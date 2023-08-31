@@ -1,0 +1,134 @@
+def unnamed():
+  global _hidden_verificationVariable=0
+  step_count_43b3d26a_214e_43ab_92f6_226e31dd6db2 = 0.0
+  thread Step_Counter_Thread_1fe8f605_23da_48c6_99df_797deaa41c89():
+    while (True):
+      step_count_43b3d26a_214e_43ab_92f6_226e31dd6db2 = step_count_43b3d26a_214e_43ab_92f6_226e31dd6db2 + 1.0
+      sync()
+    end
+  end
+  run Step_Counter_Thread_1fe8f605_23da_48c6_99df_797deaa41c89()
+  set_standard_analog_input_domain(0, 1)
+  set_standard_analog_input_domain(1, 1)
+  set_tool_analog_input_domain(0, 1)
+  set_tool_analog_input_domain(1, 1)
+  set_analog_outputdomain(0, 0)
+  set_analog_outputdomain(1, 0)
+  set_input_actions_to_default()
+  set_tool_communication(False, 115200, 0, 1, 1.5, 3.5)
+  set_tool_output_mode(0)
+  set_tool_digital_output_mode(0, 1)
+  set_tool_digital_output_mode(1, 1)
+  set_tool_voltage(0)
+  set_gravity([0.0, 0.0, 9.82])
+  set_target_payload(1.000000, [0.000000, 0.000000, 0.000000], [0.001539, 0.001539, 0.001539, 0.000000, 0.000000, 0.000000])
+  set_safety_mode_transition_hardness(1)
+  set_tcp(p[0.0,0.0,0.0,0.0,0.0,0.0])
+  while (True):
+    $ 2 "Robot Program"
+    $ 3 "Script: script_test.script"
+    # Orient myself in the program loop by popup
+    popup("Beginning a cycle", "Program start", False, False, True)
+    
+    global coordination_boolean_register = 64
+    global x_coordinate_float_register = 24
+    global y_coordinate_float_register = 25
+    
+    
+    straight_down = rpy2rotvec([d2r(0), d2r(180), d2r(0)])
+    straight_down_pose = p[0, 0, 0, straight_down[0], straight_down[1], straight_down[2]]
+    
+    # These variables will be added onto the corner of the edge of the pickup spot
+    global x_range = [0, 0.2]
+    global y_range = [0, 0.2]
+    
+    global travel_height = 0.2
+    global pickup_height = 0.1
+    
+    home_pose = pose_add(p[-0.1, -0.3, travel_height, 0, 0, 0], straight_down_pose)
+    pickup_corner_pose = pose_add(p[-0.1, -0.4, travel_height, 0, 0, 0], straight_down_pose)
+    dropoff_pose = pose_add(p[-0.4, -0.2, travel_height, 0, 0, 0], straight_down_pose)
+    
+    # Move_to_home_pos
+    # x,y,z
+    # The coordinates of the tcp
+    # z is the blue arrow
+    # x is the red arrow
+    # y is the green arrow
+    movej(home_pose)
+    
+    # set_digital_out = 0
+    write_output_boolean_register(coordination_boolean_register, False)
+    
+    # TODO
+    # Wait for external thread being ready
+    # communicated by the boolean register
+    while read_output_boolean_register(coordination_boolean_register) != True:
+    sync()
+    end
+    # The thread is finished and we now continue
+    
+    # TODO
+    # Read the coordinates of the upcoming pickup
+    received_x = read_output_float_register(x_coordinate_float_register)
+    received_y = read_output_float_register(y_coordinate_float_register)
+    
+    # Move overtop the place to pickup
+    # I think we should only receive an x and a y, and create the TCP ourselves
+    pickup_pose = pickup_corner_pose
+    pickup_pose[0] = pickup_pose[0] + received_x
+    pickup_pose[1] = pickup_pose[1] + received_y
+    movej(pickup_pose)
+    
+    
+    # Go down to pick it up
+    pickup_pose[2] = pickup_height
+    movel(pickup_pose)
+    
+    # TODO
+    # Close the tool
+    sleep(0.5)
+    
+    
+    # Lift up to stand clear
+    pickup_pose[2] = travel_height
+    movel(pickup_pose)
+    
+    # Move to the final/dropoff position
+    movej(dropoff_pose, r=0.1)
+    
+    dropoff_lowered = dropoff_pose
+    dropoff_lowered[2] = pickup_height
+    # Move straight down to drop off the item
+    movel(dropoff_lowered)
+    
+    # TODO
+    # Open the tool
+    sleep(0.2)
+    
+    # Move back up to be clear
+    movel(dropoff_pose)
+    
+    # Wait 1 sec before continuing to next loop
+    sleep(1)
+    
+    
+    # TODO
+    ## Camera Thread
+    # Generate a random TCP
+    
+    # TODO
+    # Write the generated TCP to the registers read by the robot
+    
+    # TODO
+    # set_digital_out = 1
+    # ^^ is done on the thread, so it knows that it is done
+    # Could perhaps be the boolean register instead
+    
+    
+    def clamp_coordinate(float coordinate, float min, float max):
+    # Clamp the input to the limits provided in the array.
+        sync()
+    end
+  end
+end

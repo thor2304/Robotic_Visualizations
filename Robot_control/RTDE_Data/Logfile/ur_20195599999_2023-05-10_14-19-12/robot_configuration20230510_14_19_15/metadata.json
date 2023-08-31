@@ -1,0 +1,201 @@
+{
+  "reportId" : "robot_configuration20230510_14_19_15",
+  "reportType" : "SYSTEM_CONFIGURATION_REPORT",
+  "files" : [ {
+    "path" : "summary.log",
+    "size" : 1965,
+    "mimeType" : "text/plain; charset=utf-8"
+  }, {
+    "path" : "files/programs/generated_pick_and_place_demo.script",
+    "size" : 3606,
+    "mimeType" : "text/plain; charset=utf-8"
+  }, {
+    "path" : "files/psm.ura",
+    "size" : 3629,
+    "mimeType" : "application/x-gzip"
+  }, {
+    "path" : "files/df",
+    "size" : 4065,
+    "mimeType" : "text/plain; charset=utf-8"
+  }, {
+    "path" : "files/programs/script_test.script",
+    "size" : 9289,
+    "mimeType" : "text/plain; charset=utf-8"
+  }, {
+    "path" : "files/test_installation_with_script.urp",
+    "size" : 10760,
+    "mimeType" : "application/x-gzip"
+  }, {
+    "path" : "files/urcontrol/server.conf",
+    "size" : 10805,
+    "mimeType" : "text/plain; charset=utf-8"
+  }, {
+    "path" : "files/urcontrol/joint_size3.conf",
+    "size" : 11222,
+    "mimeType" : "text/plain; charset=utf-8"
+  }, {
+    "path" : "files/polyscope.in.memory.program.script",
+    "size" : 18290,
+    "mimeType" : "text/plain; charset=utf-8"
+  }, {
+    "path" : "files/urcontrol/urcontrol.conf.UR3",
+    "size" : 19748,
+    "mimeType" : "text/plain; charset=utf-8"
+  }, {
+    "path" : "files/default.variables",
+    "size" : 19831,
+    "mimeType" : "text/plain; charset=utf-8"
+  }, {
+    "path" : "files/polyscope.in.memory.program.urp",
+    "size" : 22095,
+    "mimeType" : "application/x-gzip"
+  }, {
+    "path" : "files/urcontrol/urcontrol.conf.UR16",
+    "size" : 23833,
+    "mimeType" : "text/plain; charset=utf-8"
+  }, {
+    "path" : "files/programs/pick_and_place_demo.script",
+    "size" : 26308,
+    "mimeType" : "text/plain; charset=utf-8"
+  }, {
+    "path" : "files/default.installation",
+    "size" : 28596,
+    "mimeType" : "application/x-gzip"
+  }, {
+    "path" : "files/test_installation_with_script.script",
+    "size" : 32781,
+    "mimeType" : "text/plain; charset=utf-8"
+  }, {
+    "path" : "files/urcontrol/safety.conf.UR10",
+    "size" : 32781,
+    "mimeType" : "text/plain; charset=utf-8"
+  }, {
+    "path" : "files/urcontrol/urcontrol.conf",
+    "size" : 34269,
+    "mimeType" : "text/plain; charset=utf-8"
+  }, {
+    "path" : "files/system.environment.txt",
+    "size" : 37448,
+    "mimeType" : "text/plain; charset=utf-8"
+  }, {
+    "path" : "files/urcontrol/joint_size1.conf",
+    "size" : 37855,
+    "mimeType" : "text/plain; charset=utf-8"
+  }, {
+    "path" : "files/interpreter/interpreter.0.log",
+    "size" : 37910,
+    "mimeType" : "text/plain; charset=utf-8"
+  }, {
+    "path" : "files/log_history.txt",
+    "size" : 41297,
+    "mimeType" : "text/plain; charset=utf-8"
+  }, {
+    "path" : "files/programs/test_installation_with_script.urp",
+    "size" : 42768,
+    "mimeType" : "application/x-gzip"
+  }, {
+    "path" : "files/urcontrol/.tcp.conf",
+    "size" : 42779,
+    "mimeType" : "text/plain; charset=utf-8"
+  }, {
+    "path" : "files/urcontrol/safety.conf.UR5",
+    "size" : 46499,
+    "mimeType" : "text/plain; charset=utf-8"
+  }, {
+    "path" : "files/interpreter/interpreter.log",
+    "size" : 46499,
+    "mimeType" : "text/plain; charset=utf-8"
+  }, {
+    "path" : "files/urcontrol/joint_size4.conf",
+    "size" : 46924,
+    "mimeType" : "text/plain; charset=utf-8"
+  }, {
+    "path" : "files/urcontrol/urcontrol.conf.UR10_DC",
+    "size" : 48666,
+    "mimeType" : "text/plain; charset=utf-8"
+  }, {
+    "path" : "files/urcontrol/safety.conf.UR3",
+    "size" : 48666,
+    "mimeType" : "text/plain; charset=utf-8"
+  }, {
+    "path" : "files/urcontrol/joint_null.conf",
+    "size" : 49102,
+    "mimeType" : "text/plain; charset=utf-8"
+  }, {
+    "path" : "files/urcontrol/urcontrol.conf.UR16_DC",
+    "size" : 50842,
+    "mimeType" : "text/plain; charset=utf-8"
+  }, {
+    "path" : "files/urcontrol/joint_size2.conf",
+    "size" : 51247,
+    "mimeType" : "text/plain; charset=utf-8"
+  }, {
+    "path" : "files/polyscope.log",
+    "size" : 69828,
+    "mimeType" : "text/plain; charset=utf-8"
+  }, {
+    "path" : "files/interpreter/interpreter.saved.log",
+    "size" : 69883,
+    "mimeType" : "text/plain; charset=utf-8"
+  }, {
+    "path" : "files/urcontrol/urcontrol.conf.UR5",
+    "size" : 71371,
+    "mimeType" : "text/plain; charset=utf-8"
+  }, {
+    "path" : "files/urcontrol/joint_size0.conf",
+    "size" : 71761,
+    "mimeType" : "text/plain; charset=utf-8"
+  }, {
+    "path" : "files/polyscope.threads.txt",
+    "size" : 76088,
+    "mimeType" : "text/plain; charset=utf-8"
+  }, {
+    "path" : "files/urcontrol/urcontrol.conf.UR3_DC",
+    "size" : 77549,
+    "mimeType" : "text/plain; charset=utf-8"
+  }, {
+    "path" : "files/histogram.properties",
+    "size" : 80055,
+    "mimeType" : "text/plain; charset=utf-8"
+  }, {
+    "path" : "files/urcontrol/safety.conf",
+    "size" : 83775,
+    "mimeType" : "text/plain; charset=utf-8"
+  }, {
+    "path" : "files/programs/default.installation",
+    "size" : 86063,
+    "mimeType" : "application/x-gzip"
+  }, {
+    "path" : "files/urcontrol/urcontrol.conf.UR5_DC",
+    "size" : 87553,
+    "mimeType" : "text/plain; charset=utf-8"
+  }, {
+    "path" : "files/programs/default.variables",
+    "size" : 87636,
+    "mimeType" : "text/plain; charset=utf-8"
+  }, {
+    "path" : "files/urcontrol/urcontrol.conf.UR10",
+    "size" : 89376,
+    "mimeType" : "text/plain; charset=utf-8"
+  }, {
+    "path" : "files/urcontrol/safety.conf.UR16",
+    "size" : 89376,
+    "mimeType" : "text/plain; charset=utf-8"
+  }, {
+    "path" : "files/programs/test_installation_with_script.script",
+    "size" : 93561,
+    "mimeType" : "text/plain; charset=utf-8"
+  }, {
+    "path" : "files/programs/hello-world",
+    "size" : 93566,
+    "mimeType" : "text/plain; charset=utf-8"
+  }, {
+    "path" : "files/urcontrol/URControl.log.0",
+    "size" : 93566,
+    "mimeType" : "text/plain; charset=utf-8"
+  }, {
+    "path" : "files/ps",
+    "size" : 114031,
+    "mimeType" : "text/plain; charset=utf-8"
+  } ]
+}

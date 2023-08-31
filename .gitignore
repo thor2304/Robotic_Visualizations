@@ -1,0 +1,7 @@
+.idea/
+/venv/
+/rtde-2.7.2-release/
+/rtde-2.7.2/
+/Robot_control/EDDE_data
+/Robot_control/full_polyscope_file_dump
+!/Robot_control/**/*.py

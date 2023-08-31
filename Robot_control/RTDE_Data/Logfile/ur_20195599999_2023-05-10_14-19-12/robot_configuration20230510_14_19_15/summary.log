@@ -1,0 +1,96 @@
+== Incident Report ==
+
+Incident Time: Wed May 10 14:19:15 CEST 2023
+Reporting Time: Wed May 10 14:19:15 CEST 2023
+
+== PolyScope Probe ==
+
+Serial number: 20195599999
+Version: 5.13.0
+Build date: Thu Nov 17 00:00:00 CET 2022
+Baseline: 11.3.898
+Polyscope: 74.11.1642
+Controller: 41.6.4
+Firmware: 32.3.139
+Platform: 0.1.1
+Current Installation Name: default
+Current Program Name: test_installation_with_script
+Current Program State: STOPPED
+Latest Program Indicator: [3 Script: script_test.script main]
+
+== Log History Probe ==
+
+
+== Controller Files Probe ==
+
+
+== System Probe ==
+
+System Time: Wed May 10 14:19:15 CEST 2023
+Free Memory: 456436040
+Total Memory: 842006528
+Max Memory: 3698851840
+System Load Average: 0.53
+Loaded Class Count: 19678
+Total Loaded Class Count: 19679
+Class Path: bin/felix.jar
+Library Path: /usr/lib/jni
+VM Uptime: 85360
+VM Name: OpenJDK 64-Bit Server VM
+VM Vendor: Private Build
+VM Version: 25.352-b08
+
+
+== Programs and Installations collector ==
+
+
+== Script Interpreter Probe ==
+
+
+== Hardware Configuration Files Probe ==
+
+
+== Logging Probe ==
+
+
+== URCap Contributions ==
+
+URCap Name: Ethernet/IP
+URCap Version: 1.6.6
+Developer: Universal Robots
+Contact Info: null
+Description: null
+Copyright: null
+Licese Type: null
+
+URCap Name: Conveyor Tracking
+URCap Version: 1.8.12
+Developer: Universal Robots
+Contact Info: null
+Description: null
+Copyright: null
+Licese Type: null
+
+URCap Name: polyscope-pallet-impl
+URCap Version: 1.5.47
+Developer: Universal Robots
+Contact Info: Energivej 25, 5260 Odense S, Denmark
+Description: Palletizing
+Copyright: Copyright (C) 2009-2017 Universal Robots. All Rights Reserved
+Licese Type: Sample license
+
+URCap Name: polyscope-screwdriving-impl
+URCap Version: 3.8.35
+Developer: Universal Robots
+Contact Info: Energivej 25, 5260 Odense S, Denmark
+Description: Screwdriving
+Copyright: Copyright (C) 2009-2017 Universal Robots. All Rights Reserved
+Licese Type: Sample license
+
+
+== GUI Diagnostics ==
+
+
+== Metrics ==
+
+

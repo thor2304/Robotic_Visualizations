@@ -1,0 +1,188 @@
+global robot_ready_bit_output_register = 64
+global camera_ready_bit_input_register = 65
+global camera_ready_bit_output_register = 65
+
+global waiting_pulse_output_register = 66
+
+global x_coordinate_float_register = 24
+global y_coordinate_float_register = 25 
+
+
+move_acceleration = 3
+move_speed = 0.75
+vacuum_level = 10
+
+
+# Straight_down must be defined in polyscope
+straight_down_pose = p[0, 0, 0, straight_down[3], straight_down[4], straight_down[5]]
+
+# pickup_corner_1 must be defined in polyscope
+corner_1_x = pickup_corner_1[0]
+corner_1_y = pickup_corner_1[1]
+corner_2_x = pickup_corner_2[0]
+corner_2_y = pickup_corner_2[1]
+
+# These variables will be added onto the corner of the edge of the pickup spot
+global x_range = [0, corner_2_x - corner_1_x]
+global y_range = [0, corner_2_y - corner_1_y]
+
+# travel_height_p must be defined in polyscope
+global travel_height = travel_height_p[2]
+global pickup_height = pickup_corner_1[2]
+
+home_pose = home_pos
+pickup_corner_pose = pose_add(
+    p[
+        pickup_corner_1[0], pickup_corner_1[1], travel_height,
+        0, 0, 0
+        ],
+    straight_down_pose
+    )
+# dropoff must be defined in polyscope
+dropoff_pose = pose_add(p[dropoff[0], dropoff[1], travel_height, 0, 0, 0], straight_down_pose)
+
+
+# Helper functions
+def max(a, b):
+    if b > a:
+        return b
+    end
+
+    return a
+end
+
+def min(a, b):
+    if b < a:
+        return b
+    end
+
+    return a
+end
+
+def clamp_coordinate(coordinate, lower_limit=0, upper_limit=1):
+# Clamp the input to the limits provided in the array.
+    return max(min(upper_limit, coordinate), lower_limit)
+end
+
+global next_robot_ready_flag = True
+global previous_camera_flag = read_input_boolean_register(camera_ready_bit_input_register)
+
+# MAIN SCRIPT
+def my_main():
+  # Move_to_home_pos
+  # x,y,z
+  # The coordinates of the tcp
+  # z is the blue arrow
+  # x is the red arrow
+  # y is the green arrow
+  movel(home_pose)
+
+  # set_digital_out = 0
+  write_output_boolean_register(robot_ready_bit_output_register, next_robot_ready_flag)
+  write_output_boolean_register(camera_ready_bit_output_register, read_input_boolean_register(camera_ready_bit_input_register))
+  next_robot_ready_flag = not next_robot_ready_flag
+
+  # Wait for external thread being ready
+  # communicated by the boolean register
+  # a new result is ready when the register changes value
+
+  popup("Waiting for camera ready!", "Waiting for external", False, False, False)
+
+  pulse_thread = run wait_pulse()
+  while read_input_boolean_register(camera_ready_bit_input_register) == previous_camera_flag:
+      sync()
+  end
+  kill pulse_thread
+  # Note the new register flag
+  previous_camera_flag = not previous_camera_flag
+
+  socket_open("127.0.0.1", 29999) # Open internal socket
+  socket_send_line("close popup")
+  socket_close()
+
+  write_output_boolean_register(camera_ready_bit_output_register, read_input_boolean_register(camera_ready_bit_input_register))
+
+  # The thread is finished and we now continue
+
+  # Read the coordinates of the upcoming pickup
+  global received_x = read_input_float_register(x_coordinate_float_register)
+  global received_y = read_input_float_register(y_coordinate_float_register)
+  # Clamp the coordinates to avoid overshooting the target area
+  received_x = clamp_coordinate(received_x, x_range[0], x_range[1])
+  received_y = clamp_coordinate(received_y, y_range[0], y_range[1])
+
+  # Move overtop the place to pickup
+  # I think we should only receive an x and a y, and create the TCP ourselves
+  pickup_pose = pickup_corner_pose
+  pickup_pose[0] = pickup_pose[0] + received_x
+  pickup_pose[1] = pickup_pose[1] + received_y
+  # (Should be movej, but because of qnear shenanigans, it currently is movel)
+  movel(pickup_pose)
+
+
+  # Go down to pick it up
+  pickup_pose[2] = pickup_height
+  movel(pickup_pose, a=move_acceleration, v=move_speed)
+
+  # Close the tool
+  # popup("Apply the vacuum here!", "Picking up the tile", False, False, True)
+  
+  # channel, vacuum, timeout, alert, toolindex
+  # Channel: 0 = A, 1 = B, 2 = Both
+  # Vacuum is the percentage (must be between 0 and 80) 60 = 60% ; 30 = 30%
+  # timeout is how long the command waits for the desired vacuum, before giving an error ; it is given in seconds : 0.6 = 600 ms
+  # alert (defaults to True) When True, will give an alert if vacuum is lost
+  # tool index is only applicable if more than one gripper is mounted
+  vg10_grip(2, vacuum_level, 0, False) 
+
+  # Lift up to stand clear
+  pickup_pose[2] = travel_height
+  movel(pickup_pose, a=move_acceleration, v=move_speed)
+
+  # Move to the final/dropoff position (Should be movej, but because of qnear shenanigans, it currently is movel)
+  movel(dropoff_pose, r=0.1)
+
+  dropoff_lowered = dropoff_pose
+  dropoff_lowered[2] = dropoff[2]
+  # Move straight down to drop off the item
+  movel(dropoff_lowered)
+
+  # Open the tool
+  #popup("Drop the vacuum here!", "Dropping off the tile", False, False, True)
+  
+  # channel, timeout, autoidle, toolindex
+  # Channel: 0 = A, 1 = B, 2 = Both
+  # timeout is how long the command waits for the vacuum to drop, before giving an error ; 
+      # it is given in seconds : 0.6 = 600 ms
+  # autoidle : 
+      # Whether the release valve should be automatically turned off when the release is completed, 
+      # and the robot has moved 5 cm away from the release position
+  # tool index is only applicable if more than one gripper is mounted
+  vg10_release(2, 0.6)
+
+  # Move back up to be clear
+  movel(dropoff_pose)
+end
+
+# The pulse thread exists because it can be hard to communicate this falling/rising change 
+# if the robot hits the waiting position first without the python script being ready.
+# If the python script is started after the robot hits the waiting state, we use this pulsing signal 
+# to tell it that we are waiting
+thread wait_pulse():
+    previous = False
+    while True:
+        # Do some stuff
+        sleep(0.2)
+        previous = not previous
+        write_output_boolean_register(waiting_pulse_output_register, previous)
+    end
+end
+
+# Running the entire program:
+
+# The extra thread is run once, and then the main program loops continuously
+# If main does not have a continuous loop, the entire script is restarted by PolyScope
+
+while True:
+  my_main()
+end

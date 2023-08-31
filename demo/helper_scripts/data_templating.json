@@ -1,0 +1,53 @@
+{
+  "wildcard_character": "*",
+  "custom": {
+    "current": {
+      "length": 6,
+      "template": {
+        "actual": "actual_current_*",
+        "target": "target_current_*",
+        "window_min": "current_window_min_*",
+        "window_max": "current_window_max_*"
+      }
+    },
+    "torque": {
+      "length": 6,
+      "template": {
+        "target": "target_torque_*",
+        "window_min": "torque_window_min_*",
+        "window_max": "torque_window_max_*",
+        "external_toque": "external_torque_*"
+      }
+    },
+    "voltage": {
+      "length": 6,
+      "template": {
+        "actual": "joint_voltage_*"
+      }
+    },
+    "moter_temperature": {
+      "length": 6,
+      "template": {
+        "actual": "motor_temperature_*"
+      }
+    },
+    "movement": {
+      "length": 6,
+      "template": {
+        "actual_position": "actual_position_*",
+        "target_position": "target_position_*",
+        "actual_velocity": "actual_velocity_*",
+        "target_velocity": "target_velocity_*",
+        "joint_nwp": "joint_nwp_*",
+        "target_acceleration": "target_acceleration_*"
+      }
+    },
+    "robot_power": {
+      "template": "robot_power"
+    },
+    "singularity_ratio": {
+      "template": "singularity_ratio"
+    }
+  }
+}
+

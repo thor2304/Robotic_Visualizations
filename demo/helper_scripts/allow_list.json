@@ -1,0 +1,194 @@
+{
+  "wildcard": "*",
+  "picked_variables": [
+    {
+      "name": "actual_current_*",
+      "type": "float",
+      "count": 6,
+      "start": 0,
+      "unit": "Watt"
+    },
+    {
+      "name": "target_current_*",
+      "type": "float",
+      "count": 6,
+      "start": 0,
+      "unit": "Watt"
+    },
+    {
+      "name": "current_window_min_*",
+      "type": "float",
+      "count": 6,
+      "start": 0,
+      "unit": "Watt"
+    },
+    {
+      "name": "current_window_max_*",
+      "type": "float",
+      "count": 6,
+      "start": 0,
+      "unit": "Watt"
+    },
+    {
+      "name": "joint_voltage_*",
+      "type": "float",
+      "count": 6,
+      "start": 0,
+      "unit": "Volt"
+    },
+    {
+      "name": "target_torque_*",
+      "type": "float",
+      "count": 6,
+      "start": 0,
+      "unit": "Nm"
+    },
+    {
+      "name": "torque_window_min_*",
+      "type": "float",
+      "count": 6,
+      "start": 0,
+      "unit": "Nm"
+    },
+    {
+      "name": "torque_window_max_*",
+      "type": "float",
+      "count": 6,
+      "start": 0,
+      "unit": "Nm"
+    },
+    {
+      "name": "external_torque_*",
+      "type": "float",
+      "count": 6,
+      "start": 0,
+      "unit": "Nm"
+    },
+    {
+      "name": "motor_temp_*",
+      "type": "float",
+      "count": 6,
+      "start": 0,
+      "unit": "Degree Celsius"
+    },
+    {
+      "name": "actual_position_*",
+      "type": "float",
+      "count": 6,
+      "start": 0,
+      "unit": "radians"
+    },
+    {
+      "name": "target_position_*",
+      "type": "float",
+      "count": 6,
+      "start": 0,
+      "unit": "radians"
+    },
+    {
+      "name": "target_pose_*",
+      "type": "float",
+      "count": 6,
+      "start": 0
+    },
+    {
+      "name": "actual_pose_*",
+      "type": "float",
+      "count": 6,
+      "start": 0
+    },
+    {
+      "name": "actual_velocity_*",
+      "type": "float",
+      "count": 6,
+      "start": 0,
+      "unit": "radians/s"
+    },
+    {
+      "name": "target_velocity_*",
+      "type": "float",
+      "count": 6,
+      "start": 0,
+      "unit": "radians/s"
+    },
+    {
+      "name": "joint_*_nwp",
+      "type": "float",
+      "count": 6,
+      "start": 0,
+      "unit": "radians"
+    },
+    {
+      "name": "target_acceleration_*",
+      "type": "float",
+      "count": 6,
+      "start": 0,
+      "unit": "radians/s^2"
+    },
+    {
+      "name": "robot_power",
+      "type": "float",
+      "unit": "watt"
+    },
+    {
+      "name": "singularity_ratio",
+      "type": "float"
+    },
+    {
+      "name": "mass",
+      "type": "float",
+      "unit": "kg"
+    },
+    {
+      "name": "center_of_gravity_*",
+      "indexes": [
+        "x",
+        "y",
+        "z"
+      ],
+      "type": "float",
+      "unit": "m"
+    },
+    {
+      "name": "accelerometer_*",
+      "indexes": [
+        "x",
+        "y",
+        "z"
+      ],
+      "type": "float",
+      "unit": "m/s^2"
+    },
+    {
+      "name": "force_*",
+      "indexes": [
+        "x",
+        "y",
+        "z"
+      ],
+      "type": "float",
+      "unit": "N"
+    },
+    {
+      "name": "torque_*",
+      "indexes": [
+        "x",
+        "y",
+        "z"
+      ],
+      "type": "float",
+      "unit": "Nm"
+    }
+  ],
+  "computed_variables": [
+    {
+      "name": "current_window_diff_*",
+      "arguments": [
+        "current_window_max_*",
+        "current_window_min_*"
+      ],
+      "count": 6,
+      "method": "subtract"
+    }
+  ]
+}

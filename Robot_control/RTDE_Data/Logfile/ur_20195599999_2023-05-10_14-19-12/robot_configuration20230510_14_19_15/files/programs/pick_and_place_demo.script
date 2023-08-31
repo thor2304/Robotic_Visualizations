@@ -1,0 +1,61 @@
+def unnamed():
+  global Waypoint_1_p=p[-.209053384163, -.376649487830, .260971148640, -.001221359682, 3.116276528482, .038891915637]
+  global Waypoint_1_q=[-1.6679671460099872, -1.3549549612792857, -2.558074347828903, -0.8266458916409078, 1.5933170496094755, -0.09826196206282134]
+  global Waypoint_2_p=p[-.224812428501, -.506898396036, .092886481952, -.001221359682, 3.116276528476, .038891915647]
+  global Waypoint_2_q=[-1.6737184607956817, -1.9406566567048236, -2.4342998977081898, -0.36484769156355856, 1.593159766059029, -0.10401257388605423]
+  global Waypoint_3_p=p[-.355726423256, -.320273858912, .132928815275, 1.047, 1.047, 1.047]
+  # global Waypoint_3_p=p[-.355726423256, -.320273858912, .132928815275, -.001221359682, 3.116276528478, .038891915643]
+  global Waypoint_3_q=[-2.039115814023912, -1.7588028771514281, -2.5660800408564857, -0.42110044701727567, 1.5818895010933067, -0.4692896989436406]
+  
+  # Thread 1
+  thread Thread_1():
+    while (True):
+      $ 27 "Wait digital_out[0]≟ False "
+      while (not(get_standard_digital_out(0) ==   False  )):
+        sync()
+      end
+
+      # 'Here is where the TCPs should be generated'
+      sleep(2.0)
+      write_output_integer_register(24, 100)
+      # '24 is x, 25 is y'
+      write_output_integer_register(25, 200)
+
+      write_output_boolean_register(64,True)
+
+      set_standard_digital_out(0, True)
+    end
+  end
+  threadId_Thread_1 = run Thread_1()
+
+  # Main robot program:
+  while (True):
+    movej(get_inverse_kin(Waypoint_1_p, qnear=Waypoint_1_q), a=1.3962634015954636, v=1.0471975511965976)
+
+    # 'Digital out 0 will be used to coordinate with the camera, when LOW, the camera can process coordinates'
+    # "Camera coordination"
+    set_standard_digital_out(0, False)
+
+    # 'During this phase, the camera will generate some TCP positions for the robot to move to'
+    write_output_boolean_register(64,False)
+
+    while (not(read_output_boolean_register(64)  ==   True  )):
+      sync()
+    end
+
+    TCP_x=read_output_integer_register(24)
+    TCP_y=read_output_integer_register(25)
+
+    movej(get_inverse_kin(Waypoint_2_p, qnear=Waypoint_2_q), a=1.3962634015954636, v=1.0471975511965976)
+    set_tool_digital_out(0, True)
+    sleep(0.1)
+    set_tool_digital_out(0, False)
+    
+    movej(get_inverse_kin(Waypoint_3_p, qnear=Waypoint_3_q), a=1.3962634015954636, v=1.0471975511965976)
+    set_tool_digital_out(0, True)
+    sleep(0.1)
+    set_tool_digital_out(0, False)
+    sleep(1.0)
+  end
+end
+unnamed()

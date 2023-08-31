@@ -1,0 +1,68 @@
+{
+  "time": {
+    "timestamp": "received",
+    "controller_time": "received. The time that the controller spent on the command",
+    "program_line": "received through EDDE or inferred using other variables"
+  },
+  "tcp_error": {
+    "xyz_error": {
+      "x": "computed from: target - actual",
+      "y": "computed from: target - actual",
+      "z": "computed from: target - actual"
+    },
+    "rotation_error": {
+      "direction_error": "computed",
+      "rotation_amount_error": "computed"
+    }
+  },
+  "tcp_position": {
+    "x": "actual_tcp_pose_0",
+    "y": "actual_tcp_pose_1",
+    "z": "actual_tcp_pose_2",
+    "rotation/orientation": {
+      "direction": "Vec? Axis-angle representation? Quaternion representation?"
+    }
+  },
+  "joints": {
+    "base": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "Shoulder": {
+      "x": "Computed from base rotation actual_q_0",
+      "y": "Computed from base rotation actual_q_0",
+      "z": "Will always be the same height above the base",
+      "rotation/orientation": "Do we want that? if so i think the same notion as tcp_position.rotation is applicable"
+    },
+    "elbow": {
+      "x": "Computed compoundly from base rotation (actual_q_0) and shoulder rotation (actual_q_1)",
+      "y": "Computed compoundly from base rotation (actual_q_0) and shoulder rotation (actual_q_1)",
+      "z": "Computed compoundly from base rotation (actual_q_0) and shoulder rotation (actual_q_1)",
+      "rotation/orientation": "Do we want that? if so i think the same notion as tcp_position.rotation is applicable"
+    },
+    "wrist 1": {
+      "Same as elbow and base": "For all attributes, except more actual_q_x is used"
+    },
+    "wrist 2": {
+      "Same as wrist 2": "For all attributes, except more actual_q_x is used"
+    },
+    "wrist 3": {
+      "Same as elbow and base": "For all attibutes, except more actual_q_x is used"
+    }
+  },
+  "payload": {
+    "weight": "Received",
+    "expected_weight": "?"
+  },
+  "Variables":{
+    "program_variables": {
+      "internal variable 1": "This variable is internal to the script. So far it seems like it cannot be read through RTDE"
+    },
+    "register_variables": {
+      "double_register_24": "value received. This is one of the values used for communication with camera",
+      "double_register_25": "value received. This is one of the values used for communication with camera",
+      "boolean_register_64": "value received. This is used for synchronization between the threads"
+    }
+  }
+}

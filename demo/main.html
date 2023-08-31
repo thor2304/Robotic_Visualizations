@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Contextual Visualizations</title>
+
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js'></script>
+    <script src="https://cdn.plot.ly/plotly-latest.js"></script>
+    <script src="https://unpkg.com/mathjs@11.8.0/lib/browser/math.js"></script>
+
+    <!-- This supports light and dark mode automatically. -->
+    <link rel="stylesheet" href="https://esm.sh/@wooorm/starry-night@2/style/both.css">
+    <!--    Stylesheet for code numbers from rehype-starry-night-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@microflash/rehype-starry-night@2.1.1/index.min.css">
+
+
+    <script src="./helper_scripts/helpers.js"></script>
+
+    <script src="./helper_scripts/load_csv_data.js"></script>
+    <script src="./helper_scripts/datastructures.js"></script>
+
+    <script src="./helper_scripts/factories/animationSettings.js"></script>
+    <script src="./helper_scripts/factories/layoutFactory.js"></script>
+    <script src="./helper_scripts/factories/LinePlotFactory.js"></script>
+    <script src="./helper_scripts/factories/directionPlotFactory.js"></script>
+
+    <link rel="stylesheet" href="./source_code_visualization/source_code.css">
+    <link rel="stylesheet" href="source_code_visualization/placeholders.css">
+    <script defer type="module" src="./source_code_visualization/render_using_rehype.js"></script>
+    <script defer type="module" src="source_code_visualization/fetch_and_render_sample_code.js"></script>
+    <script defer src="source_code_visualization/line_highlight.js"></script>
+
+    <script defer src="csv_driven_3d.js"></script>
+    <script defer src="helper_scripts/cycle_filtering.js"></script>
+    <script defer src="./dataframe_driven_robot_arm/computeJointPositions.js"></script>
+    <script defer src="./helper_scripts/EDDE_loader.js"></script>
+    <script defer src="./helper_scripts/variable_table.js"></script>
+
+    <script defer src="fluid_layout/toggle_draggable.js"></script>
+    <script defer src="fluid_layout/make_draggable.js"></script>
+    <script defer src="fluid_layout/column_resize.js"></script>
+
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+<header>
+    <div id="header-title">
+        <p id="filler"></p>
+        <h1>This is the page where the visualizations come together</h1>
+        <button id="lock-layout-button"></button>
+    </div>
+</header>
+<main>
+    <div id="visualization-container" class="visualization-container drag-container">
+        <!--        <h1>Visualizations go here</h1>-->
+        <div id="3dAnimation" class="vis-placeholder draggable" draggable="false">
+            <h1></h1>
+        </div>
+        <div id="3d_tcp_vis" class="vis-placeholder draggable" draggable="false">
+            <h1></h1>
+        </div>
+
+        <div id="tcp_vis" class="vis-placeholder draggable" draggable="false">
+            <h1></h1>
+        </div>
+
+        <div id="variable_vis" class="vis-placeholder draggable" draggable="false">
+            <table id="variable_showcase">
+                <tbody>
+                    <tr>
+                        <th>Variable</th>
+                        <th>Value</th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <hr id="separator-slider"><!----------------------------------------------------------------------------------->
+
+
+    <div class="code-container" id="code-container">
+        <!--        <h1>Code goes here</h1>-->
+    </div>
+
+
+</main>
+</body>
+</html>

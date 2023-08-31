@@ -1,0 +1,66 @@
+:root{
+    /*The color parameters for light mode*/
+    --highlight-background-color: hsl(210, 29%, 97%);
+    --highlight-border-color: hsl(210, 9%, 77%);
+    --highlight-border-between-color: hsla(210, 9%, 77%, 50%);
+    --highlight-code-highlight: hsl(210, 9%, 83%);
+
+    /*Constants that override the provided stylesheet from rehype*/
+    --highlight-border-radius: .5em;
+
+    /*This allows us to change the color, to something that pops a bit more if we wish to*/
+    /*--highlight-active-line-color: var(--highlight-code-highlight);*/
+    --highlight-active-line-color: hsla(193, 46%, 78%, 70%);
+}
+
+pre {
+    margin: .5em 0;
+
+    height: calc(100vh - 10em);
+    overflow-y: auto;
+}
+
+
+.highlight pre .line {
+    margin: 0;
+    padding: .18em;
+    /*Lines between code lines*/
+    border-bottom: .1em solid var(--highlight-border-between-color);
+}
+
+.highlight pre .line span{
+    padding: 0;
+    margin: 0;
+}
+
+.line.active{
+    background-color: var(--highlight-active-line-color);
+}
+
+.highlight pre :last-child {
+    border-bottom-style: none;
+}
+
+.highlight {
+    background: var(--highlight-background-color);
+    border: .15em solid var(--highlight-border-color);
+
+    margin: .25em;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        color-scheme: dark;
+
+        /*To change the color scheme of the rehype highlight*/
+        --highlight-background-color: hsl(240, 20%, 2%);
+        --highlight-border-color: hsl(208, 21%, 12%);
+        --highlight-border-between-color: hsla(208, 21%, 12%, 50%);
+        --highlight-code-highlight: hsl(208, 19%, 13%);
+
+        /*This allows us to change the color, to something that pops a bit more if we wish to*/
+        --highlight-active-line-color: hsl(213, 50%, 23%);
+    }
+}
+
+

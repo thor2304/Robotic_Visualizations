@@ -1,0 +1,21 @@
+ Program
+   Variables Setup
+   Robot Program
+     Popup: loop start
+     Pose assignments
+       If  False 
+         MoveJ
+           home_pos_w
+           pickup_1
+           pickup_2
+           dropoff_way
+           travel_height_w
+           straight_down_w
+       pickup_corner_1≔pickup_1
+       pickup_corner_2≔pickup_2
+       dropoff≔dropoff_way
+       travel_height_p≔travel_height_w
+       straight_down≔straight_down_w
+       home_pos≔home_pos_w
+     Popup: custom urscript starting
+     Script: real_script_for_robot_use.script
