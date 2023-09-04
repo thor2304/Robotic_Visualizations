@@ -50,43 +50,6 @@ async function plot_raw_data(data) {
     }
 }
 
-async function createButtonJumpingToTimeStamp(timestamp, name) {
-    // const button = document.createElement("button");
-    // button.innerHTML = `${name}<br>
-    // ${timestamp}`;
-    //
-    // document.body.appendChild(button);
-    //
-    // button.addEventListener ("click", async function() {
-    //     await updateVisualizations(timestamp);
-    // });
-
-    const datapoint = datapoints[timestamp]
-
-    if(datapoint === undefined){
-        console.log(`No datapoint found for timestamp ${timestamp}`)
-        return
-    }
-
-    const line = await get_line(datapoint.time.lineNumber, scriptOffset)
-
-    if (line === undefined){
-        console.log(`No line found for timestamp ${timestamp} and line number ${datapoint.time.lineNumber}`)
-        return
-    }else{
-        console.log(`Found line for timestamp ${timestamp} and line number ${datapoint.time.lineNumber}`)
-    }
-
-    line.addEventListener("click", async function() {
-        console.log("timestamp", timestamp)
-        try {
-            await updateVisualizations(timestamp);
-        } catch (e) {
-            console.error(e)
-        }
-    });
-}
-
 /**
  *
  * @param dataPoints

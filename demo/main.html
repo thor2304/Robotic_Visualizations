@@ -25,10 +25,13 @@
     <script src="./helper_scripts/factories/directionPlotFactory.js"></script>
 
     <link rel="stylesheet" href="./source_code_visualization/source_code.css">
-    <link rel="stylesheet" href="source_code_visualization/placeholders.css">
+    <link rel="stylesheet" href="./source_code_visualization/line-control.css">
+    <link rel="stylesheet" href="./source_code_visualization/placeholders.css">
     <script defer type="module" src="./source_code_visualization/render_using_rehype.js"></script>
-    <script defer type="module" src="source_code_visualization/fetch_and_render_sample_code.js"></script>
-    <script defer src="source_code_visualization/line_highlight.js"></script>
+    <script defer type="module" src="./source_code_visualization/fetch_and_render_sample_code.js"></script>
+    <script defer src="./source_code_visualization/line_highlight.js"></script>
+    <script defer src="./source_code_visualization/ErrorHighlightingLine.js"></script>
+
 
     <script defer src="csv_driven_3d.js"></script>
     <script defer src="helper_scripts/cycle_filtering.js"></script>
@@ -82,7 +85,11 @@
 
     <div class="code-container" id="code-container">
         <!--        <h1>Code goes here</h1>-->
+        <div id="Script-control-button-container">
+
+        </div>
     </div>
+
 
 
 </main>
