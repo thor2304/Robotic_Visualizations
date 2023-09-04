@@ -20,3 +20,4 @@ jobs:
           server: ${{ vars.FTP_SERVER }}
           username: ${{ vars.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: "Robotic_Visualizations/"
