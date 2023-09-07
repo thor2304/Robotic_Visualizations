@@ -48,7 +48,7 @@ function extract_available_variables(frame) {
     const variables = []
     for (let i = 0; i < allVariables.length; i++) {
         const lowerCased = allVariables[i].toLowerCase()
-        if (lowerCased.startsWith("on_") || lowerCased.startsWith("vg_")) {
+        if ((lowerCased.startsWith("on_") || lowerCased.startsWith("vg_")) && lowerCased !== "vg_vacuum_b" && lowerCased !== "vg_vacuum_a") {
             continue
         }
 

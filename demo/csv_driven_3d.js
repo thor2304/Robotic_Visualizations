@@ -304,13 +304,20 @@ async function updateVisualizations(timestamp, sliderTrigger = false) {
 
 
 async function plot_tcp_error(dataframes, timestamps) {
-    const chartName = 'TCP Error'
-    const chartId = 'tcp_vis'
+    // const chartName = 'TCP Error'
+    // const chartId = 'tcp_vis'
+    // const dataNames = [
+    //     "robot.tool.positionError.x",
+    //     "robot.tool.positionError.y",
+    //     "robot.tool.positionError.z",
+    //     "robot.tool.positionError.magnitude",
+    // ]
+
+    const chartName = "Vacuum level"
+    const chartId = "tcp_vis"
     const dataNames = [
-        "robot.tool.positionError.x",
-        "robot.tool.positionError.y",
-        "robot.tool.positionError.z",
-        "robot.tool.positionError.magnitude",
+        "scriptVariables.vg_Vacuum_A.value",
+        "scriptVariables.vg_Vacuum_B.value",
     ]
 
     await plotLineChart(chartName, chartId, dataframes, timestamps, dataNames)
