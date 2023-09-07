@@ -11,17 +11,21 @@ const highlight_inactive_line_name = "inactive";
  * @param line_number The line number provided by the csv data
  * @param offset The line from the csv data that is actually line 0 in the code visualization
  * (Where it is loaded by the "true" script running on the controller)
+ * @param scrollIntoView
  */
-async function highlight_line(line_number, offset = 0) {
+async function highlight_line(line_number, offset = 0, scrollIntoView = true) {
     const line = await get_line(line_number, offset);
 
     if (line === undefined) {
         if(previous_highlighted_line === undefined || previous_highlighted_line === null){
+            console.log("undefined exit: ", previous_highlighted_line)
             return;
         }
         previous_highlighted_line.classList.add(highlight_inactive_line_name);
-
+        console.log("Changing to inactive: ", previous_highlighted_line)
         return;
+    }else{
+        console.log("line is active: ", line, "previous line == line? ", previous_highlighted_line === line)
     }
 
     // Unhighlight the previously highlighted line
@@ -31,6 +35,10 @@ async function highlight_line(line_number, offset = 0) {
     }
 
     line.classList.add(highlight_class_name);
+
+    if(scrollIntoView){
+        line.scrollIntoView( {block: "nearest", inline: "nearest", behavior: "auto"})
+    }
 
     previous_highlighted_line = line;
 

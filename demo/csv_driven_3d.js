@@ -263,33 +263,43 @@ async function plot3dVis(dataframes) {
 
     const robotArmvis = document.getElementById('3dAnimation')
     robotArmvis.on('plotly_sliderchange', async function (e) {
-        try{
-            await updateVisualizations(e.step.value)
-
-        }catch (exc){
+        try {
+            await updateVisualizations(e.step.value, true)
+        } catch (exc) {
             console.log(exc)
         }
     })
 }
 
-async function updateVisualizations(timestamp) {
+let sliderIndex = 1;
+async function updateVisualizations(timestamp, sliderTrigger = false) {
     datapoints_linked.updateCurrent(timestamp);
+
+    if (!sliderTrigger){
+        // If this call was not triggered by the slider updating, then update the plot with the slider and return.
+        // If we do not do this, updating the plot will cause the slider to update, which triggers a new call to this method
+        await Plotly.animate(updatingPlots[sliderIndex][0], [timestamp], updatingPlots[sliderIndex][1])
+        return
+    }
+
+    console.log(datapoints[timestamp].time.lineNumber)
 
     const calls = []
 
     for (let i = 0; i < updatingPlots.length; i++) {
+        if (i === sliderIndex){
+            continue
+        }
         calls.push(Plotly.animate(updatingPlots[i][0], [timestamp], updatingPlots[i][1]))
     }
 
     calls.push(update_variable_showcase(timestamp))
+    await highlight_line(datapoints[timestamp].time.lineNumber, scriptOffset)
 
     try{
-        await Promise.all(calls);
+        await Promise.allSettled(calls);
     }catch (e){
-        console.log("promise all: " + e)
     }
-
-    await highlight_line(datapoints[timestamp].time.lineNumber, scriptOffset)
 }
 
 
