@@ -47,7 +47,6 @@ async function createButtonJumpingToTimeStamp(timestamp, name) {
 
     if (button_groups[line].length === 0){
         line.addEventListener("click", async function() {
-            console.log("timestamp", timestamp)
             hideAllButtons()
             for (let i = 0; i < button_groups[line].length; i++) {
                 button_groups[line][i].style.display = default_display;

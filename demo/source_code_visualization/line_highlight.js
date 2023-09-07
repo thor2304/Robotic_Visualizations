@@ -18,14 +18,10 @@ async function highlight_line(line_number, offset = 0, scrollIntoView = true) {
 
     if (line === undefined) {
         if(previous_highlighted_line === undefined || previous_highlighted_line === null){
-            console.log("undefined exit: ", previous_highlighted_line)
             return;
         }
         previous_highlighted_line.classList.add(highlight_inactive_line_name);
-        console.log("Changing to inactive: ", previous_highlighted_line)
         return;
-    }else{
-        console.log("line is active: ", line, "previous line == line? ", previous_highlighted_line === line)
     }
 
     // Unhighlight the previously highlighted line

@@ -13,12 +13,14 @@ const scriptOffset = 1467;
 
 let available_variable_names = [""]
 
+const cycle_index = 1
+
 async function plot_raw_data(data) {
     const reduced_data = pick_every_x_from_array(data, 10);
     const rawFrames = await convert_EDDE_to_data_frames(reduced_data);
     print_script_lines(rawFrames);
 
-    const frames = reduce_to_cycle(rawFrames);
+    const frames = reduce_to_cycle(rawFrames, cycle_index);
     console.log("frames generated, next step plotting->", frames)
 
     available_variable_names = extract_available_variables(frames[frames.length - 1]);
@@ -264,32 +266,25 @@ async function plot3dVis(dataframes) {
     const robotArmvis = document.getElementById('3dAnimation')
     robotArmvis.on('plotly_sliderchange', async function (e) {
         try {
-            await updateVisualizations(e.step.value, true)
+            await updateVisualizations(e.step.value)
         } catch (exc) {
             console.log(exc)
         }
     })
 }
 
-let sliderIndex = 1;
-async function updateVisualizations(timestamp, sliderTrigger = false) {
-    datapoints_linked.updateCurrent(timestamp);
-
-    if (!sliderTrigger){
-        // If this call was not triggered by the slider updating, then update the plot with the slider and return.
-        // If we do not do this, updating the plot will cause the slider to update, which triggers a new call to this method
-        await Plotly.animate(updatingPlots[sliderIndex][0], [timestamp], updatingPlots[sliderIndex][1])
+let previousTimestamp = 0;
+async function updateVisualizations(timestamp) {
+    if (timestamp === previousTimestamp){
         return
     }
+    previousTimestamp = timestamp.toString()
 
-    console.log(datapoints[timestamp].time.lineNumber)
+    datapoints_linked.updateCurrent(timestamp);
 
     const calls = []
 
     for (let i = 0; i < updatingPlots.length; i++) {
-        if (i === sliderIndex){
-            continue
-        }
         calls.push(Plotly.animate(updatingPlots[i][0], [timestamp], updatingPlots[i][1]))
     }
 
