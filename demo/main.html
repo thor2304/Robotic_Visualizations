@@ -8,7 +8,6 @@
     <link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="./icons/favicon-16x16.png">
     <link rel="icon" type="image/x-icon" href="./icons/favicon.ico">
-    <link rel="manifest" href="./icons/site.webmanifest">
     <link rel="mask-icon" href="./icons/safari-pinned-tab.svg" color="#5bbad5">
 
     <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js'></script>
@@ -32,6 +31,7 @@
     <script src="./helper_scripts/factories/layoutFactory.js"></script>
     <script src="./helper_scripts/factories/LinePlotFactory.js"></script>
     <script src="./helper_scripts/factories/directionPlotFactory.js"></script>
+    <script src="./helper_scripts/factories/chartDivFactory.js"></script>
 
     <link rel="stylesheet" href="./source_code_visualization/source_code.css">
     <link rel="stylesheet" href="source_code_visualization/placeholders.css">
@@ -66,12 +66,12 @@
 <main>
     <div id="visualization-container" class="visualization-container drag-container">
         <!--        <h1>Visualizations go here</h1>-->
-        <div id="3dAnimation" class="vis-placeholder draggable" draggable="false">
-            <h1></h1>
-        </div>
-        <div id="tcp_vis" class="vis-placeholder draggable" draggable="false">
-            <h1></h1>
-        </div>
+<!--        <div id="3dAnimation" class="vis-placeholder draggable" draggable="false">-->
+<!--            <h1></h1>-->
+<!--        </div>-->
+<!--        <div id="tcp_vis" class="vis-placeholder draggable" draggable="false">-->
+<!--            <h1></h1>-->
+<!--        </div>-->
         <div id="variable_vis" class="vis-placeholder draggable" draggable="false">
             <table id="variable_showcase">
                 <tbody>
@@ -82,9 +82,9 @@
                 </tbody>
             </table>
         </div>
-        <div id="3d_tcp_vis" class="vis-placeholder draggable" draggable="false">
-            <h1></h1>
-        </div>
+<!--        <div id="3d_tcp_vis" class="vis-placeholder draggable" draggable="false">-->
+<!--            <h1></h1>-->
+<!--        </div>-->
 
     </div>
 

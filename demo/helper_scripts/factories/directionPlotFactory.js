@@ -10,6 +10,8 @@
 async function plotDirection(chartName, chartId, dataPoints, timestamps, dataNames) {
     const traces = []
 
+    await createDivForPlotlyChart(chartId)
+
     for (let i = 0; i < dataNames.length; i++) {
         traces.push(...createArrowTraces(dataPoints, dataNames[i]))
     }

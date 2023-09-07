@@ -11,6 +11,8 @@
 async function plotLineChart(chartName, chartId, dataPoints, timestamps, dataNames) {
     const dataArrays = {}
 
+    await createDivForPlotlyChart(chartId)
+
     for (let i = 0; i < dataNames.length; i++) {
         dataArrays[dataNames[i]] = []
     }

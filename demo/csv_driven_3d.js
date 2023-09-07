@@ -16,6 +16,13 @@ let available_variable_names = [""]
 const cycle_index = 1
 
 async function plot_raw_data(data) {
+    const robotArmChartId = "3dAnimation"
+    const lineGraphId = "lineGraph"
+    const ArrowVisId = "3d_tcp_vis"
+    await createDivsForPlotlyCharts([robotArmChartId, lineGraphId, ArrowVisId])
+
+    await createDivForTable("variable_vis", "variable_showcase", ["Variable", "Value"])
+
     const reduced_data = pick_every_x_from_array(data, 10);
     const rawFrames = await convert_EDDE_to_data_frames(reduced_data);
     print_script_lines(rawFrames);
@@ -46,7 +53,7 @@ async function plot_raw_data(data) {
         await createButtonJumpingToTimeStamp(maxValues[variablesForError[i]].stepcount, variablesForError[i] + " max")
     }
 
-    await Promise.all([plot3dVis(frames), plot_tcp_error(frames, timestamps), plot_tcp_error_3d(frames, timestamps)]);
+    await Promise.all([plot3dVis(frames, robotArmChartId), plot_line_graph(frames, timestamps, lineGraphId), plot_tcp_error_3d(frames, timestamps, ArrowVisId)]);
 
     // Mark all vis containers as loaded, to remove the loading text
     const visContainers = document.getElementsByClassName("vis-placeholder");
@@ -85,7 +92,9 @@ async function findMaxOfVariables(dataPoints, variablePathArray) {
 }
 
 
-async function plot3dVis(dataframes) {
+async function plot3dVis(dataframes, chartId) {
+    await createDivForPlotlyChart(chartId)
+
     const overlap_with_slider = true;
 
     const traces = []
@@ -255,15 +264,15 @@ async function plot3dVis(dataframes) {
     }
 
 // Create the plot:
-    await Plotly.newPlot('3dAnimation', {
+    await Plotly.newPlot(chartId, {
         data: traces,
         layout: layout,
         frames: frames,
     });
 
-    updatingPlots.push(['3dAnimation', getAnimationSettings()])
+    updatingPlots.push([chartId, getAnimationSettings()])
 
-    const robotArmvis = document.getElementById('3dAnimation')
+    const robotArmvis = document.getElementById(chartId)
     robotArmvis.on('plotly_sliderchange', async function (e) {
         try {
             await updateVisualizations(e.step.value)
@@ -298,9 +307,8 @@ async function updateVisualizations(timestamp) {
 }
 
 
-async function plot_tcp_error(dataframes, timestamps) {
+async function plot_line_graph(dataframes, timestamps, chartId) {
     // const chartName = 'TCP Error'
-    // const chartId = 'tcp_vis'
     // const dataNames = [
     //     "robot.tool.positionError.x",
     //     "robot.tool.positionError.y",
@@ -309,7 +317,6 @@ async function plot_tcp_error(dataframes, timestamps) {
     // ]
 
     const chartName = "Vacuum level"
-    const chartId = "tcp_vis"
     const dataNames = [
         "scriptVariables.vg_Vacuum_A.value",
         "scriptVariables.vg_Vacuum_B.value",
@@ -318,8 +325,8 @@ async function plot_tcp_error(dataframes, timestamps) {
     await plotLineChart(chartName, chartId, dataframes, timestamps, dataNames)
 }
 
-async function plot_tcp_error_3d(dataframes, timestamps) {
-    await plotDirection("TCP Error", "3d_tcp_vis", dataframes, timestamps, ["robot.tool.positionError"])
+async function plot_tcp_error_3d(dataframes, timestamps, chartId) {
+    await plotDirection("TCP Error", chartId, dataframes, timestamps, ["robot.tool.positionError"])
 }
 
 load_data_then_call(plot_raw_data)
