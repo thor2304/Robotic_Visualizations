@@ -3,6 +3,8 @@
 // It is used for debugging by printing the datapoint to the console. As well as for highlighting the line hit
 let datapoints = {}
 
+const datapoints_linked = new LinkedList()
+
 // This is a list of all the plots that are currently updating.
 // Push information as arrays, that are to be passed to Plotly.animate(plot_name, settings)
 let updatingPlots = [];
@@ -23,10 +25,11 @@ async function plot_raw_data(data) {
     console.log("available_variable_names", available_variable_names)
 
     const timestamps = []
-    // Add the frames to the datapoints dictionary and timestamps array
+    // Add the frames to the datapoints dictionary and timestamps array, and the next_datapoint_name
     for (let i = 0; i < frames.length; i++) {
         datapoints[frames[i].time.stepCount] = frames[i]
         timestamps.push(frames[i].time.stepCount)
+        datapoints_linked.push(frames[i].time.stepCount)
     }
 
     const variablesForError = [
@@ -37,7 +40,7 @@ async function plot_raw_data(data) {
 
     console.table(maxValues)
 
-    for (let i= 0; i < variablesForError.length; i++) {
+    for (let i = 0; i < variablesForError.length; i++) {
         await createButtonJumpingToTimeStamp(maxValues[variablesForError[i]].stepcount, variablesForError[i] + " max")
     }
 
@@ -56,9 +59,9 @@ async function plot_raw_data(data) {
  * @param variablePathArray An array of paths that will be passed to DataPoint.traversed_attribute()
  * @returns {Promise<{}>}  Of the form {variablePath: {stepcount: number, value: number}}
  */
-async function findMaxOfVariables(dataPoints, variablePathArray){
+async function findMaxOfVariables(dataPoints, variablePathArray) {
     const currentMax = {}
-    for (let variablePath of variablePathArray){
+    for (let variablePath of variablePathArray) {
         currentMax[variablePath] = {
             stepcount: undefined,
             value: 0
@@ -67,9 +70,9 @@ async function findMaxOfVariables(dataPoints, variablePathArray){
 
     for (let i = 0; i < dataPoints.length; i++) {
         const dataPoint = dataPoints[i];
-        for (let variablePath of variablePathArray){
+        for (let variablePath of variablePathArray) {
             const value = dataPoint.traversed_attribute(variablePath)
-            if (value > currentMax[variablePath].value){
+            if (value > currentMax[variablePath].value) {
                 currentMax[variablePath].value = value
                 currentMax[variablePath].stepcount = dataPoint.time.stepCount
             }
@@ -260,11 +263,18 @@ async function plot3dVis(dataframes) {
 
     const robotArmvis = document.getElementById('3dAnimation')
     robotArmvis.on('plotly_sliderchange', async function (e) {
-        await updateVisualizations(e.step.value)
+        try{
+            await updateVisualizations(e.step.value)
+
+        }catch (exc){
+            console.log(exc)
+        }
     })
 }
 
 async function updateVisualizations(timestamp) {
+    datapoints_linked.updateCurrent(timestamp);
+
     const calls = []
 
     for (let i = 0; i < updatingPlots.length; i++) {
@@ -273,10 +283,15 @@ async function updateVisualizations(timestamp) {
 
     calls.push(update_variable_showcase(timestamp))
 
-    await Promise.all(calls);
+    try{
+        await Promise.all(calls);
+    }catch (e){
+        console.log("promise all: " + e)
+    }
 
     await highlight_line(datapoints[timestamp].time.lineNumber, scriptOffset)
 }
+
 
 async function plot_tcp_error(dataframes, timestamps) {
     const chartName = 'TCP Error'

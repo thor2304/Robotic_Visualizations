@@ -11,6 +11,7 @@
     /*This allows us to change the color, to something that pops a bit more if we wish to*/
     /*--highlight-active-line-color: var(--highlight-code-highlight);*/
     --highlight-active-line-color: hsla(193, 46%, 78%, 70%);
+    --highlight-inactive-line-color: hsla(263, 55%, 71%, 0.7);
 }
 
 pre {
@@ -37,6 +38,10 @@ pre {
     background-color: var(--highlight-active-line-color);
 }
 
+.line.inactive{
+    background-color: var(--highlight-inactive-line-color);
+}
+
 .highlight pre :last-child {
     border-bottom-style: none;
 }
@@ -60,6 +65,7 @@ pre {
 
         /*This allows us to change the color, to something that pops a bit more if we wish to*/
         --highlight-active-line-color: hsl(213, 50%, 23%);
+        --highlight-inactive-line-color: hsla(264, 59%, 60%, 0.7);
     }
 }
 

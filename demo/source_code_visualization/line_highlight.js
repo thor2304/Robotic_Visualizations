@@ -2,6 +2,7 @@ let code = undefined;
 const code_container = document.getElementById('code-container');
 let previous_highlighted_line = null;
 const highlight_class_name = 'active';
+const highlight_inactive_line_name = "inactive";
 
 /**
  * Highlights the given line number, offset by the given offset.<br>
@@ -15,17 +16,21 @@ async function highlight_line(line_number, offset = 0) {
     const line = await get_line(line_number, offset);
 
     if (line === undefined) {
+        if(previous_highlighted_line === undefined || previous_highlighted_line === null){
+            return;
+        }
+        previous_highlighted_line.classList.add(highlight_inactive_line_name);
+
         return;
     }
-
-    line.classList.add(highlight_class_name);
 
     // Unhighlight the previously highlighted line
     if (previous_highlighted_line !== null) {
         previous_highlighted_line.classList.remove(highlight_class_name);
-        // Enabled again
-        //     Currently disabled, so I can show all the lines that are actually hit during the control loop
+        previous_highlighted_line.classList.remove(highlight_inactive_line_name);
     }
+
+    line.classList.add(highlight_class_name);
 
     previous_highlighted_line = line;
 
