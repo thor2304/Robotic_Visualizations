@@ -43,8 +43,15 @@ function computeTCPPosition(datum, offSetVector, computedPositions, computedRota
     return new Position(computedPositions[5].x + computedTcpOffset[0], computedPositions[5].y + computedTcpOffset[1], computedPositions[5].z + computedTcpOffset[2]);
 }
 
+/**
+ * @param frame {DataPoint}
+ * @returns {string[]}
+ */
 function extract_available_variables(frame) {
     const allVariables = Object.keys(frame.scriptVariables)
+    /**
+     * @type {string[]}
+     */
     const variables = []
     for (let i = 0; i < allVariables.length; i++) {
         const lowerCased = allVariables[i].toLowerCase()

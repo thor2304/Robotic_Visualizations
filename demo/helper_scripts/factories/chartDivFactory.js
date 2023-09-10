@@ -1,3 +1,8 @@
+/**
+ *
+ * @param chartId {string}
+ * @returns {Promise<void>}
+ */
 async function createDivForPlotlyChart(chartId) {
     // check whether the div already exists
     if (document.getElementById(chartId) !== null) {
@@ -18,6 +23,11 @@ async function createDivForPlotlyChart(chartId) {
     document.getElementById("visualization-container").appendChild(div)
 }
 
+/**
+ * @param id {string}
+ * @returns {HTMLDivElement}
+ * @private
+ */
 function _createDiv(id) {
     const div = document.createElement("div")
 
@@ -29,12 +39,24 @@ function _createDiv(id) {
     return div
 }
 
+/**
+ *
+ * @param chartIds {Array<String>}
+ * @returns {Promise<void>}
+ */
 async function createDivsForPlotlyCharts(chartIds) {
     for (let chartId of chartIds) {
         await createDivForPlotlyChart(chartId)
     }
 }
 
+/**
+ *
+ * @param chartId {string}
+ * @param tableId {string}
+ * @param tableHeaders {Array<string>} each entry to this array will be used as the header for a column
+ * @returns {Promise<void>}
+ */
 async function createDivForTable(chartId, tableId, tableHeaders) {
     // check whether the div already exists
     if (document.getElementById(chartId) !== null) {

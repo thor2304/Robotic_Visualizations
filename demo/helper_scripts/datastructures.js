@@ -167,6 +167,12 @@ class Register extends Variable {
 }
 
 class PointInTime {
+    /**
+     * @param timestamp {number}
+     * @param lineNumber {number}
+     * @param lineString {string}
+     * @param stepCount {number}
+     */
     constructor(timestamp, lineNumber, lineString, stepCount) {
         this.timestamp = timestamp
         this.lineNumber = Number.parseFloat(lineNumber);
@@ -227,6 +233,9 @@ class DataPoint {
         this.custom = raw;
     }
 
+    /**
+     * @returns {PointInTime}
+     */
     get time() {
         return this.pointInTime
     }

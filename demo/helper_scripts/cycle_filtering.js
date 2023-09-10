@@ -1,4 +1,12 @@
+/**
+ * @param frames {DataPoint[]}
+ * @param cycle_index {number}
+ * @returns {DataPoint[]}
+ */
 function reduce_to_cycle(frames, cycle_index = 0) {
+    /**
+     * @type {Array<Array<DataPoint>>}
+     */
     const cycles = []
 
     const cycle_end = {
@@ -45,6 +53,12 @@ function reduce_to_cycle(frames, cycle_index = 0) {
     // return frames
 }
 
+/**
+ * @template K
+ * @param arr {Array<K>}
+ * @param pick_every {number}
+ * @returns {Array<K>}
+ */
 function pick_every_x_from_array(arr, pick_every = 10) {
     const out = []
 
@@ -57,7 +71,20 @@ function pick_every_x_from_array(arr, pick_every = 10) {
     return out;
 }
 
+/**
+ *  I have disabled this for now,
+ *  since it is more of a debug option to see what lines are hit during the execution
+ * @param rawFrames {DataPoint[]}
+ */
 function print_script_lines(rawFrames) {
+    const disabled = true
+    if(disabled){
+        return
+    }
+
+    /**
+     * @type {{linenumber: number, lineString: string, timestamp: number}[]}
+     */
     const filteredScriptLines = rawFrames.map((e) => {
         return {
             linenumber: e.time.lineNumber,

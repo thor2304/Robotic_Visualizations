@@ -1,3 +1,8 @@
+/**
+ *
+ * @param data {Array<Object>}
+ * @returns {Promise<Array<DataPoint>>}
+ */
 async function convert_EDDE_to_data_frames(data) {
     translate_names(data)
 
@@ -12,7 +17,14 @@ function get_controller_memory(datum) {
     return 8_000_000;
 }
 
+/**
+ * @param datum {Object}
+ * @returns {PhysicalIO[]}
+ */
 function extract_physical_io(datum) {
+    /**
+     * @type {PhysicalIO[]}
+     */
     const out = []
 
     for (let i = 0; i < 8; i++) {
@@ -30,9 +42,19 @@ function extract_physical_io(datum) {
     return out
 }
 
+/**
+ * @param datum {Object}
+ * @returns {Variable[]}
+ */
 function extract_variables(datum) {
+    /**
+     * @type {Variable[]}
+     */
     const out = []
 
+    /**
+     * @type {string[]}
+     */
     const variables = datum.vars
     if (variables === undefined) {
         return out;
@@ -50,6 +72,15 @@ function extract_variables(datum) {
     return out;
 }
 
+/**
+ * Takes in a number and converts it to a string of 1's and 0's
+ *
+ * function copied from MDN docs
+ * The original has a note about not taking in too large numbers, but i expect the inputs to this to be purely positive numbers
+ *
+ * @param nMask {number} The number to convert
+ * @returns {string}
+ */
 function createBinaryString(nMask) {
     // function copied from MDN docs
     // The original has a note about not taking in too large numbers, but i expect the inputs to this to be purely positive numbers
@@ -61,7 +92,14 @@ function createBinaryString(nMask) {
     return sMask;
 }
 
+/**
+ * @param datum {Object}
+ * @returns {Register[]}
+ */
 function extract_registers(datum) {
+    /**
+     * @type {Register[]}
+     */
     const out = []
 
     for (let i = 0; i < 24; i++) {
@@ -87,6 +125,9 @@ function extract_registers(datum) {
     return out;
 }
 
+/**
+ * @type {{add: (function(*, *)), subtract: (function(*, *)), divide: (function(*, *)), multiply: (function(*, *))}}
+ */
 const method_map = {
     "add": (a, b) => a + b,
     "subtract": (a, b) => a - b,
@@ -94,6 +135,11 @@ const method_map = {
     "divide": (a, b) => a / b,
 }
 
+/**
+ * @param customVariables {{picked_variables: Array<Object>, wildcard: string, computed_variables: Array<Object>}}
+ * @param datum {Object}
+ * @returns {Promise<{Object}>}
+ */
 async function createCustom(customVariables, datum) {
     const out = {}
 
@@ -146,6 +192,12 @@ async function createCustom(customVariables, datum) {
     return out
 }
 
+/**
+ * @param datum {Object}
+ * @param offSetVector {ArrayLike}
+ * @param customVariables {Object}
+ * @returns {Promise<DataPoint>}
+ */
 async function create_frame_from_datum(datum, offSetVector, customVariables) {
     const computation = computePositionAndRotation([datum.actual_q_0, datum.actual_q_1, datum.actual_q_2, datum.actual_q_3, datum.actual_q_4, datum.actual_q_5]);
     const computedPositions = computation[0];
@@ -196,13 +248,21 @@ async function create_frame_from_datum(datum, offSetVector, customVariables) {
     );
 }
 
+/**
+ * @returns {Promise<Object>}
+ */
 async function get_custom_map() {
     const server_url = window.location.origin + "/Robotic_Visualizations/";
     const file_location = "demo/helper_scripts/allow_list.json";
+
     const response = await fetch(server_url + file_location);
     return await response.json();
 }
 
+/**
+ * @param data {Array<Object>}
+ * @returns {Promise<Array<DataPoint>>}
+ */
 async function parser(data) {
     // console.log("data received, now going to loop over the data and generate the frames->")
     const firstData = data[0];
@@ -223,6 +283,9 @@ async function parser(data) {
     const customVariables = await get_custom_map();
     console.log("customVariables", customVariables)
 
+    /**
+     * @type {DataPoint[]}
+     */
     const frames = []
 
     // Generate the uniquely positioned frames
@@ -234,7 +297,9 @@ async function parser(data) {
     return frames;
 }
 
-
+/**
+ * @type {{actual_q_0: string, protective_stop: string, actual_q_2: string, line_string: string, actual_q_1: string, actual_q_4: string, actual_q_3: string, actual_q_5: string, memory_usage: string, execution_time: string, actual_TCP_pose_4: string, actual_TCP_pose_3: string, actual_TCP_pose_5: string, actual_TCP_pose_0: string, actual_TCP_pose_2: string, line_number: string, actual_TCP_pose_1: string, force_z: string, cpu_usage: string, force_x: string, force_y: string, timestamp: string}}
+ */
 const EDDE_translations = {
     // RTDE name: EDDE name
     "actual_TCP_pose_0": "actual_pose_0",
@@ -265,6 +330,10 @@ const EDDE_translations = {
     "protective_stop": "protective_stop",
 }
 
+/**
+ * Modifies the attributes of the objects within the data Array
+ * @param data {Array<Object>}
+ */
 function translate_names(data) {
     for (let i = 0; i < data.length; i++) {
         for (const RTDE_name of Object.keys(EDDE_translations)) {

@@ -1,5 +1,9 @@
 let code = undefined;
 const code_container = document.getElementById('code-container');
+
+/**
+ * @type {Element}
+ */
 let previous_highlighted_line = null;
 const highlight_class_name = 'active';
 const highlight_inactive_line_name = "inactive";
@@ -37,9 +41,13 @@ async function highlight_line(line_number, offset = 0, scrollIntoView = true) {
     }
 
     previous_highlighted_line = line;
-
 }
 
+/**
+ * @param lineNumber {number}
+ * @param offset {number}
+ * @returns {Promise<Element>}
+ */
 async function get_line(lineNumber, offset = 0) {
     return new Promise((resolve, reject) => {
         ensure_code()
@@ -54,6 +62,13 @@ async function get_line(lineNumber, offset = 0) {
     });
 }
 
+/**
+ *
+ * @param lineNumber {number}
+ * @param offset {number}
+ * @returns {Element}
+ * @private
+ */
 function _get_line(lineNumber, offset = 0) {
     const lines = code.getElementsByClassName('line');
 
@@ -66,7 +81,10 @@ function _get_line(lineNumber, offset = 0) {
     return lines[scriptLine - 1];
 }
 
-
+/**
+ * This function can be called multiple times with no consequence
+ * @returns {boolean}
+ */
 function ensure_code() {
     if (code === undefined) {
         code = document.getElementById('code-container').getElementsByTagName('code')[0];

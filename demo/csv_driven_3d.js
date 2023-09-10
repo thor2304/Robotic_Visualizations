@@ -1,6 +1,9 @@
-// Datapoints is a dictionary that maps a timestamp to a datapoint object.
-// This mapping should follow the datapoint that is visualized at this timestamp by plotly.
-// It is used for debugging by printing the datapoint to the console. As well as for highlighting the line hit
+/**
+ * Datapoints is a dictionary that maps a timestamp to a datapoint object.
+ * This mapping should follow the datapoint that is visualized at this timestamp by plotly.
+ * It is used for debugging by printing the datapoint to the console. As well as for highlighting the line hit
+ * @type {Object<number, DataPoint>}
+ */
 let datapoints = {}
 
 const datapoints_linked = new LinkedList()
@@ -11,6 +14,11 @@ let available_variable_names = [""]
 
 const cycle_index = 1
 
+/**
+ *
+ * @param data {Array<Object>}
+ * @returns {Promise<void>}
+ */
 async function plot_raw_data(data) {
     const robotArmChartId = "3dAnimation"
     const lineGraphId = "lineGraph"
@@ -29,6 +37,9 @@ async function plot_raw_data(data) {
     available_variable_names = extract_available_variables(frames[frames.length - 1]);
     console.log("available_variable_names", available_variable_names)
 
+    /**
+     * @type {number[]}
+     */
     const timestamps = []
     // Add the frames to the datapoints dictionary and timestamps array, and the next_datapoint_name
     for (let i = 0; i < frames.length; i++) {
@@ -61,10 +72,10 @@ async function plot_raw_data(data) {
 }
 
 /**
- *
- * @param dataPoints
- * @param variablePathArray An array of paths that will be passed to DataPoint.traversed_attribute()
- * @returns {Promise<{}>}  Of the form {variablePath: {stepcount: number, value: number}}
+ * { [x: string]: {stepcount:string, value: number} }
+ * @param dataPoints {Array<DataPoint>}
+ * @param variablePathArray {Array<String>} An array of paths that will be passed to DataPoint.traversed_attribute()
+ * @returns {Promise<{ [x: string]: {stepcount:number, value: number} }>}  Of the form {variablePath: {stepcount: number, value: number}}
  */
 async function findMaxOfVariables(dataPoints, variablePathArray) {
     const currentMax = {}
@@ -89,7 +100,12 @@ async function findMaxOfVariables(dataPoints, variablePathArray) {
     return currentMax
 }
 
-
+/**
+ * @param dataframes {Array<DataPoint>}
+ * @param timestamps {Array<Number>}
+ * @param chartId {String}
+ * @returns {Promise<void>}
+ */
 async function plot_line_graph(dataframes, timestamps, chartId) {
     // const chartName = 'TCP Error'
     // const dataNames = [

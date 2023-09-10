@@ -1,8 +1,19 @@
 const button_container = document.getElementById("Script-control-button-container");
 
+/**
+ * @type {Object<Element, Array<HTMLButtonElement>>}
+ */
 const button_groups = {};
+/**
+ * @type {HTMLButtonElement[]}
+ */
 const all_buttons = [];
 
+/**
+ * @param timestamp {number}
+ * @param name {string}
+ * @returns {Promise<void>}
+ */
 async function createButtonJumpingToTimeStamp(timestamp, name) {
     // Create and add the button
     const button = document.createElement("button");
@@ -41,7 +52,6 @@ async function createButtonJumpingToTimeStamp(timestamp, name) {
     }
 
     line.classList.add("error")
-
 
     button_groups[line] = button_groups[line] || []
 
