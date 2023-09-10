@@ -23,6 +23,8 @@ async function plot_raw_data(data) {
 
     await createDivForTable("variable_vis", "variable_showcase", ["Variable", "Value"])
 
+    makeAllDraggable()
+
     const reduced_data = pick_every_x_from_array(data, 10);
     const rawFrames = await convert_EDDE_to_data_frames(reduced_data);
     print_script_lines(rawFrames);

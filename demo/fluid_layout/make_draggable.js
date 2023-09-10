@@ -39,9 +39,6 @@ function makeAllDraggable() {
     })
 }
 
-makeAllDraggable()
-
-
 function getDragAfterElement(container, y) {
     const draggableElements = [...container.querySelectorAll('.draggable:not(.dragging)')]
 
