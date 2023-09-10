@@ -18,7 +18,7 @@ async function updateVisualizations(timestamp) {
     }
 
     calls.push(update_variable_showcase(timestamp))
-    await highlight_line(datapoints[timestamp].time.lineNumber, scriptOffset)
+    await highlight_line(datapoints[timestamp].time.lineNumber, getScriptOffset())
 
     try{
         await Promise.allSettled(calls);

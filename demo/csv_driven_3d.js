@@ -10,6 +10,10 @@ const datapoints_linked = new LinkedList()
 
 const scriptOffset = 1467;
 
+function getScriptOffset(){
+    return scriptOffset
+}
+
 let available_variable_names = [""]
 
 const cycle_index = 1
@@ -57,7 +61,7 @@ async function plot_raw_data(data) {
     console.table(maxValues)
 
     for (let i = 0; i < variablesForError.length; i++) {
-        await createButtonJumpingToTimeStamp(maxValues[variablesForError[i]].stepcount, variablesForError[i] + " max")
+        await createButtonAndErrorLine(maxValues[variablesForError[i]].stepcount, variablesForError[i] + " max")
     }
 
     await Promise.all([plot3dVis(frames, robotArmChartId), plot_line_graph(frames, timestamps, lineGraphId), plot_tcp_error_3d(frames, timestamps, ArrowVisId)]);

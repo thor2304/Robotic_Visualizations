@@ -14,7 +14,7 @@ const all_buttons = [];
  * @param name {string}
  * @returns {Promise<void>}
  */
-async function createButtonJumpingToTimeStamp(timestamp, name) {
+async function createButtonAndErrorLine(timestamp, name) {
     // Create and add the button
     const button = document.createElement("button");
     button.innerHTML = `${name}<br>
@@ -42,7 +42,7 @@ async function createButtonJumpingToTimeStamp(timestamp, name) {
         return
     }
 
-    const line = await get_line(datapoint.time.lineNumber, scriptOffset)
+    const line = await get_line(datapoint.time.lineNumber, getScriptOffset())
 
     if (line === undefined){
         console.log(`No line found for timestamp ${timestamp} and line number ${datapoint.time.lineNumber}`)
