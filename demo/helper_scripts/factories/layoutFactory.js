@@ -65,14 +65,31 @@ function createErrorBar(startX, endX){
     }
 }
 
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+    const newColorScheme = event.matches ? "dark" : "light";
+    alert(`To change to ${newColorScheme} mode, you should reload the page while it is the chosen mode`)
+});
+
 /**
  *
  * @param title {string}
  * @returns Object
  */
 function get2dLayout(title) {
+    let plotColor = 'rgba(145,0,0,0)'
+    let paperColor = 'hsl(208, 21%, 12%)'
+    let gridColor = "rgba(100,100,100,0.6)"
+
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+        // light mode
+        plotColor = 'rgba(145,0,0,0)'
+        paperColor = 'hsl(210, 29%, 97%)'
+        gridColor = "rgba(96,96,96,0.6)"
+    }
+
     return {
         title: title,
+        hovermode:"x unified",
         autosize: true,
         margin: {
             l: 0,
@@ -83,12 +100,17 @@ function get2dLayout(title) {
         },
         xaxis: {
             automargin: true,
+            spikethickness: -2, // Enabling this removes the color surrounding the spike line
+            gridcolor: gridColor,
+            gridwidth: 1,
         },
         yaxis: {
             automargin: true,
+            gridcolor: gridColor,
+            gridwidth: 1,
         },
-        paper_bgcolor: '#303f4b00',
-        plot_bgcolor: '#b7b7b700',
+        plot_bgcolor: plotColor,
+        paper_bgcolor: paperColor,
         //https://plotly.com/javascript/shapes/
         shapes: [
         ],
