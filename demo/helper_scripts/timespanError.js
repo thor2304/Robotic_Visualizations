@@ -93,10 +93,17 @@ class VariableController {
     }
 
     /**
-     * The input array maps script lines to arrays of the variable controllers that are configured for those lines
+     * The input array maps script lines to arrays of the variable controllers that are configured for those lines.<br>
+     * There is no line 0, therefore 0 is used for a list of all controllers.
      * @param controllerLookup {Array<Array<VariableController>>}
      */
     register(controllerLookup) {
+        if (controllerLookup.length === 0){
+            controllerLookup.push([])
+        }
+
+        controllerLookup[0].push(this)
+
         for (let range of this.ranges) {
             const loopStart = range.scriptRange.min
             const loopEnd = range.scriptRange.max
@@ -117,9 +124,9 @@ class VariableController {
      * @param lastDataPoint {DataPoint}
      * @returns {TimespanError[]}
      */
-    getAllObservedErrors(lastDataPoint){
+    getAllObservedErrors(lastDataPoint) {
         // if an error is currently active, close it and add to the list
-        if(this._hasActiveError){
+        if (this._hasActiveError) {
             this._closeError(lastDataPoint)
         }
 
@@ -131,14 +138,14 @@ class VariableController {
      * @param endDataPoint {DataPoint}
      * @private
      */
-    _closeError(endDataPoint){
+    _closeError(endDataPoint) {
         const error = new TimespanError(this._activeErrorStart, endDataPoint, this.variableName)
         this._observedErrors.push(error)
 
         this._hasActiveError = false
     }
 
-    _startError(dataPoint){
+    _startError(dataPoint) {
         this._hasActiveError = true
         this._activeErrorStart = dataPoint
     }
@@ -146,25 +153,25 @@ class VariableController {
     /**
      * @param dataPoint {DataPoint}
      */
-    checkDataPoint(dataPoint){
+    checkDataPoint(dataPoint) {
         // Loop through ranges.
         // If this range has min > datapoint then return
         // If this range.contains the datapoint then check it and return right after
 
         const lineNumber = dataPoint.pointInTime.lineNumber - getScriptOffset()
         for (let i = 0; i < this.ranges.length; i++) {
-            if(this.ranges[i].scriptRange.min > lineNumber){
+            if (this.ranges[i].scriptRange.min > lineNumber) {
                 return
             }
 
-            if(this.ranges[i].contains_line(lineNumber)){
+            if (this.ranges[i].contains_line(lineNumber)) {
                 const isWithinLimits = this.ranges[i].variableLimit.contains(dataPoint.traversed_attribute(this.variableName))
 
                 // If there was previously an error, but now we are within limits, end the active error
-                if(this._hasActiveError && isWithinLimits){
+                if (this._hasActiveError && isWithinLimits) {
                     this._closeError(dataPoint)
                     return;
-                }else if(!this._hasActiveError && !isWithinLimits){ // if we don't have an active error, but we are now outside the limits
+                } else if (!this._hasActiveError && !isWithinLimits) { // if we don't have an active error, but we are now outside the limits
                     this._startError(dataPoint)
                     return;
                 }
@@ -187,7 +194,6 @@ async function detectErrors(dataPoints) {
     const out = []
 
     /**
-     *
      * @type {Array<Array<VariableController>>}
      */
     const controllerLookup = []
@@ -198,15 +204,36 @@ async function detectErrors(dataPoints) {
      * I see these as relevant informations for knowing why this error was triggered.
      */
 
-    // Create the variable controllers that we need
+        // Create the variable controllers that we need
         // Create their script ranges
+    const vacuumInActiveRangeBefore = new ScriptSpan(72, 135, 0, 5)
+    const vacuumActiveRange = new ScriptSpan(137, 160, 10, 100)
+    const vacuumInActiveRangeAfter = new ScriptSpan(162, 165, 0, 5)
+    const vacuumAController = new VariableController("scriptVariables.vg_Vacuum_A.value", [vacuumInActiveRangeBefore, vacuumActiveRange, vacuumInActiveRangeAfter])
+    const vacuumBController = new VariableController("scriptVariables.vg_Vacuum_B.value", [vacuumInActiveRangeBefore, vacuumActiveRange, vacuumInActiveRangeAfter])
+
     // Register the controllers using controllerLookup
+    vacuumAController.register(controllerLookup)
+    vacuumBController.register(controllerLookup)
 
     // Loop through all datapoints and call controllerlookup[datapoint.time.linenumber] (correct for scriptoffset)
-        // For all VariableControllers returned by that:
-        // Call controller.checkDataPoint(datapoint)
+    // For all VariableControllers returned by that:
+    // Call controller.checkDataPoint(datapoint)
+    for (let i = 0; i < dataPoints.length; i++) {
+        const datapoint = dataPoints[i]
+        const controllers = controllerLookup[datapoint.time.lineNumber - getScriptOffset()]
+        if (controllers === undefined){
+            continue
+        }
+        for (let controller of controllers) {
+            controller.checkDataPoint(datapoint)
+        }
+    }
 
     // For all controllers call getObservedErrors and add the results to out (consider using spread ...)
+    for (let i = 0; i < controllerLookup[0].length; i++) {
+        out.push(...controllerLookup[0][i].getAllObservedErrors(dataPoints[dataPoints.length -1]))
+    }
 
-    // return out
+    return out
 }

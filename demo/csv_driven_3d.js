@@ -64,7 +64,9 @@ async function plot_raw_data(data) {
         await createButtonAndErrorLine(maxValues[variablesForError[i]].stepcount, variablesForError[i] + " max")
     }
 
-    await Promise.all([plot3dVis(frames, robotArmChartId), plot_line_graph(frames, timestamps, lineGraphId), plot_tcp_error_3d(frames, timestamps, ArrowVisId)]);
+    const errors = await detectErrors(frames)
+
+    await Promise.all([plot3dVis(frames, robotArmChartId), plot_line_graph(frames, timestamps, lineGraphId, errors), plot_tcp_error_3d(frames, timestamps, ArrowVisId)]);
 
     // Mark all vis containers as loaded, to remove the loading text
     const visContainers = document.getElementsByClassName("vis-placeholder");
@@ -108,9 +110,10 @@ async function findMaxOfVariables(dataPoints, variablePathArray) {
  * @param dataframes {Array<DataPoint>}
  * @param timestamps {Array<Number>}
  * @param chartId {String}
+ * @param errors {TimespanError[]}
  * @returns {Promise<void>}
  */
-async function plot_line_graph(dataframes, timestamps, chartId) {
+async function plot_line_graph(dataframes, timestamps, chartId, errors) {
     // const chartName = 'TCP Error'
     // const dataNames = [
     //     "robot.tool.positionError.x",
@@ -125,7 +128,7 @@ async function plot_line_graph(dataframes, timestamps, chartId) {
         "scriptVariables.vg_Vacuum_B.value",
     ]
 
-    await plotLineChart(chartName, chartId, dataframes, timestamps, dataNames)
+    await plotLineChart(chartName, chartId, dataframes, timestamps, dataNames, errors)
 }
 
 async function plot_tcp_error_3d(dataframes, timestamps, chartId) {

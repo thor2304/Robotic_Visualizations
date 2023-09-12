@@ -1,14 +1,15 @@
 /**
  * Creates a line plot with the given dataPoints and data names
- * @param chartName - The name of the chart displayed as the title
- * @param chartId - The id of the htmlElement into which the chart will be created
- * @param dataPoints - An array of dataPoints
- * @param timestamps - An array of timestamps
- * @param dataNames - An array of strings that are passed to dataPoints[i].traversed_attribute(dataNames[j]).
+ * @param chartName {string} - The name of the chart displayed as the title
+ * @param chartId {string} - The id of the htmlElement into which the chart will be created
+ * @param dataPoints {DataPoint[]} - An array of dataPoints
+ * @param timestamps {number} - An array of timestamps
+ * @param dataNames {string} - An array of strings that are passed to dataPoints[i].traversed_attribute(dataNames[j]).
  * These are the names of the attributes that will be plotted.
+ * @param errors {TimespanError[]}
  * @returns {Promise<void>}
  */
-async function plotLineChart(chartName, chartId, dataPoints, timestamps, dataNames) {
+async function plotLineChart(chartName, chartId, dataPoints, timestamps, dataNames, errors) {
     const dataArrays = {}
 
     await createDivForPlotlyChart(chartId)
@@ -40,9 +41,16 @@ async function plotLineChart(chartName, chartId, dataPoints, timestamps, dataNam
 
     const chart = document.getElementById(chartId)
 
+    const layout = get2dLayout(chartName)
+    for(let timespanError of errors){
+        console.log(createErrorBar(timespanError.start.time.stepCount, timespanError.end.time.stepCount))
+        layout.shapes.push(createErrorBar(timespanError.start.time.stepCount, timespanError.end.time.stepCount))
+    }
+
+
     await Plotly.newPlot(chart, {
         data: traces,
-        layout: get2dLayout(chartName),
+        layout: layout,
         frames: frames,
     })
 
