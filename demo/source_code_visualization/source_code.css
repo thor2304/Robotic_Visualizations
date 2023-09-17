@@ -29,6 +29,7 @@ pre {
 }
 
 #code-container {
+    /*This disables sticky on the code vis*/
     overflow-x: auto;
 }
 
@@ -51,6 +52,14 @@ pre {
 
 .line.inactive{
     background-color: var(--highlight-inactive-line-color);
+}
+
+.line.inactive.error{
+    background-color: color-mix(in hsl, var(--highlight-error-line-color), var(--highlight-inactive-line-color));
+}
+
+.line.inactive.error{
+    background-color: color-mix(in hsl, var(--highlight-error-line-color), var(--highlight-active-line-color));
 }
 
 .highlight pre :last-child {

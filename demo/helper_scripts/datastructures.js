@@ -168,6 +168,12 @@ class Register extends Variable {
 
 class PointInTime {
     /**
+     * The value put into this variable is already offset by the value from getScriptOffset()
+     * @type {number}
+     */
+    highlightLine = undefined;
+
+    /**
      * @param timestamp {number}
      * @param lineNumber {number}
      * @param lineString {string}

@@ -41,6 +41,8 @@ async function plot_raw_data(data) {
     available_variable_names = extract_available_variables(frames[frames.length - 1]);
     console.log("available_variable_names", available_variable_names)
 
+    await addHighlightLineToDataPoints(frames)
+
     /**
      * @type {number[]}
      */

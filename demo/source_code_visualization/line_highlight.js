@@ -17,7 +17,7 @@ const highlight_inactive_line_name = "inactive";
  * (Where it is loaded by the "true" script running on the controller)
  * @param scrollIntoView
  */
-async function highlight_line(line_number, offset = 0, scrollIntoView = true) {
+async function highlight_line(line_number, offset = 0, scrollIntoView = true, active = true) {
     const line = await get_line(line_number, offset);
 
     if (line === undefined) {
@@ -35,6 +35,9 @@ async function highlight_line(line_number, offset = 0, scrollIntoView = true) {
     }
 
     line.classList.add(highlight_class_name);
+    if (!active) {
+        line.classList.add(highlight_inactive_line_name);
+    }
 
     if(scrollIntoView){
         line.scrollIntoView( {block: "nearest", inline: "nearest", behavior: "auto"})
