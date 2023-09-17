@@ -1,11 +1,16 @@
+// Adapted from:
+// https://codedamn.com/news/javascript/throttling-in-javascript
+// Although I modified the logic of the return function heavily, to go for immediate execution of the first call,
+// and then wait for the minimum_time_between_calls before executing the next call.
+
 /**
  *The function to throttle must be an async function.
  *
  * @param function_to_throttle {function}
  * @param minimum_time_between_calls
- * @returns {Promise<(function(...[*]): void)|*>}
+ * @returns {function(...[*]): void}
  */
-function call_throttled_async(function_to_throttle, minimum_time_between_calls) {
+function get_throttled_version_function(function_to_throttle, minimum_time_between_calls) {
     let wait = false;
     let storedArgs = null;
 

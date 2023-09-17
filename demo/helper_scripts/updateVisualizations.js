@@ -26,4 +26,4 @@ async function _updateVisualizations(timestamp) {
     }
 }
 
-const updateVisualizations = call_throttled_async(_updateVisualizations, 10);
+const updateVisualizations = get_throttled_version_function(_updateVisualizations, 10);
