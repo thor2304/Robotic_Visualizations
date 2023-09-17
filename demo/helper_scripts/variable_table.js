@@ -1,15 +1,16 @@
-function createRowInTable(variable_name, timestamp, tblBody) {
-    const variable = datapoints[timestamp].scriptVariables[variable_name]
+function createRowInTable(traversed_variable_name, timestamp, tblBody) {
+    const variable = datapoints[timestamp].traversed_attribute(traversed_variable_name)
     if(variable === undefined) {
         return
     }
-    const variable_value = variable.value
+    // const variable_value = variable.value
+    const variable_value = variable
 
 
     const row = document.createElement("tr");
 
     const var_name = document.createElement("td");
-    var_name.appendChild(document.createTextNode(variable_name));
+    var_name.appendChild(document.createTextNode(traversed_variable_name));
 
     const var_value = document.createElement("td");
     var_value.appendChild(document.createTextNode(variable_value));
@@ -18,7 +19,7 @@ function createRowInTable(variable_name, timestamp, tblBody) {
     row.appendChild(var_value);
 
     tblBody.appendChild(row);
-    tblBody.childDict[variable_name] = row
+    tblBody.childDict[traversed_variable_name] = row
 }
 
 async function update_variable_showcase(timestamp) {
@@ -64,14 +65,24 @@ async function update_variable_showcase(timestamp) {
     }
 
     const available_variable_names = extract_available_variables(datapoints[timestamp])
+    add_path_to_variable_names('scriptVariables', available_variable_names)
+    // available_variable_names.push("pointInTime.lineString") // When added back in the table might become too wide for the screen with the current implementation
+    available_variable_names.push("pointInTime.lineNumber")
 
     for (let i = 0; i < available_variable_names.length; i++) {
-        if(tblBody.childDict[available_variable_names[i]] === undefined) {
-            createRowInTable(available_variable_names[i], timestamp, tblBody);
+        const name = available_variable_names[i];
+        if(tblBody.childDict[name] === undefined) {
+            createRowInTable(name, timestamp, tblBody);
         }
 
-        tblBody.childDict[available_variable_names[i]].childNodes[1].innerText = datapoints[timestamp].scriptVariables[available_variable_names[i]].value
+        tblBody.childDict[name].childNodes[1].innerText = datapoints[timestamp].traversed_attribute(name)
     }
 
     variable_showcase.appendChild(tblBody);
+}
+
+function add_path_to_variable_names(path, variable_names) {
+    for(let i = 0; i < variable_names.length; i++) {
+        variable_names[i] = `${path}.${variable_names[i]}.value`
+    }
 }

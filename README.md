@@ -31,6 +31,8 @@ Here is a short clarification of how the labels are expected to be used, such th
 - New Feature and enhancement
   - These labels should be used for issues that request changes to the code.  
 
+Whenever possible consider using the issue template at [ISSUE_TEMPLATE.md](ISSUE_TEMPLATE.md)
+
 
 # Working with URScript
 

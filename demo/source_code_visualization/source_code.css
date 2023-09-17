@@ -14,11 +14,22 @@
     --highlight-inactive-line-color: hsla(263, 55%, 71%, 0.7);
 }
 
+/*Make the source code block sticky, to make the scrolling experience smoother*/
+
+.highlight {
+    position: sticky;
+    top: 1em;
+}
+
 pre {
     margin: .5em 0;
 
     height: calc(100vh - 10em);
     overflow-y: auto;
+}
+
+#code-container {
+    overflow-x: auto;
 }
 
 

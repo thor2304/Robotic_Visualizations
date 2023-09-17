@@ -13,10 +13,15 @@ document.body.addEventListener("mouseup", (event) => {
     buttonDown = false;
 });
 
-const plotly_containers = document.querySelectorAll('.draggable');
+let plotly_containers = document.querySelectorAll('.js-plotly-plot');
 const main_container = document.querySelector('main');
 
 document.body.addEventListener('mousemove', (e) => {
+    setTimeout(() => {
+        plotly_containers = document.querySelectorAll('.js-plotly-plot');
+    }, 2000)
+    // TODO: Add a an event for charts loaded, that this can tie into along with the draggable functionality
+
     // noinspection UnnecessaryLocalVariableJS
     if (buttonDown) {
         // Using clientWidth is not a bulletproof solution and may cause issues
@@ -46,6 +51,8 @@ document.body.addEventListener('mousemove', (e) => {
         // Since the plotly charts have set width, they somehow override the flex container
         // We need to manually update the width of the plotly charts
         plotly_containers.forEach((plotly_container) => {
+            console.log("plotly_container.layout", plotly_container.layout)
+            console.log("plotly_container", plotly_container)
             const difference = true_target_size - plotly_container.layout.width;
             if (difference > lower_bound && difference < upper_bound) {
                 // We are within acceptable bounds, no need to resize

@@ -8,7 +8,7 @@ let datapoints = {}
 
 const datapoints_linked = new LinkedList()
 
-const scriptOffset = 1467;
+const scriptOffset = 1468;
 
 function getScriptOffset(){
     return scriptOffset
