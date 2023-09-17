@@ -3,7 +3,7 @@
 const updatingPlots = [];
 
 let previousTimestamp = 0;
-async function updateVisualizations(timestamp) {
+async function _updateVisualizations(timestamp) {
     if (timestamp === previousTimestamp){
         return
     }
@@ -25,3 +25,5 @@ async function updateVisualizations(timestamp) {
     }catch (e){
     }
 }
+
+const updateVisualizations = call_throttled_async(_updateVisualizations, 10);
