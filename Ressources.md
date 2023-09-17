@@ -19,3 +19,15 @@ Not necessarily, something that will be useful for others to understand the proj
 - https://www.figma.com/file/22eopjqG5Wp4K3zjCUPhrs/Cycle-mockup?type=design&node-id=0-1&mode=design&t=4BRnJHiLtmq0OxRh-0
   - Mockup of design for multiple cycles
 
+
+# WIP
+The following is ressourced that are acquired during research, but needs to be set aside for later
+
+## CSS position sticky
+- https://elad.medium.com/css-position-sticky-how-it-really-works-54cd01dc2d46
+  - Explaining that sticky is only sticky within the parent element
+- https://dev.to/robmarshall/how-to-fix-issues-with-css-position-sticky-not-working-4a18
+  - Explaining that sticky and overflow does not play nice
+- https://developer.mozilla.org/en-US/docs/Web/CSS/overflow
+  - Overflow: clip
+
