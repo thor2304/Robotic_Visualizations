@@ -15,12 +15,10 @@
 }
 
 /*Make the source code block sticky, to make the scrolling experience smoother*/
-
 .highlight {
     position: sticky;
     top: 1em;
     overflow-x: auto;
-
 }
 
 pre {
@@ -31,8 +29,8 @@ pre {
 }
 
 #code-container {
-    /*This disables sticky on the code vis*/
-    min-width: 0px;
+    /*This is necessary to force the container to respect flex, and not the content*/
+    min-width: 0;
 }
 
 
@@ -60,7 +58,8 @@ pre {
     background-color: color-mix(in hsl, var(--highlight-error-line-color), var(--highlight-inactive-line-color));
 }
 
-.line.inactive.error{
+.line.active.error{
+    /*background-color: var(--highlight-active-line-color);*/
     background-color: color-mix(in hsl, var(--highlight-error-line-color), var(--highlight-active-line-color));
 }
 

@@ -15,10 +15,18 @@ class LinkedList{
     }
 
     next(){
-        return this.list[++this.currentIndex];
+        ++this.currentIndex;
+        if (this.currentIndex >= this.list.length){
+            this.currentIndex = this.list.length - 1;
+        }
+        return this.list[this.currentIndex];
     }
 
     previous(){
-        return this.list[--this.currentIndex];
+        --this.currentIndex;
+        if (this.currentIndex < 0){
+            this.currentIndex = 0;
+        }
+        return this.list[this.currentIndex];
     }
 }

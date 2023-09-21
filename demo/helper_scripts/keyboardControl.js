@@ -5,6 +5,9 @@ async function stepToNextTimestamp() {
 
 async function stepToPreviousTimestamp(){
     const previousTimeStamp = datapoints_linked.previous();
+    if (previousTimeStamp === undefined){
+        return;
+    }
     await updateVisualizations(previousTimeStamp);
 }
 
