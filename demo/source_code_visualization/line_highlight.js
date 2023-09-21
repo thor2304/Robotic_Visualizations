@@ -21,8 +21,6 @@ const highlight_inactive_line_name = "inactive";
 async function highlight_line(line_number, offset = 0, scrollIntoView = true, active = true) {
     const line = await get_line(line_number, offset);
 
-    console.log(line_number, offset, line)
-
     if (line === undefined) {
         if(previous_highlighted_line === undefined || previous_highlighted_line === null){
             return;

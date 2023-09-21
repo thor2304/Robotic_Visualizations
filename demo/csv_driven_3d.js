@@ -19,7 +19,6 @@ let available_variable_names = [""]
 const cycle_index = 1
 
 /**
- *
  * @param data {Array<Object>}
  * @returns {Promise<void>}
  */
@@ -31,11 +30,11 @@ async function plot_raw_data(data) {
 
     await createDivForTable("variable_vis", "variable_showcase", ["Variable", "Value"])
 
-    const reduced_data = pick_every_x_from_array(data, 10);
+    const reduced_data = pick_every_x_from_array(data, 5);
     const rawFrames = await convert_EDDE_to_data_frames(reduced_data);
     print_script_lines(rawFrames);
 
-    const frames = reduce_to_cycle(rawFrames, cycle_index);
+    const frames = get_cycle(rawFrames, cycle_index);
     console.log("frames generated, next step plotting->", frames)
 
     available_variable_names = extract_available_variables(frames[frames.length - 1]);

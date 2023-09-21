@@ -1,14 +1,27 @@
 /**
+ * @type {Array<Array<DataPoint>>}
+ */
+const cycles = []
+
+/**
+ * @param frames {DataPoint[]}
+ * @param cycle_index {number}
+ * @returns {DataPoint[]}
+ */
+function get_cycle(frames, cycle_index=0){
+    if(cycles.length === 0){
+        return reduce_to_cycle(frames, cycle_index)
+    }
+    return cycles[cycle_index]
+}
+
+
+/**
  * @param frames {DataPoint[]}
  * @param cycle_index {number}
  * @returns {DataPoint[]}
  */
 function reduce_to_cycle(frames, cycle_index = 0) {
-    /**
-     * @type {Array<Array<DataPoint>>}
-     */
-    const cycles = []
-
     const cycle_end = {
         first: 1467 + 80,
         last: 1467 + 88
