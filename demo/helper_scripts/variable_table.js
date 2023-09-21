@@ -23,7 +23,7 @@ function createRowInTable(traversed_variable_name, timestamp, tblBody) {
 }
 
 async function update_variable_showcase(timestamp) {
-    const variable_showcase = document.getElementById('variable_showcase')
+    const variable_showcase = document.getElementById('A-variable_vis')
 
     let tblBodyID = 0;
 

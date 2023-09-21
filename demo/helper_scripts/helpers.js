@@ -1,3 +1,9 @@
+/**
+ * Creates an immutable object that has the values presented attributes.
+ * The attributes return their value.
+ * @param values {Array<String>}
+ * @returns {Readonly<{}>}
+ */
 function createEnum(values) {
     const enumObject = {};
     for (const val of values) {

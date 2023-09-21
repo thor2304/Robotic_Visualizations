@@ -1,12 +1,17 @@
 /**
  * @type {Array<Array<DataPoint>>}
  */
+const rawCycles = []
+/**
+ *
+ * @type {Cycle[]}
+ */
 const cycles = []
 
 /**
  * @param frames {DataPoint[]}
  * @param cycle_index {number}
- * @returns {DataPoint[]}
+ * @returns {Cycle}
  */
 function get_cycle(frames, cycle_index=0){
     if(cycles.length === 0){
@@ -19,7 +24,7 @@ function get_cycle(frames, cycle_index=0){
 /**
  * @param frames {DataPoint[]}
  * @param cycle_index {number}
- * @returns {DataPoint[]}
+ * @returns {Cycle}
  */
 function reduce_to_cycle(frames, cycle_index = 0) {
     const cycle_end = {
@@ -44,7 +49,7 @@ function reduce_to_cycle(frames, cycle_index = 0) {
         if (frames[i].time.lineNumber >= cycle_start.first && frames[i].time.lineNumber <= cycle_start.last && (!cycle_active || end_area_hit)) {
             cycle_active = true
             end_area_hit = false
-            cycles.push([])
+            rawCycles.push([])
         }
 
         if (!cycle_active) {
@@ -59,7 +64,11 @@ function reduce_to_cycle(frames, cycle_index = 0) {
             end_area_hit = true
         }
 
-        cycles[cycles.length - 1].push(frames[i])
+        rawCycles[rawCycles.length - 1].push(frames[i])
+    }
+
+    for (let i = 0; i < rawCycles.length; i++) {
+        cycles[i] = new Cycle(rawCycles[i])
     }
 
     return cycles[cycle_index]

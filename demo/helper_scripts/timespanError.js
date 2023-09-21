@@ -185,9 +185,9 @@ class VariableController {
 /**
  *
  * @param dataPoints {DataPoint[]}
- * @returns {Promise<TimespanError[]>}
+ * @returns {TimespanError[]}
  */
-async function detectErrors(dataPoints) {
+function detectErrors(dataPoints) {
     /**
      * @type {TimespanError[]}
      */
