@@ -19,6 +19,8 @@
 .highlight {
     position: sticky;
     top: 1em;
+    overflow-x: auto;
+
 }
 
 pre {
@@ -30,7 +32,7 @@ pre {
 
 #code-container {
     /*This disables sticky on the code vis*/
-    overflow-x: auto;
+    min-width: 0px;
 }
 
 
