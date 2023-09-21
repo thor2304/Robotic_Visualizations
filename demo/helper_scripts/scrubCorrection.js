@@ -1,5 +1,6 @@
 /**
- *
+ *This adds the preprocessed attribute highlightLine to the data points.
+ * This is used to get accurate line highlighting when scrubbing backwards and hitting a line which is outside of the script.
  * @param dataPoints {Array<DataPoint>}
  * @returns {Promise<void>}
  */

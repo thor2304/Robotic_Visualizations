@@ -44,6 +44,9 @@ function computeTCPPosition(datum, offSetVector, computedPositions, computedRota
 }
 
 /**
+ * Usage example:
+ *     // available_variable_names = extract_available_variables(frames[frames.length - 1]);
+ *     // console.log("available_variable_names", available_variable_names)
  * @param frame {DataPoint}
  * @returns {string[]}
  */

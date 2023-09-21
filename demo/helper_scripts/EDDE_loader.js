@@ -267,6 +267,7 @@ async function parser(data) {
     // console.log("data received, now going to loop over the data and generate the frames->")
     const firstData = data[0];
     const res = computePositionAndRotation([firstData.actual_q_0, firstData.actual_q_1, firstData.actual_q_2, firstData.actual_q_3, firstData.actual_q_4, firstData.actual_q_5]);
+
     const positions = res[0];
     const rotationMatrix = res[1];
 
@@ -289,6 +290,7 @@ async function parser(data) {
     const frames = []
 
     // Generate the uniquely positioned frames
+    // This is the slowest part of this function
     for (let i = 0; i < data.length; i++) {
         const dataPoint = await create_frame_from_datum(data[i], offSetVector, customVariables);
         frames.push(dataPoint)
