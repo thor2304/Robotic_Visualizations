@@ -136,57 +136,21 @@ const method_map = {
 }
 
 /**
- * @param customVariables {{picked_variables: Array<Object>, wildcard: string, computed_variables: Array<Object>}}
+ * @param customVariables {CustomVariableConfiguration}
  * @param datum {Object}
- * @returns {Promise<{Object}>}
+ * @returns {Object<string, number>}
  */
-async function createCustom(customVariables, datum) {
+function createCustom(customVariables, datum) {
     const out = {}
 
     for (let i = 0; i < customVariables.picked_variables.length; i++) {
         const variable = customVariables.picked_variables[i]
-        if (variable.count !== undefined) {
-            for (let j = 0; j < variable.count; j++) {
-                const variable_name = variable.name.replace(customVariables.wildcard, j)
-                out[variable_name] = variable.type === "float" ? Number.parseFloat(datum[variable_name]) : datum[variable_name]
-            }
-        } else if (variable.indexes !== undefined) {
-            for (let index of variable.indexes) {
-                const variable_name = variable.name.replace(customVariables.wildcard, index)
-                out[variable_name] = variable.type === "float" ? Number.parseFloat(datum[variable_name]) : datum[variable_name]
-            }
-        } else {
-            out[variable.name] = variable.type === "float" ? Number.parseFloat(datum[variable.name]) : datum[variable.name]
-        }
+        out[variable.name] = variable.type === "float" ? Number.parseFloat(datum[variable.name]) : datum[variable.name]
     }
 
     for (let i = 0; i < customVariables.computed_variables.length; i++) {
         const variable = customVariables.computed_variables[i]
-
-        if (variable.count !== undefined) {
-            for (let j = 0; j < variable.count; j++) {
-                const variable_name = variable.name.replace(customVariables.wildcard, j)
-
-                const argument_1 = datum[variable.arguments[0].replace(customVariables.wildcard, j)]
-                const argument_2 = datum[variable.arguments[1].replace(customVariables.wildcard, j)]
-
-                out[variable_name] = method_map[variable.method](argument_1, argument_2)
-            }
-        } else if (variable.indexes !== undefined) {
-            for (let index of variable.indexes) {
-                const variable_name = variable.name.replace(customVariables.wildcard, index)
-
-                const argument_1 = datum[variable.arguments[0].replace(customVariables.wildcard, index)]
-                const argument_2 = datum[variable.arguments[1].replace(customVariables.wildcard, index)]
-
-                out[variable_name] = method_map[variable.method](argument_1, argument_2)
-            }
-        } else {
-            const argument_1 = datum[variable.arguments[0]]
-            const argument_2 = datum[variable.arguments[1]]
-
-            out[variable.name] = method_map[variable.method](argument_1, argument_2)
-        }
+        out[variable.name] = method_map[variable.method](datum[variable.arguments[0]], datum[variable.arguments[1]])
     }
 
     return out
@@ -195,7 +159,7 @@ async function createCustom(customVariables, datum) {
 /**
  * @param datum {Object}
  * @param offSetVector {ArrayLike}
- * @param customVariables {Object}
+ * @param customVariables {CustomVariableConfiguration}
  * @returns {Promise<DataPoint>}
  */
 async function create_frame_from_datum(datum, offSetVector, customVariables) {
@@ -203,6 +167,7 @@ async function create_frame_from_datum(datum, offSetVector, customVariables) {
     const computedPositions = computation[0];
     const computedTCPRotation = computation[1];
     const computedTcpPosition = computeTCPPosition(datum, offSetVector, computedPositions, computedTCPRotation);
+
 
     const base = new Joint(Joints.Base, computedPositions[0], undefined, datum.actual_position_0, datum.target_position_0)
     const shoulder = new Joint(Joints.Shoulder, computedPositions[1], undefined, datum.actual_position_1, datum.target_position_1)
@@ -217,6 +182,7 @@ async function create_frame_from_datum(datum, offSetVector, customVariables) {
         datum.force_x, datum.force_y, datum.force_z,
     )
 
+
     const robot = new Robot(tool,
         [base, shoulder, elbow, wrist_1, wrist_2, wrist_3],
         new Payload(extractExpectedWeight(datum), parseFloat(datum.payload)),
@@ -228,7 +194,7 @@ async function create_frame_from_datum(datum, offSetVector, customVariables) {
     const variables = extract_variables(datum);
     const registers = extract_registers(datum);
 
-    const custom = await createCustom(customVariables, datum)
+    const custom = createCustom(customVariables, datum)
 
     // The names should be added to the translation list so the EDDE names can be translated to our "universal name"
     // frame.tcp_error = new Offset(datum.actual_TCP_pose_0 - computedTcpPosition[0], datum.actual_TCP_pose_1 - computedTcpPosition[1], datum.actual_TCP_pose_2 - computedTcpPosition[2])
@@ -245,18 +211,157 @@ async function create_frame_from_datum(datum, offSetVector, customVariables) {
         variables,
         registers,
         custom
-    );
+    )
 }
 
 /**
- * @returns {Promise<Object>}
+ * @returns {Promise<CustomVariableConfiguration>}
  */
 async function get_custom_map() {
     const server_url = window.location.origin + "/Robotic_Visualizations/";
     const file_location = "demo/helper_scripts/allow_list.json";
 
     const response = await fetch(server_url + file_location);
-    return await response.json();
+    return new CustomVariableConfiguration(await response.json());
+}
+
+/** Picked Variable:
+ * @typedef  {
+ * {unit: string, name: string, count: number, start: number, type: string}
+ * |{name: string, count: number, start: number, type: string}
+ * |{unit: string, name: string, type: string}
+ * |{name: string, type: string}
+ * |{unit: string, indexes: string[], name: string, type: string}
+ * } PickedVariableTemplate
+ */
+
+/**
+ * @typedef  {{unit?: string, name: string, type: string}} PickedVariable
+ */
+
+/**
+ * Computed Variable:
+ * @typedef {
+ * {method: string, name: string, count: number, arguments: string[]}
+ * | {method: string, name: string, indexes: string[], arguments: string[]}
+ * |{method: string, name: string, arguments: string[]}
+ * } ComputedVariableTemplate
+ */
+
+/**
+ * @typedef {{method: string, name: string, arguments: string[]}} ComputedVariable
+ */
+
+class CustomVariableConfiguration {
+    /**
+     * @param jsonConfig {{
+     * picked_variables: PickedVariableTemplate[],
+     * wildcard: string,
+     * computed_variables: ComputedVariableTemplate[]
+     *}}
+     */
+    constructor(jsonConfig) {
+        /**
+         * @type {{
+         * picked_variables: PickedVariableTemplate[],
+         * wildcard: string,
+         * computed_variables: ComputedVariableTemplate[]
+         * }}
+         * @private
+         */
+        this._jsonConfig = jsonConfig;
+        /**
+         *
+         * @type {PickedVariable[]}
+         */
+        this.picked_variables = [];
+        /**
+         * @type {ComputedVariable[]}
+         */
+        this.computed_variables = [];
+        this._populateComputedVariables()
+        this._populatePickedVariables()
+    }
+
+    _populateComputedVariables() {
+        for (let i = 0; i < this._jsonConfig.computed_variables.length; i++) {
+            const variable = this._jsonConfig.computed_variables[i]
+
+            if (variable.count !== undefined) {
+                for (let j = 0; j < variable.count; j++) {
+                    /**
+                     * @type {ComputedVariable}
+                     */
+                    const outVariable = {
+                        name: variable.name.replace(this._jsonConfig.wildcard, j),
+                        method: variable.method,
+                        arguments: [
+                            variable.arguments[0].replace(this._jsonConfig.wildcard, j),
+                            variable.arguments[1].replace(this._jsonConfig.wildcard, j)
+                        ]
+                    }
+
+                    this.computed_variables.push(outVariable)
+                }
+            } else if (variable.indexes !== undefined) {
+                for (let index of variable.indexes) {
+                    /**
+                     * @type {ComputedVariable}
+                     */
+                    const outVariable = {
+                        name: variable.name.replace(this._jsonConfig.wildcard, index),
+                        method: variable.method,
+                        arguments: [
+                            variable.arguments[0].replace(this._jsonConfig.wildcard, index),
+                            variable.arguments[1].replace(this._jsonConfig.wildcard, index)
+                        ]
+                    }
+
+                    this.computed_variables.push(outVariable)
+                }
+            } else {
+                this.computed_variables.push({
+                    name: variable.name,
+                    method: variable.method,
+                    arguments: [
+                        variable.arguments[0],
+                        variable.arguments[1]
+                    ]
+                })
+            }
+        }
+    }
+
+    _populatePickedVariables() {
+        for (let i = 0; i < this._jsonConfig.picked_variables.length; i++) {
+            const variable = this._jsonConfig.picked_variables[i]
+            if (variable.count !== undefined) { // Loop using numbered indexes (0,1,2,3,4...)
+                for (let j = 0; j < variable.count; j++) {
+                    this.picked_variables.push({
+                        name: variable.name.replace(this._jsonConfig.wildcard, j),
+                        type: variable.type,
+                        unit: variable.unit
+                    })
+                }
+            } else if (variable.indexes !== undefined) { // Loop using named indexes (x,y,z)
+                for (let index of variable.indexes) {
+                    this.picked_variables.push({
+                        name: variable.name.replace(this._jsonConfig.wildcard, index),
+                        type: variable.type,
+                        unit: variable.unit
+                    })
+                }
+            } else { // No loop, just use the variable name
+                this.picked_variables.push({
+                    name: variable.name,
+                    type: variable.type,
+                    unit: variable.unit
+                })
+            }
+        }
+    }
+
+
 }
 
 /**
