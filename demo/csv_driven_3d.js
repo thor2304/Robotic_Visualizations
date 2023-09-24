@@ -1,12 +1,27 @@
+
 /**
- * Datapoints is a dictionary that maps a timestamp to a datapoint object.
+ * @typedef {number | `${number}`} Timestamp
+ */
+
+/**
+ * "DatapointMap" is a dictionary that maps a timestamp to a datapoint object.
  * This mapping should follow the datapoint that is visualized at this timestamp by plotly.
  * It is used for debugging by printing the datapoint to the console. As well as for highlighting the line hit
- * @type {Object<number, DataPoint>}
+ * <br>
+ * This data structure stores "DatapointMap" objects for each plot group.
+ * @type {Object<PlotGroupIdentifier, Object<Timestamp, DataPoint>>}
  */
-let datapoints = {}
-
-let datapoints_linked = new LinkedList()
+const groupedDataPoints = {
+    "A": {},
+    "B": {},
+}
+/**
+ * @type {Object<PlotGroupIdentifier, LinkedList>}
+ */
+const groupedDataPoints_linked = {
+    "A": new LinkedList(),
+    "B": new LinkedList(),
+}
 
 const scriptOffset = 1468;
 
@@ -16,6 +31,9 @@ function getScriptOffset() {
 
 const cycle_index = 1
 
+/**
+ * @param firstSepCount {number}
+ */
 function finalizePlotting(firstSepCount) {
     // Mark all vis containers as loaded, to remove the loading text
     const visContainers = document.getElementsByClassName("vis-placeholder");
@@ -24,23 +42,29 @@ function finalizePlotting(firstSepCount) {
     }
 
     // Updating immediately after loading, populates the variable showcase with the first datapoint
-    updateVisualizations(firstSepCount)
+    updateVisualizations(firstSepCount, getActivePlotGroup())
 
     makeAllDraggable()
 }
 
 /**
+ * @param groupIdentifier {PlotGroupIdentifier}
+ * @returns {string}
+ */
+function getIdPrefix(groupIdentifier) {
+    return `${groupIdentifier}-`
+}
+
+/**
  *
- * @param groupIdentifier {string}
+ * @param groupIdentifier {PlotGroupIdentifier}
  * @returns {PlotGroup}
  */
 function createGroup(groupIdentifier) {
     const variablesForMaxima = ["robot.tool.measuredForce.magnitude", "robot.tool.positionError.magnitude", "controller.memoryUsage",
         "custom.current_window_diff_0", "custom.current_window_diff_1", "custom.current_window_diff_2", "custom.current_window_diff_3", "custom.current_window_diff_4", "custom.current_window_diff_5"];
 
-    // const idPrefix = ""
-    const idPrefix = `${groupIdentifier}-`
-    // const namePrefix = ""
+    const idPrefix = getIdPrefix(groupIdentifier)
     const namePrefix = `${groupIdentifier}: `
 
     const plotRequests = [
@@ -50,7 +74,7 @@ function createGroup(groupIdentifier) {
         new PlotRequest(`${namePrefix}variable_table`, `${idPrefix}variable_vis`, [], plotTypes.table),
     ]
 
-    return new PlotGroup(plotRequests, variablesForMaxima)
+    return new PlotGroup(plotRequests, variablesForMaxima, groupIdentifier)
 }
 
 /**
@@ -59,8 +83,9 @@ function createGroup(groupIdentifier) {
  */
 async function plot_raw_data(data) {
     const groupA = createGroup("A");
-    // const groupB = createGroup("B");
+    const groupB = createGroup("B");
     await groupA.createDivsForPlots();
+    await groupB.createDivsForPlots();
 
     // 2. Shared operation for both groups
     const reduced_data = pick_every_x_from_array(data, 5);
@@ -70,25 +95,29 @@ async function plot_raw_data(data) {
 
     // 3. Per group operations
     groupA.setCycle(get_cycle(rawFrames, cycle_index));
-    const frames = groupA.cycle.sequentialDataPoints;
+    const firstStep = groupA.cycle.sequentialDataPoints[0].time.stepCount;
 
+    groupB.setCycle(get_cycle(rawFrames, cycle_index + 1));
 
-    datapoints = groupA.cycle.dataPointsDictionary
-    datapoints_linked = groupA.cycle.traversableDataPoints
+    groupedDataPoints[groupA.identifier] = groupA.cycle.dataPointsDictionary
+    groupedDataPoints[groupB.identifier] = groupB.cycle.dataPointsDictionary
 
+    groupedDataPoints_linked[groupA.identifier] = groupA.cycle.traversableDataPoints
+    groupedDataPoints_linked[groupB.identifier] = groupB.cycle.traversableDataPoints
 
     // 3.1 Per group operations that might interfere with the other group
     // for (let i = 0; i < variablesForError.length; i++) {
-    //     await createButtonAndErrorLine(maxValues[variablesForError[i]].stepcount, variablesForError[i] + " max")
+    //     await createButtonAndErrorLine(maxValues[variablesForError[i]].stepcount, variablesForError[i] + " max", groupA.identifier)
     // }
     // end of 3.1
 
     // 4. Shared operation for both groups
     const plotPromises = groupA.getPlotPromises();
+    plotPromises.push(...groupB.getPlotPromises());
     await Promise.all(plotPromises);
 
     // 5. shared operations for both groups
-    finalizePlotting(frames[0].time.stepCount);
+    finalizePlotting(firstStep);
     // end of 5.
 }
 
@@ -122,13 +151,14 @@ function findMaxOfVariables(dataPoints, variablePathArray) {
 }
 
 /**
- * @param dataframes {Array<DataPoint>}
- * @param timestamps {Array<Number>}
- * @param chartId {String}
+ * @param dataframes {DataPoint[]}
+ * @param timestamps {Timestamp[]}
+ * @param chartId {string}
  * @param errors {TimespanError[]}
+ * @param plotGroupIdentifier {PlotGroupIdentifier}
  * @returns {Promise<void>}
  */
-async function plot_line_graph(dataframes, timestamps, chartId, errors) {
+async function plot_line_graph(dataframes, timestamps, chartId, errors, plotGroupIdentifier) {
     // const chartName = 'TCP Error'
     // const dataNames = [
     //     "robot.tool.positionError.x",
@@ -143,11 +173,7 @@ async function plot_line_graph(dataframes, timestamps, chartId, errors) {
         "scriptVariables.vg_Vacuum_B.value",
     ]
 
-    await plotLineChart(chartName, chartId, dataframes, timestamps, dataNames, errors)
+    await plotLineChart(chartName, chartId, dataframes, timestamps, dataNames, errors, plotGroupIdentifier)
 }
 
-async function plot_tcp_error_3d(dataframes, timestamps, chartId) {
-    await plotDirection("TCP Error", chartId, dataframes, timestamps, ["robot.tool.positionError"])
-}
-
-load_data_then_call(plot_raw_data)
+load_data_then_call(plot_raw_data).then(r => ("loaded"))

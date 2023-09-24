@@ -1,4 +1,10 @@
-async function plot3dVis(dataframes, chartId) {
+/**
+ * @param dataframes {Array<DataPoint>}
+ * @param chartId {String}
+ * @param plotGroup {PlotGroupIdentifier}
+ * @returns {Promise<void>}
+ */
+async function plot3dVis(dataframes, chartId, plotGroup) {
     await createDivForPlotlyChart(chartId)
 
     const overlap_with_slider = true;
@@ -181,7 +187,7 @@ async function plot3dVis(dataframes, chartId) {
     const robotArmvis = document.getElementById(chartId)
     robotArmvis.on('plotly_sliderchange', async function (e) {
         try {
-            await updateVisualizations(e.step.value)
+            await updateVisualizations(e.step.value, plotGroup)
         } catch (exc) {
             console.log(exc)
         }

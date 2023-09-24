@@ -3,13 +3,14 @@
  * @param chartName {string} - The name of the chart displayed as the title
  * @param chartId {string} - The id of the htmlElement into which the chart will be created
  * @param dataPoints {DataPoint[]} - An array of dataPoints
- * @param timestamps {number} - An array of timestamps
- * @param dataNames {string} - An array of strings that are passed to dataPoints[i].traversed_attribute(dataNames[j]).
+ * @param timestamps {Timestamp[]} - An array of timestamps
+ * @param dataNames {string []} - An array of strings that are passed to dataPoints[i].traversed_attribute(dataNames[j]).
  * These are the names of the attributes that will be plotted.
  * @param errors {TimespanError[]}
+ * @param plotGroup {PlotGroupIdentifier}
  * @returns {Promise<void>}
  */
-async function plotLineChart(chartName, chartId, dataPoints, timestamps, dataNames, errors) {
+async function plotLineChart(chartName, chartId, dataPoints, timestamps, dataNames, errors, plotGroup) {
     const dataArrays = {}
 
     await createDivForPlotlyChart(chartId)
@@ -57,8 +58,8 @@ async function plotLineChart(chartName, chartId, dataPoints, timestamps, dataNam
     updatingPlots.push([chartId, getAnimationSettings(false)])
 
     chart.on('plotly_click', async function (data) {
-        let timestamp = await createAnnotationForClick(data, chartId, false);
-        await updateVisualizations(timestamp);
+        const timestamp = await createAnnotationForClick(data, chartId, false);
+        await updateVisualizations(timestamp, plotGroup);
     })
 }
 
@@ -74,8 +75,8 @@ function generate_traces(dataNames, dataArrays, time) {
         localMaximums.push(Math.max(...dataArrays[dataNames[i]]))
     }
 
-    let minY = Math.min(...localMinimums)
-    let maxY = Math.max(...localMaximums)
+    const minY = Math.min(...localMinimums)
+    const maxY = Math.max(...localMaximums)
 
     traces.push({
             x: [time[0], time[0]],

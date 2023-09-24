@@ -12,9 +12,10 @@ const all_buttons = [];
 /**
  * @param timestamp {number}
  * @param name {string}
+ * @param plotGroup {PlotGroupIdentifier}
  * @returns {Promise<void>}
  */
-async function createButtonAndErrorLine(timestamp, name) {
+async function createButtonAndErrorLine(timestamp, name, plotGroup) {
     // Create and add the button
     const button = document.createElement("button");
     button.innerHTML = `${name}<br>
@@ -25,7 +26,7 @@ async function createButtonAndErrorLine(timestamp, name) {
     button_container.appendChild(button);
 
     button.addEventListener ("click", async function() {
-        await updateVisualizations(timestamp);
+        await updateVisualizations(timestamp, plotGroup);
     });
 
     const default_display = button.style.display;
@@ -35,7 +36,7 @@ async function createButtonAndErrorLine(timestamp, name) {
 
     // Add the event listener for the line which shows the buttons
 
-    const datapoint = datapoints[timestamp]
+    const datapoint = groupedDataPoints[plotGroup][timestamp]
 
     if(datapoint === undefined){
         console.log(`No datapoint found for timestamp ${timestamp}`)

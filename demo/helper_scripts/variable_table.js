@@ -1,5 +1,5 @@
 function createRowInTable(traversed_variable_name, timestamp, tblBody) {
-    const variable = datapoints[timestamp].traversed_attribute(traversed_variable_name)
+    const variable = groupedDataPoints[getActivePlotGroup()][timestamp].traversed_attribute(traversed_variable_name)
     if(variable === undefined) {
         return
     }
@@ -23,7 +23,9 @@ function createRowInTable(traversed_variable_name, timestamp, tblBody) {
 }
 
 async function update_variable_showcase(timestamp) {
-    const variable_showcase = document.getElementById('A-variable_vis')
+    const variable_showcase = document.getElementById(
+        `${getIdPrefix(getActivePlotGroup())}variable_vis`
+    )
 
     let tblBodyID = 0;
 
@@ -64,7 +66,7 @@ async function update_variable_showcase(timestamp) {
         child.childNodes[1].innerText = 'undefined'
     }
 
-    const available_variable_names = extract_available_variables(datapoints[timestamp])
+    const available_variable_names = extract_available_variables(groupedDataPoints[getActivePlotGroup()][timestamp])
     add_path_to_variable_names('scriptVariables', available_variable_names)
     // available_variable_names.push("pointInTime.lineString") // When added back in the table might become too wide for the screen with the current implementation
     available_variable_names.push("pointInTime.lineNumber")
@@ -75,7 +77,7 @@ async function update_variable_showcase(timestamp) {
             createRowInTable(name, timestamp, tblBody);
         }
 
-        tblBody.childDict[name].childNodes[1].innerText = datapoints[timestamp].traversed_attribute(name)
+        tblBody.childDict[name].childNodes[1].innerText = groupedDataPoints[getActivePlotGroup()][timestamp].traversed_attribute(name)
     }
 
     variable_showcase.appendChild(tblBody);

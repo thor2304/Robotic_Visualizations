@@ -1,14 +1,14 @@
 async function stepToNextTimestamp() {
-    const nextTimestamp = datapoints_linked.next();
-    await updateVisualizations(nextTimestamp);
+    const nextTimestamp = groupedDataPoints_linked[getActivePlotGroup()].next();
+    await updateVisualizations(nextTimestamp, getActivePlotGroup());
 }
 
 async function stepToPreviousTimestamp(){
-    const previousTimeStamp = datapoints_linked.previous();
+    const previousTimeStamp = groupedDataPoints_linked[getActivePlotGroup()].previous();
     if (previousTimeStamp === undefined){
         return;
     }
-    await updateVisualizations(previousTimeStamp);
+    await updateVisualizations(previousTimeStamp, getActivePlotGroup());
 }
 
 const right_arrow = "ArrowRight";

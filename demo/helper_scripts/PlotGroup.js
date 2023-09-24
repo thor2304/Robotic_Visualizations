@@ -10,14 +10,23 @@ class PlotGroup {
     plotRequests;
     _variablesForMaxima;
     maxima;
+    /**
+     * @typedef {"A"|"B"} PlotGroupIdentifier
+     */
+    /**
+     * @type {PlotGroupIdentifier}
+     */
+    identifier;
 
     /**
      * @param plotRequests {PlotRequest[]}
      * @param variablesForMaxima {string[]}
+     * @param identifier {PlotGroupIdentifier}
      */
-    constructor(plotRequests, variablesForMaxima) {
+    constructor(plotRequests, variablesForMaxima, identifier) {
         this.plotRequests = plotRequests;
         this._variablesForMaxima = variablesForMaxima;
+        this.identifier = identifier;
     }
 
     async createDivsForPlots() {
@@ -47,17 +56,17 @@ class PlotGroup {
         await createDivForTable(table.chartId, table.plotName, ["Variable", "Value"])
     }
 
-    /**
-     *
-     * @param plotRequest {PlotRequest}
-     * @private
-     */
-    _createDivForPlot(plotRequest) {
-        switch (plotRequest.type) {
-            case plotTypes.line:
-
-        }
-    }
+    // /**
+    //  *
+    //  * @param plotRequest {PlotRequest}
+    //  * @private
+    //  */
+    // _createDivForPlot(plotRequest) {
+    //     switch (plotRequest.type) {
+    //         case plotTypes.line:
+    //
+    //     }
+    // }
 
     /**
      * Sets the cycle for this plot group to visualize
@@ -76,9 +85,9 @@ class PlotGroup {
     _plot(plotRequest) {
         switch (plotRequest.type) {
             case plotTypes.line:
-                return plot_line_graph(this.cycle.sequentialDataPoints, this.cycle.timestamps, plotRequest.chartId, this.cycle.errors)
+                return plot_line_graph(this.cycle.sequentialDataPoints, this.cycle.timestamps, plotRequest.chartId, this.cycle.errors, this.identifier)
             case plotTypes.robot:
-                return plot3dVis(this.cycle.sequentialDataPoints, plotRequest.chartId)
+                return plot3dVis(this.cycle.sequentialDataPoints, plotRequest.chartId, this.identifier)
             case plotTypes.direction:
                 return plotDirection(plotRequest.plotName, plotRequest.chartId, this.cycle.sequentialDataPoints, this.cycle.timestamps, plotRequest.dataNames)
             case plotTypes.table:
