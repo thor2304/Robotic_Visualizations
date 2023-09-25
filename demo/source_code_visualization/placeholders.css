@@ -1,3 +1,9 @@
+:root {
+    --group-a-color: hsl(208, 21%, 12%);
+    --group-b-color: hsl(209, 44%, 14%);
+    --ungrouped-color: hsl(272, 55%, 49%);
+}
+
 .vis-placeholder h1{
     text-align: center;
 }
@@ -8,7 +14,7 @@
     /*height: 20em;*/
     min-height: 20em;
     border: .2em solid hsl(240, 20%, 2%);
-    background: hsl(208, 21%, 12%);
+    background-color: var(--ungrouped-color);
     border-radius: .5em;
     margin: .25em .25em .75em;
 
@@ -24,6 +30,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.group-A {
+    background-color: var(--group-a-color);
+}
+
+.group-B {
+    background-color: var(--group-b-color);
 }
 
 .vis-placeholder h1:only-child::after, .code-placeholder h1:only-child::after{

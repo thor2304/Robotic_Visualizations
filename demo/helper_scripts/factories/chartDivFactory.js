@@ -1,13 +1,13 @@
 /**
  *
  * @param chartId {string}
- * @returns {Promise<void>}
+ * @returns {Promise<HTMLDivElement>}
  */
 async function createDivForPlotlyChart(chartId) {
     // check whether the div already exists
     if (document.getElementById(chartId) !== null) {
         // Check if it has the correct shape?
-        return
+        return document.getElementById(chartId)
     }
 
     // create div since it does not exist yet
@@ -21,6 +21,8 @@ async function createDivForPlotlyChart(chartId) {
 
     //Add the div to the container that has the visualizations
     document.getElementById("visualization-container").appendChild(div)
+
+    return div
 }
 
 /**
@@ -42,12 +44,18 @@ function _createDiv(id) {
 /**
  *
  * @param chartIds {Array<String>}
- * @returns {Promise<void>}
+ * @returns {Promise<Record<string, HTMLDivElement>>}
  */
 async function createDivsForPlotlyCharts(chartIds) {
+    /**
+     * @type {Record<string, HTMLDivElement>}
+     */
+    const divs = {}
     for (let chartId of chartIds) {
-        await createDivForPlotlyChart(chartId)
+        divs[chartId] = await createDivForPlotlyChart(chartId)
     }
+
+    return divs
 }
 
 /**
@@ -55,13 +63,13 @@ async function createDivsForPlotlyCharts(chartIds) {
  * @param chartId {string}
  * @param tableId {string}
  * @param tableHeaders {Array<string>} each entry to this array will be used as the header for a column
- * @returns {Promise<void>}
+ * @returns {Promise<HTMLDivElement>}
  */
 async function createDivForTable(chartId, tableId, tableHeaders) {
     // check whether the div already exists
     if (document.getElementById(chartId) !== null) {
         // Check if it has the correct shape?
-        return
+        return document.getElementById(chartId)
     }
 
     const div = _createDiv(chartId)
@@ -85,4 +93,6 @@ async function createDivForTable(chartId, tableId, tableHeaders) {
 
     //Add the div to the container that has the visualizations
     document.getElementById("visualization-container").appendChild(div)
+
+    return div
 }

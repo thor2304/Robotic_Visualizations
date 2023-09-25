@@ -52,8 +52,20 @@ class PlotGroup {
         console.log(plotlyCharts)
         console.log(this.plotRequests)
 
-        await createDivsForPlotlyCharts(plotlyCharts)
-        await createDivForTable(table.chartId, table.plotName, ["Variable", "Value"])
+        const divs = await createDivsForPlotlyCharts(plotlyCharts)
+        for (let plotRequest of this.plotRequests) {
+            if (plotRequest.type !== plotTypes.table) {
+                this.addGroupClass(divs[plotRequest.chartId])
+            }
+        }
+        createDivForTable(table.chartId, table.plotName, ["Variable", "Value"]).then(div => this.addGroupClass(div))
+    }
+
+    /**
+     * @param div {HTMLDivElement}
+     */
+    addGroupClass(div){
+        div.classList.add(`group-${this.identifier}`)
     }
 
     // /**
