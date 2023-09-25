@@ -101,7 +101,7 @@ class PlotGroup {
             case plotTypes.robot:
                 return plot3dVis(this.cycle.sequentialDataPoints, plotRequest.chartId, this.identifier)
             case plotTypes.direction:
-                return plotDirection(plotRequest.plotName, plotRequest.chartId, this.cycle.sequentialDataPoints, this.cycle.timestamps, plotRequest.dataNames)
+                return plotDirection(plotRequest.plotName, plotRequest.chartId, this.cycle.sequentialDataPoints, this.cycle.timestamps, plotRequest.dataNames, this.identifier)
             case plotTypes.table:
                 return Promise.resolve()
         }
@@ -185,7 +185,7 @@ class Cycle {
 
     /**
      * The timestamps of the data points in this cycle
-     * @type {number[]}
+     * @type {Timestamp[]}
      */
     timestamps = []
 

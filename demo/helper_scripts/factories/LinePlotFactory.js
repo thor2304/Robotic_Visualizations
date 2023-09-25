@@ -55,7 +55,7 @@ async function plotLineChart(chartName, chartId, dataPoints, timestamps, dataNam
         frames: frames,
     })
 
-    updatingPlots.push([chartId, getAnimationSettings(false)])
+    updatingGroupedPlots[plotGroup].push([chartId, getAnimationSettings(false)])
 
     chart.on('plotly_click', async function (data) {
         const timestamp = await createAnnotationForClick(data, chartId, false);

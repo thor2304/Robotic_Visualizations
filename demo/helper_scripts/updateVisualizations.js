@@ -1,7 +1,12 @@
 // This is a list of all the plots that are currently updating.
 // Push information as arrays, that are to be passed to Plotly.animate(plot_name, settings)
-const updatingPlots = [];
-// TODO: ^^ This should be a "grouped" variable where a plot identifier is mapped to a list of plots that are updating
+/**
+ * @type {{PlotGroupIdentifier: Array<[string, {}]>}}
+ */
+const updatingGroupedPlots = {
+    "A": [],
+    "B": [],
+};
 
 let previousTimestamp = 0;
 
@@ -37,6 +42,7 @@ async function _updateVisualizations(timestamp, plotGroup = _activePlotGroup) {
 
     const calls = []
 
+    const updatingPlots = updatingGroupedPlots[plotGroup]
     for (let i = 0; i < updatingPlots.length; i++) {
         calls.push(Plotly.animate(updatingPlots[i][0], [timestamp], updatingPlots[i][1]))
     }

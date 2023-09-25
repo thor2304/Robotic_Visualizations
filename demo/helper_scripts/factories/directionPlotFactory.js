@@ -1,13 +1,14 @@
 /**
  * Creates a plotly plot with the given data displayed in the form of an arrow for each DataName
- * @param chartName - Name of the chart
- * @param chartId - htmlID of the chart
- * @param dataPoints - Array of DataPoints
- * @param timestamps - Array of timestamps
- * @param dataNames - Array of DataNames. These are used for traversing in each datapoint. This is therefore in the shape of "robot.tool.positionError" without x,y,z
+ * @param chartName {string} - Name of the chart
+ * @param chartId {string} - htmlID of the chart
+ * @param dataPoints {DataPoint[]}- Array of DataPoints
+ * @param timestamps {Timestamp[]} - Array of timestamps
+ * @param dataNames {string[]} - Array of DataNames. These are used for traversing in each datapoint. This is therefore in the shape of "robot.tool.positionError" without x,y,z
+ * @param plotGroupIdentifier {PlotGroupIdentifier}
  * @returns {Promise<PlotlyHTMLElement>}
  */
-async function plotDirection(chartName, chartId, dataPoints, timestamps, dataNames) {
+async function plotDirection(chartName, chartId, dataPoints, timestamps, dataNames, plotGroupIdentifier) {
     const traces = []
 
     await createDivForPlotlyChart(chartId)
@@ -41,7 +42,7 @@ async function plotDirection(chartName, chartId, dataPoints, timestamps, dataNam
     console.log(frames)
     console.log(layoutSec)
 
-    updatingPlots.push([chartId, getAnimationSettings()])
+    updatingGroupedPlots[plotGroupIdentifier].push([chartId, getAnimationSettings()])
 
     return await Plotly.newPlot(chartId, {
         data: traces,

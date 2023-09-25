@@ -182,7 +182,7 @@ async function plot3dVis(dataframes, chartId, plotGroup) {
         frames: frames,
     });
 
-    updatingPlots.push([chartId, getAnimationSettings()])
+    updatingGroupedPlots[plotGroup].push([chartId, getAnimationSettings()])
 
     const robotArmvis = document.getElementById(chartId)
     robotArmvis.on('plotly_sliderchange', async function (e) {
