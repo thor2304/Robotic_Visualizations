@@ -1,10 +1,10 @@
 async function stepToNextTimestamp() {
-    const nextTimestamp = groupedDataPoints_linked[getActivePlotGroup()].next();
+    const nextTimestamp = groups.get(getActivePlotGroup()).dataPointsLinked.next();
     await updateVisualizations(nextTimestamp, getActivePlotGroup());
 }
 
 async function stepToPreviousTimestamp(){
-    const previousTimeStamp = groupedDataPoints_linked[getActivePlotGroup()].previous();
+    const previousTimeStamp = groups.get(getActivePlotGroup()).dataPointsLinked.previous();
     if (previousTimeStamp === undefined){
         return;
     }

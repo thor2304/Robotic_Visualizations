@@ -3,25 +3,8 @@
  * @typedef {number | `${number}`} Timestamp
  */
 
-/**
- * "DatapointMap" is a dictionary that maps a timestamp to a datapoint object.
- * This mapping should follow the datapoint that is visualized at this timestamp by plotly.
- * It is used for debugging by printing the datapoint to the console. As well as for highlighting the line hit
- * <br>
- * This data structure stores "DatapointMap" objects for each plot group.
- * @type {Object<PlotGroupIdentifier, Object<Timestamp, DataPoint>>}
- */
-const groupedDataPoints = {
-    "A": {},
-    "B": {},
-}
-/**
- * @type {Object<PlotGroupIdentifier, LinkedList>}
- */
-const groupedDataPoints_linked = {
-    "A": new LinkedList(),
-    "B": new LinkedList(),
-}
+const groups = new GroupController();
+
 
 const scriptOffset = 1468;
 
@@ -99,11 +82,8 @@ async function plot_raw_data(data) {
 
     groupB.setCycle(get_cycle(rawFrames, cycle_index + 1));
 
-    groupedDataPoints[groupA.identifier] = groupA.cycle.dataPointsDictionary
-    groupedDataPoints[groupB.identifier] = groupB.cycle.dataPointsDictionary
 
-    groupedDataPoints_linked[groupA.identifier] = groupA.cycle.traversableDataPoints
-    groupedDataPoints_linked[groupB.identifier] = groupB.cycle.traversableDataPoints
+    groups.initialize(groupA, groupB)
 
     // 3.1 Per group operations that might interfere with the other group
     // for (let i = 0; i < variablesForError.length; i++) {

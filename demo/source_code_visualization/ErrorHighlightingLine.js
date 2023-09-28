@@ -36,7 +36,7 @@ async function createButtonAndErrorLine(timestamp, name, plotGroup) {
 
     // Add the event listener for the line which shows the buttons
 
-    const datapoint = groupedDataPoints[plotGroup][timestamp]
+    const datapoint = groups.get(plotGroup).groupedDataPoints[timestamp]
 
     if(datapoint === undefined){
         console.log(`No datapoint found for timestamp ${timestamp}`)

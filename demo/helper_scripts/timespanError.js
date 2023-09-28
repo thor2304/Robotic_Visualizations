@@ -207,7 +207,7 @@ function detectErrors(dataPoints) {
         // Create the variable controllers that we need
         // Create their script ranges
     const vacuumInActiveRangeBefore = new ScriptSpan(72, 135, 0, 5)
-    const vacuumActiveRange = new ScriptSpan(137, 160, 10, 100)
+    const vacuumActiveRange = new ScriptSpan(137, 160, 9, 100)
     const vacuumInActiveRangeAfter = new ScriptSpan(162, 165, 0, 5)
     const vacuumAController = new VariableController("scriptVariables.vg_Vacuum_A.value", [vacuumInActiveRangeBefore, vacuumActiveRange, vacuumInActiveRangeAfter])
     const vacuumBController = new VariableController("scriptVariables.vg_Vacuum_B.value", [vacuumInActiveRangeBefore, vacuumActiveRange, vacuumInActiveRangeAfter])

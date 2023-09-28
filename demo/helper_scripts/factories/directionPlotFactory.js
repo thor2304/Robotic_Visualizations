@@ -42,7 +42,7 @@ async function plotDirection(chartName, chartId, dataPoints, timestamps, dataNam
     console.log(frames)
     console.log(layoutSec)
 
-    updatingGroupedPlots[plotGroupIdentifier].push([chartId, getAnimationSettings()])
+    groups.get(plotGroupIdentifier).addUpdateInformation(chartId, getAnimationSettings())
 
     return await Plotly.newPlot(chartId, {
         data: traces,

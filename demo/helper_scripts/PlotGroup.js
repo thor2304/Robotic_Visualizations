@@ -19,6 +19,27 @@ class PlotGroup {
     identifier;
 
     /**
+     * "DatapointMap" is a dictionary that maps a timestamp to a datapoint object.
+     * This mapping should follow the datapoint that is visualized at this timestamp by plotly.
+     * It is used for debugging by printing the datapoint to the console. As well as for highlighting the line hit
+     * @type {Object<Timestamp, DataPoint>}
+     */
+    groupedDataPoints;
+
+    /**
+     * @type {LinkedList}
+     */
+    dataPointsLinked;
+
+    /**
+     * This is a list of all the plots that are currently updating.
+     * Push information as arrays, that are to be passed to Plotly.animate(plot_name, settings)
+     * @private
+     * @type {Array<[string, {}]>}
+     */
+    updateInformation= [];
+
+    /**
      * @param plotRequests {PlotRequest[]}
      * @param variablesForMaxima {string[]}
      * @param identifier {PlotGroupIdentifier}
@@ -86,7 +107,9 @@ class PlotGroup {
      */
     setCycle(cycle) {
         this.cycle = cycle
-        this.maxima = findMaxOfVariables(this.cycle.sequentialDataPoints, this._variablesForMaxima)
+        this.maxima = findMaxOfVariables(this.cycle.sequentialDataPoints, this._variablesForMaxima);
+        this.groupedDataPoints = this.cycle.dataPointsDictionary
+        this.dataPointsLinked = this.cycle.traversableDataPoints
     }
 
     /**
@@ -116,7 +139,17 @@ class PlotGroup {
     }
 
 
+    addUpdateInformation(chartId, updateInformation){
+        this.updateInformation.push([chartId, updateInformation])
+    }
+
+    getUpdateInformation(){
+        return this.updateInformation
+    }
+
+
 }
+
 
 /**
  * @typedef {"line"| "robot"| "direction"| "table"} PlotType

@@ -1,12 +1,5 @@
-// This is a list of all the plots that are currently updating.
-// Push information as arrays, that are to be passed to Plotly.animate(plot_name, settings)
-/**
- * @type {{PlotGroupIdentifier: Array<[string, {}]>}}
- */
-const updatingGroupedPlots = {
-    "A": [],
-    "B": [],
-};
+
+
 
 let previousTimestamp = 0;
 
@@ -38,21 +31,21 @@ async function _updateVisualizations(timestamp, plotGroup = _activePlotGroup) {
 
     _activePlotGroup = plotGroup
 
-    groupedDataPoints_linked[_activePlotGroup].updateCurrent(timestamp);
+    groups.get(_activePlotGroup).dataPointsLinked.updateCurrent(timestamp);
 
     const calls = []
 
-    const updatingPlots = updatingGroupedPlots[plotGroup]
+    const updatingPlots = groups.get(_activePlotGroup).getUpdateInformation()
     for (let i = 0; i < updatingPlots.length; i++) {
         calls.push(Plotly.animate(updatingPlots[i][0], [timestamp], updatingPlots[i][1]))
     }
 
     calls.push(update_variable_showcase(timestamp))
     await highlight_line(
-        groupedDataPoints[_activePlotGroup][timestamp].time.highlightLine,
+        groups.get(_activePlotGroup).groupedDataPoints[timestamp].time.highlightLine,
         0,
         true,
-        groupedDataPoints[_activePlotGroup][timestamp].time.highlightLine + getScriptOffset() === groupedDataPoints[_activePlotGroup][timestamp].time.lineNumber
+        groups.get(_activePlotGroup).groupedDataPoints[timestamp].time.highlightLine + getScriptOffset() === groups.get(_activePlotGroup).groupedDataPoints[timestamp].time.lineNumber
     )
 
     try{
