@@ -1,7 +1,7 @@
 /**
  * @param dataframes {Array<DataPoint>}
  * @param chartId {String}
- * @param plotGroup {PlotGroupIdentifier}
+ * @param plotGroup {PlotGroup}
  * @returns {Promise<void>}
  */
 async function plot3dVis(dataframes, chartId, plotGroup) {
@@ -182,12 +182,12 @@ async function plot3dVis(dataframes, chartId, plotGroup) {
         frames: frames,
     });
 
-    groups.get(plotGroup).addUpdateInformation(chartId, getAnimationSettings())
+    plotGroup.addUpdateInformation(chartId, getAnimationSettings())
 
     const robotArmvis = document.getElementById(chartId)
     robotArmvis.on('plotly_sliderchange', async function (e) {
         try {
-            await updateVisualizations(e.step.value, plotGroup)
+            await updateVisualizations(e.step.value, plotGroup.identifier)
         } catch (exc) {
             console.log(exc)
         }

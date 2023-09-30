@@ -5,10 +5,10 @@
  * @param dataPoints {DataPoint[]}- Array of DataPoints
  * @param timestamps {Timestamp[]} - Array of timestamps
  * @param dataNames {string[]} - Array of DataNames. These are used for traversing in each datapoint. This is therefore in the shape of "robot.tool.positionError" without x,y,z
- * @param plotGroupIdentifier {PlotGroupIdentifier}
+ * @param plotGroup {PlotGroup}
  * @returns {Promise<PlotlyHTMLElement>}
  */
-async function plotDirection(chartName, chartId, dataPoints, timestamps, dataNames, plotGroupIdentifier) {
+async function plotDirection(chartName, chartId, dataPoints, timestamps, dataNames, plotGroup) {
     const traces = []
 
     await createDivForPlotlyChart(chartId)
@@ -42,7 +42,7 @@ async function plotDirection(chartName, chartId, dataPoints, timestamps, dataNam
     console.log(frames)
     console.log(layoutSec)
 
-    groups.get(plotGroupIdentifier).addUpdateInformation(chartId, getAnimationSettings())
+    plotGroup.addUpdateInformation(chartId, getAnimationSettings())
 
     return await Plotly.newPlot(chartId, {
         data: traces,

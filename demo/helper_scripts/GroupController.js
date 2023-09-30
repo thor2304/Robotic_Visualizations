@@ -38,6 +38,7 @@ class GroupController {
      */
     setA(group){
         this.A = group;
+        this.A.getPlotPromises().forEach(promise => promise.then())
     }
 
     /**
@@ -59,6 +60,14 @@ class GroupController {
      */
     addOptionB(group) {
         this.BOptions.push(group);
+    }
+
+    getAOptions(){
+        return this.AOptions;
+    }
+
+    getBOptions(){
+        return this.BOptions;
     }
 
     /**

@@ -70,9 +70,6 @@ class PlotGroup {
             }
         })
 
-        console.log(plotlyCharts)
-        console.log(this.plotRequests)
-
         const divs = await createDivsForPlotlyCharts(plotlyCharts)
         for (let plotRequest of this.plotRequests) {
             if (plotRequest.type !== plotTypes.table) {
@@ -120,17 +117,20 @@ class PlotGroup {
     _plot(plotRequest) {
         switch (plotRequest.type) {
             case plotTypes.line:
-                return plot_line_graph(this.cycle.sequentialDataPoints, this.cycle.timestamps, plotRequest.chartId, this.cycle.errors, this.identifier)
+                return plot_line_graph(this.cycle.sequentialDataPoints, this.cycle.timestamps, plotRequest.chartId, this.cycle.errors, this)
             case plotTypes.robot:
-                return plot3dVis(this.cycle.sequentialDataPoints, plotRequest.chartId, this.identifier)
+                return plot3dVis(this.cycle.sequentialDataPoints, plotRequest.chartId, this)
             case plotTypes.direction:
-                return plotDirection(plotRequest.plotName, plotRequest.chartId, this.cycle.sequentialDataPoints, this.cycle.timestamps, plotRequest.dataNames, this.identifier)
+                return plotDirection(plotRequest.plotName, plotRequest.chartId, this.cycle.sequentialDataPoints, this.cycle.timestamps, plotRequest.dataNames, this)
             case plotTypes.table:
                 return Promise.resolve()
         }
     }
 
     getPlotPromises() {
+        /**
+         * @type {Promise<void>[]}
+         */
         const plotPromises = []
         for (let i = 0; i < this.plotRequests.length; i++) {
             plotPromises.push(this._plot(this.plotRequests[i]))

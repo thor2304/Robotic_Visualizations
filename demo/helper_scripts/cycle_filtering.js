@@ -9,8 +9,9 @@ const rawCycles = []
 const cycles = []
 
 /**
- * @param frames {DataPoint[]}
- * @param cycle_index {number}
+ * This method is safe to call multiple times, since it will only calculate the cycles once
+ * @param frames {DataPoint[]} The frames from which cycles are calculated
+ * @param cycle_index {number} 0-based index of the cycle to get
  * @returns {Cycle}
  */
 function get_cycle(frames, cycle_index=0){

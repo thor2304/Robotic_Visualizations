@@ -66,8 +66,11 @@ function createGroup(groupIdentifier) {
  */
 async function plot_raw_data(data) {
     const groupA = createGroup("A");
+    const alternateGroupA = createGroup("A");
     const groupB = createGroup("B");
+
     await groupA.createDivsForPlots();
+    await alternateGroupA.createDivsForPlots();
     await groupB.createDivsForPlots();
 
     // 2. Shared operation for both groups
@@ -79,11 +82,13 @@ async function plot_raw_data(data) {
     // 3. Per group operations
     groupA.setCycle(get_cycle(rawFrames, cycle_index));
     const firstStep = groupA.cycle.sequentialDataPoints[0].time.stepCount;
+    alternateGroupA.setCycle(get_cycle(rawFrames, cycle_index + 1));
 
     groupB.setCycle(get_cycle(rawFrames, cycle_index + 1));
 
 
     groups.initialize(groupA, groupB)
+    groups.addOptionA(alternateGroupA)
 
     // 3.1 Per group operations that might interfere with the other group
     // for (let i = 0; i < variablesForError.length; i++) {
@@ -135,7 +140,7 @@ function findMaxOfVariables(dataPoints, variablePathArray) {
  * @param timestamps {Timestamp[]}
  * @param chartId {string}
  * @param errors {TimespanError[]}
- * @param plotGroupIdentifier {PlotGroupIdentifier}
+ * @param plotGroupIdentifier {PlotGroup}
  * @returns {Promise<void>}
  */
 async function plot_line_graph(dataframes, timestamps, chartId, errors, plotGroupIdentifier) {

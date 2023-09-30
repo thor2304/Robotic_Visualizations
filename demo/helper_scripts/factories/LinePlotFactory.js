@@ -7,7 +7,7 @@
  * @param dataNames {string []} - An array of strings that are passed to dataPoints[i].traversed_attribute(dataNames[j]).
  * These are the names of the attributes that will be plotted.
  * @param errors {TimespanError[]}
- * @param plotGroup {PlotGroupIdentifier}
+ * @param plotGroup {PlotGroup}
  * @returns {Promise<void>}
  */
 async function plotLineChart(chartName, chartId, dataPoints, timestamps, dataNames, errors, plotGroup) {
@@ -55,11 +55,11 @@ async function plotLineChart(chartName, chartId, dataPoints, timestamps, dataNam
         frames: frames,
     })
 
-    groups.get(plotGroup).addUpdateInformation(chartId, getAnimationSettings(false))
+    plotGroup.addUpdateInformation(chartId, getAnimationSettings(false))
 
     chart.on('plotly_click', async function (data) {
         const timestamp = await createAnnotationForClick(data, chartId, false);
-        await updateVisualizations(timestamp, plotGroup);
+        await updateVisualizations(timestamp, plotGroup.identifier);
     })
 }
 
