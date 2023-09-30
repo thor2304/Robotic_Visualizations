@@ -21,6 +21,19 @@ function get_cycle(frames, cycle_index=0){
     return cycles[cycle_index]
 }
 
+/**
+ * This method is safe to call multiple times, since it will only calculate the cycles once
+ * @param frames {DataPoint[]} The frames from which cycles are calculated
+ * @return {number}
+ */
+function get_cycle_count(frames){
+    if(cycles.length === 0){
+        get_cycle(frames, 0)
+    }
+
+    return cycles.length
+}
+
 
 /**
  * @param frames {DataPoint[]}
@@ -69,7 +82,7 @@ function reduce_to_cycle(frames, cycle_index = 0) {
     }
 
     for (let i = 0; i < rawCycles.length; i++) {
-        cycles[i] = new Cycle(rawCycles[i])
+        cycles[i] = new Cycle(rawCycles[i], i)
     }
 
     return cycles[cycle_index]

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="auto">
 <head>
     <meta charset="UTF-8">
     <title>Contextual Visualizations</title>
@@ -13,11 +13,21 @@
     <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js'></script>
     <script src="https://cdn.plot.ly/plotly-2.25.2.min.js"></script>
     <script src="https://unpkg.com/mathjs@11.8.0/lib/browser/math.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+            crossorigin="anonymous"></script>
 
     <!-- This supports light and dark mode automatically. -->
     <link rel="stylesheet" href="https://esm.sh/@wooorm/starry-night@2/style/both.css">
     <!--    Stylesheet for code numbers from rehype-starry-night-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@microflash/rehype-starry-night@2.1.1/index.min.css">
+
+    <script src="./helper_scripts/bootstrap-dark-mode.js"></script>
 
 
     <script src="./helper_scripts/helpers.js"></script>
@@ -40,6 +50,7 @@
     <script src="./helper_scripts/scrubCorrection.js"></script>
     <script src="./helper_scripts/PlotGroup.js"></script>
     <script src="./helper_scripts/GroupController.js"></script>
+    <script src="./helper_scripts/cycle-picker.js"></script>
 
     <link rel="stylesheet" href="./source_code_visualization/source_code.css">
     <link rel="stylesheet" href="source_code_visualization/placeholders.css">
@@ -69,15 +80,29 @@
     <div id="header-title">
         <p id="filler"></p>
         <h1>This cycle is a partial pickup. Only one suction cup grabbed the tile</h1>
-        <button id="lock-layout-button"></button>
+        <button id="lock-layout-button" class="btn btn-primary m-2"></button>
     </div>
 </header>
-<div>
+<div class="p-2">
     <p>Multiple Cycles are now presented at the same time. They update independently of each other.
         The 4 at the top belong to group A and the bottom 4 belong to Group B. </p>
 </div>
 <main>
     <div id="visualization-container" class="visualization-container drag-container">
+        <div id="dropdown-container" class="container text-center p-2">
+            <div class="row align-items-center">
+                <div class="col">
+                    <label for="dropdown-A" class="form-label">Visualization A</label>
+                    <select class="form-select" id="dropdown-A">
+                    </select>
+                </div>
+                <div class="col">
+                    <label for="dropdown-B" class="form-label">Visualization B</label>
+                    <select class="form-select" id="dropdown-B">
+                    </select>
+                </div>
+            </div>
+        </div>
     </div>
 
     <hr id="separator-slider"><!----------------------------------------------------------------------------------->

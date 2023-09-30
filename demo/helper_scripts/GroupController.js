@@ -25,6 +25,7 @@ class GroupController {
     /**
      * @param groupA {PlotGroup}
      * @param groupB {PlotGroup}
+     * @returns {void}
      */
     initialize(groupA, groupB){
         this.A = groupA;
@@ -34,22 +35,19 @@ class GroupController {
     }
 
     /**
-     * @param group {PlotGroup}
+     * @param groupIdentifier {PlotGroupIdentifier}
+     * @param optionIndex {number | string}
      */
-    setA(group){
-        this.A = group;
-        this.A.getPlotPromises().forEach(promise => promise.then())
+    set(groupIdentifier, optionIndex){
+        const index = typeof optionIndex === "string" ? parseInt(optionIndex) : optionIndex;
+        this[groupIdentifier] = this.getOptions(groupIdentifier)[index]
+        // This updates the visualizations to use this new cycle
+        this[groupIdentifier].getPlotPromises().forEach(promise => promise.then())
     }
 
     /**
      * @param group {PlotGroup}
-     */
-    setB(group){
-        this.B = group;
-    }
-
-    /**
-     * @param group {PlotGroup}
+     * @returns {void}
      */
     addOptionA(group) {
         this.AOptions.push(group);
@@ -57,6 +55,7 @@ class GroupController {
 
     /**
      * @param group {PlotGroup}
+     * @returns {void}
      */
     addOptionB(group) {
         this.BOptions.push(group);
@@ -64,6 +63,20 @@ class GroupController {
 
     getAOptions(){
         return this.AOptions;
+    }
+
+    /**
+     * @param identifier {PlotGroupIdentifier}
+     * @returns {PlotGroup[]}
+     */
+    getOptions(identifier){
+        if (identifier === "A") {
+            return this.getAOptions()
+        } else if (identifier === "B") {
+            return this.getBOptions()
+        } else {
+            throw new Error(`Invalid identifier ${identifier}`)
+        }
     }
 
     getBOptions(){
@@ -78,5 +91,11 @@ class GroupController {
         return this[option]
     }
 
+    /**
+     * @returns {PlotGroupIdentifier[]}
+     */
+    getGroupIdentifiers(){
+        return ["A", "B"]
+    }
 
 }

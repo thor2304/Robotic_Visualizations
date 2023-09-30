@@ -110,6 +110,13 @@ class PlotGroup {
     }
 
     /**
+     * @returns {Cycle}
+     */
+    getCycle(){
+        return this.cycle
+    }
+
+    /**
      * @param plotRequest {PlotRequest}
      * @returns {Promise<void>}
      * @private
@@ -228,9 +235,15 @@ class Cycle {
      */
     errors = undefined
 
-    constructor(sequentialDataPoints) {
+    /**
+     * @type {number}
+     */
+    cycleIndex = undefined
+
+    constructor(sequentialDataPoints, cycleIndex) {
         addHighlightLineToDataPoints(sequentialDataPoints)
         this.sequentialDataPoints = sequentialDataPoints
+        this.cycleIndex = cycleIndex
 
         for (let i = 0; i < sequentialDataPoints.length; i++) {
             const stepCount = sequentialDataPoints[i].time.stepCount

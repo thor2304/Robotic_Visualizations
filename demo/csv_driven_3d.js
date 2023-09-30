@@ -66,11 +66,9 @@ function createGroup(groupIdentifier) {
  */
 async function plot_raw_data(data) {
     const groupA = createGroup("A");
-    const alternateGroupA = createGroup("A");
     const groupB = createGroup("B");
 
     await groupA.createDivsForPlots();
-    await alternateGroupA.createDivsForPlots();
     await groupB.createDivsForPlots();
 
     // 2. Shared operation for both groups
@@ -82,6 +80,10 @@ async function plot_raw_data(data) {
     // 3. Per group operations
     groupA.setCycle(get_cycle(rawFrames, cycle_index));
     const firstStep = groupA.cycle.sequentialDataPoints[0].time.stepCount;
+
+
+    const alternateGroupA = createGroup("A");
+    await alternateGroupA.createDivsForPlots();
     alternateGroupA.setCycle(get_cycle(rawFrames, cycle_index + 1));
 
     groupB.setCycle(get_cycle(rawFrames, cycle_index + 1));
@@ -89,6 +91,11 @@ async function plot_raw_data(data) {
 
     groups.initialize(groupA, groupB)
     groups.addOptionA(alternateGroupA)
+
+    populatePickers(groups)
+
+    // groups.setA(groups.getAOptions()[0])
+    // groups.setB(groups.getBOptions()[0])
 
     // 3.1 Per group operations that might interfere with the other group
     // for (let i = 0; i < variablesForError.length; i++) {
