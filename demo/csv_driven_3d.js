@@ -77,20 +77,28 @@ async function plot_raw_data(data) {
     // print_script_lines(rawFrames);
     // end of 2.
 
+    const cycle_count = get_cycle_count(rawFrames);
+
     // 3. Per group operations
-    groupA.setCycle(get_cycle(rawFrames, cycle_index));
-    const firstStep = groupA.cycle.sequentialDataPoints[0].time.stepCount;
-
-
-    const alternateGroupA = createGroup("A");
-    await alternateGroupA.createDivsForPlots();
-    alternateGroupA.setCycle(get_cycle(rawFrames, cycle_index + 1));
+    const AGroups = [groupA]
 
     groupB.setCycle(get_cycle(rawFrames, cycle_index + 1));
 
-
     groups.initialize(groupA, groupB)
-    groups.addOptionA(alternateGroupA)
+
+    for (let i = 1; i < cycle_count; i++) {
+        AGroups.push(createGroup("A"))
+        groups.addOptionA(AGroups[i])
+    }
+
+    console.log(AGroups)
+
+    AGroups.forEach((group, index) => {
+        console.log(get_cycle(rawFrames, index))
+        group.setCycle(get_cycle(rawFrames, index));
+    })
+
+    const firstStep = groupA.cycle.sequentialDataPoints[0].time.stepCount;
 
     populatePickers(groups)
 
