@@ -22,6 +22,17 @@ function get_cycle(frames, cycle_index=0){
 }
 
 /**
+ * @param frames {DataPoint[]}
+ * @return {Cycle[]}
+ */
+function get_cycles(frames){
+    if(cycles.length === 0){
+        reduce_to_cycle(frames, cycle_index)
+    }
+    return cycles
+}
+
+/**
  * This method is safe to call multiple times, since it will only calculate the cycles once
  * @param frames {DataPoint[]} The frames from which cycles are calculated
  * @return {number}

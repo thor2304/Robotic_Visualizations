@@ -1,23 +1,20 @@
 class GroupController {
     /**
      * @private
-     * @type {PlotGroup}
+     * @type {{plotGroup: PlotGroup, options: PlotGroup[]}}
      */
-    A;
+    A={
+        plotGroup: undefined,
+        options: []
+    };
     /**
      * @private
-     * @type {PlotGroup}
+     * @type {{plotGroup: PlotGroup, options: PlotGroup[]}}
      */
-    B;
-
-    /**
-     * @type {PlotGroup[]}
-     */
-    AOptions = [];
-    /**
-     * @type {PlotGroup[]}
-     */
-    BOptions = [];
+    B={
+        plotGroup: undefined,
+        options: []
+    };
 
     constructor() {
     }
@@ -28,10 +25,10 @@ class GroupController {
      * @returns {void}
      */
     initialize(groupA, groupB){
-        this.A = groupA;
-        this.B = groupB;
-        this.addOptionA(groupA);
-        this.addOptionB(groupB);
+        this.A.plotGroup = groupA;
+        this.B.plotGroup = groupB;
+        this.addOption(groupA);
+        this.addOption(groupB);
     }
 
     /**
@@ -40,29 +37,18 @@ class GroupController {
      */
     set(groupIdentifier, optionIndex){
         const index = typeof optionIndex === "string" ? parseInt(optionIndex) : optionIndex;
-        this[groupIdentifier] = this.getOptions(groupIdentifier)[index]
+        const activePlotGroup = this.getOptions(groupIdentifier)[index]
+        this[groupIdentifier].plotGroup = activePlotGroup;
         // This updates the visualizations to use this new cycle
-        this[groupIdentifier].getPlotPromises().forEach(promise => promise.then())
+        activePlotGroup.getPlotPromises().forEach(promise => promise.then())
     }
 
     /**
      * @param group {PlotGroup}
      * @returns {void}
      */
-    addOptionA(group) {
-        this.AOptions.push(group);
-    }
-
-    /**
-     * @param group {PlotGroup}
-     * @returns {void}
-     */
-    addOptionB(group) {
-        this.BOptions.push(group);
-    }
-
-    getAOptions(){
-        return this.AOptions;
+    addOption(group) {
+        this[group.identifier].options.push(group);
     }
 
     /**
@@ -70,17 +56,7 @@ class GroupController {
      * @returns {PlotGroup[]}
      */
     getOptions(identifier){
-        if (identifier === "A") {
-            return this.getAOptions()
-        } else if (identifier === "B") {
-            return this.getBOptions()
-        } else {
-            throw new Error(`Invalid identifier ${identifier}`)
-        }
-    }
-
-    getBOptions(){
-        return this.BOptions;
+        return this[identifier].options;
     }
 
     /**
@@ -88,7 +64,7 @@ class GroupController {
      * @returns {PlotGroup}
      */
     get(option){
-        return this[option]
+        return this[option].plotGroup
     }
 
     /**

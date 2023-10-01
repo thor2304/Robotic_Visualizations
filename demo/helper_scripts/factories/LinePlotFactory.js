@@ -44,7 +44,6 @@ async function plotLineChart(chartName, chartId, dataPoints, timestamps, dataNam
 
     const layout = get2dLayout(chartName)
     for(let timespanError of errors){
-        console.log(createErrorBar(timespanError.start.time.stepCount, timespanError.end.time.stepCount))
         layout.shapes.push(createErrorBar(timespanError.start.time.stepCount, timespanError.end.time.stepCount))
     }
 

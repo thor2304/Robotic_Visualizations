@@ -17,7 +17,7 @@ async function plotDirection(chartName, chartId, dataPoints, timestamps, dataNam
         traces.push(...createArrowTraces(dataPoints, dataNames[i]))
     }
 
-    console.log(traces)
+    // console.log(traces)
 
     const frames = [];
     for (let i = 0; i < timestamps.length; i++) {
@@ -34,13 +34,11 @@ async function plotDirection(chartName, chartId, dataPoints, timestamps, dataNam
 
     const scale = getMaxScale(dataPoints, dataNames)
 
-    console.log(scale)
+    // console.log(scale)
 
     const layout = get3dLayout(chartName, scale)
-    const layoutSec = get3dLayout(chartName, scale)
 
-    console.log(frames)
-    console.log(layoutSec)
+    // console.log(frames)
 
     plotGroup.addUpdateInformation(chartId, getAnimationSettings())
 

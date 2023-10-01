@@ -1,4 +1,3 @@
-
 /**
  * @typedef {number | `${number}`} Timestamp
  */
@@ -77,33 +76,40 @@ async function plot_raw_data(data) {
     // print_script_lines(rawFrames);
     // end of 2.
 
-    const cycle_count = get_cycle_count(rawFrames);
+    const cycles = get_cycles(rawFrames);
 
-    // 3. Per group operations
-    const AGroups = [groupA]
+    const withErrors = [];
+    const withoutErrors = [];
 
-    groupB.setCycle(get_cycle(rawFrames, cycle_index + 1));
+    for (let i = 0; i < cycles.length; i++) {
+        const cycle = cycles[i];
+        if (cycle.hasError()) {
+            withErrors.push(cycle)
+        } else {
+            withoutErrors.push(cycle)
+        }
+    }
 
     groups.initialize(groupA, groupB)
 
-    for (let i = 1; i < cycle_count; i++) {
-        AGroups.push(createGroup("A"))
-        groups.addOptionA(AGroups[i])
+    groupA.setCycle(withErrors[0])
+    for (let i = 1; i < withErrors.length; i++) {
+        const newGroup = createGroup("A")
+        newGroup.setCycle(withErrors[i])
+        groups.addOption(newGroup)
     }
 
-    console.log(AGroups)
-
-    AGroups.forEach((group, index) => {
-        console.log(get_cycle(rawFrames, index))
-        group.setCycle(get_cycle(rawFrames, index));
-    })
+    groupB.setCycle(withoutErrors[0])
+    for (let i = 1; i < withoutErrors.length; i++) {
+        const newGroup = createGroup("B")
+        newGroup.setCycle(withoutErrors[i])
+        groups.addOption(newGroup)
+    }
 
     const firstStep = groupA.cycle.sequentialDataPoints[0].time.stepCount;
 
     populatePickers(groups)
 
-    // groups.setA(groups.getAOptions()[0])
-    // groups.setB(groups.getBOptions()[0])
 
     // 3.1 Per group operations that might interfere with the other group
     // for (let i = 0; i < variablesForError.length; i++) {

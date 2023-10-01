@@ -255,5 +255,8 @@ class Cycle {
         this.errors = detectErrors(this.sequentialDataPoints)
     }
 
+    hasError(){
+        return this.errors.length > 0
+    }
 
 }

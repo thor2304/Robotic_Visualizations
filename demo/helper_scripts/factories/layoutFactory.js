@@ -76,8 +76,6 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', eve
  * @returns Object
  */
 function get2dLayout(title) {
-    console.log(document.querySelector(".group-A"))
-    console.log(window.getComputedStyle(document.querySelector(".group-A")))
     let plotColor = 'rgba(145,0,0,0)'
     // let paperColor = 'hsl(208, 21%, 12%)'
     let paperColor = 'hsla(208,21%,12%,0)'

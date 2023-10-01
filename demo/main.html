@@ -83,22 +83,26 @@
         <button id="lock-layout-button" class="btn btn-primary m-2"></button>
     </div>
 </header>
-<div class="p-2">
-    <p>Multiple Cycles are now presented at the same time. They update independently of each other.
-        The 4 at the top belong to group A and the bottom 4 belong to Group B. </p>
-</div>
+<!--<div class="p-2">-->
+<!--    <p>Multiple Cycles are now presented at the same time. They update independently of each other.-->
+<!--        The 4 at the top belong to group A and the bottom 4 belong to Group B. </p>-->
+<!--</div>-->
 <main>
     <div id="visualization-container" class="visualization-container drag-container">
         <div id="dropdown-container" class="container text-center p-2">
             <div class="row align-items-center">
                 <div class="col">
-                    <label for="dropdown-A" class="form-label">Visualization A</label>
-                    <select class="form-select" id="dropdown-A">
+                    <label for="dropdown-A" class="form-label">
+                        Visualization A: Errors detected
+                    </label>
+                    <select class="form-select group-A" id="dropdown-A">
                     </select>
                 </div>
                 <div class="col">
-                    <label for="dropdown-B" class="form-label">Visualization B</label>
-                    <select class="form-select" id="dropdown-B">
+                    <label for="dropdown-B" class="form-label">
+                        Visualization B: No Errors detected
+                    </label>
+                    <select class="form-select group-B" id="dropdown-B">
                     </select>
                 </div>
             </div>
