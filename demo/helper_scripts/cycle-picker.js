@@ -4,11 +4,27 @@
  */
 function populatePickers(groups) {
     const groupIdentifiers = groups.getGroupIdentifiers()
+    const counts = []
     for (let i = 0; i < groupIdentifiers.length; i++) {
         const groupIdentifier = groupIdentifiers[i];
         const groupSelector = document.getElementById(`dropdown-${groupIdentifier}`)
-        addOptions(groupIdentifier, groupSelector, groups.getOptions(groupIdentifier))
+        const plotGroups = groups.getOptions(groupIdentifier)
+        counts.push(plotGroups.length)
+        addOptions(groupIdentifier, groupSelector, plotGroups)
     }
+
+    const sum = counts.reduce((a, b) => a + b, 0)
+
+    for (let i = 0; i < groupIdentifiers.length; i++) {
+        const label = document.getElementById(`dropdown-${groupIdentifiers[i]}-label`)
+        addPercentageDisplay(label, counts[i] / sum * 100)
+    }
+}
+
+function addPercentageDisplay(pickerLabel, percentage) {
+    const percentageDisplay = document.createElement("span")
+    percentageDisplay.innerText = ` (${percentage}% of cycles)`
+    pickerLabel.appendChild(percentageDisplay)
 }
 
 /**

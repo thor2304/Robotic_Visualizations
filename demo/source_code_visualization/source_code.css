@@ -54,6 +54,7 @@ pre {
     background-color: var(--highlight-inactive-line-color);
 }
 
+/*https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/color-mix*/
 .line.inactive.error{
     background-color: color-mix(in hsl, var(--highlight-error-line-color), var(--highlight-inactive-line-color));
 }
