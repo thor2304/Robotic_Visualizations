@@ -45,7 +45,6 @@ function addOptions(groupIdentifier, groupPicker, plotGroups) {
     }
 
     groupPicker.addEventListener("change", () => {
-        console.log("change")
         const selected = groupPicker.value
         groups.set(groupIdentifier, selected)
     })

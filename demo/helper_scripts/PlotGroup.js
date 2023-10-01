@@ -40,6 +40,12 @@ class PlotGroup {
     updateInformation= [];
 
     /**
+     *
+     * @type {Record<string, boolean>}
+     */
+    updateInformationLookup = {};
+
+    /**
      * @param plotRequests {PlotRequest[]}
      * @param variablesForMaxima {string[]}
      * @param identifier {PlotGroupIdentifier}
@@ -147,14 +153,16 @@ class PlotGroup {
 
 
     addUpdateInformation(chartId, updateInformation){
+        if (this.updateInformationLookup[chartId]){
+            return
+        }
+        this.updateInformationLookup[chartId] = true
         this.updateInformation.push([chartId, updateInformation])
     }
 
     getUpdateInformation(){
         return this.updateInformation
     }
-
-
 }
 
 
