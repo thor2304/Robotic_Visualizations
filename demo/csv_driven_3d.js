@@ -52,6 +52,7 @@ function createGroup(groupIdentifier) {
     const plotRequests = [
         new PlotRequest(`${namePrefix}3D Robot Arm`, `${idPrefix}3dAnimation`, [], plotTypes.robot),
         new PlotRequest(`${namePrefix}Line Graph`, `${idPrefix}lineGraph`, ["scriptVariables.vg_Vacuum_A.value", "scriptVariables.vg_Vacuum_B.value",], plotTypes.line),
+        new PlotRequest(`${namePrefix}Line Graph of stepS`, `${idPrefix}lineGraph-secomd`, ["scriptVariables.step_count.value"], plotTypes.line),
         new PlotRequest(`${namePrefix}3D TCP Vis`, `${idPrefix}3d_tcp_vis`, ["robot.tool.positionError"], plotTypes.direction),
         new PlotRequest(`${namePrefix}variable_table`, `${idPrefix}variable_vis`, [], plotTypes.table),
     ]
@@ -71,7 +72,10 @@ async function plot_raw_data(data) {
     await groupB.createDivsForPlots();
 
     // 2. Shared operation for both groups
-    const reduced_data = pick_every_x_from_array(data, 5);
+
+    data = filter_raw_data(data);
+    console.log(data)
+    const reduced_data = pick_every_x_from_array(data, 2);
     const rawFrames = await convert_EDDE_to_data_frames(reduced_data); // This method is the cause of all loading time
     // print_script_lines(rawFrames);
     // end of 2.

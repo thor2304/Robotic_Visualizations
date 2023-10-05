@@ -130,7 +130,7 @@ class PlotGroup {
     _plot(plotRequest) {
         switch (plotRequest.type) {
             case plotTypes.line:
-                return plot_line_graph(this.cycle.sequentialDataPoints, this.cycle.timestamps, plotRequest.chartId, this.cycle.errors, this)
+                return plotLineChart(plotRequest.plotName, plotRequest.chartId, this.cycle.sequentialDataPoints, this.cycle.timestamps, plotRequest.dataNames, this.cycle.errors, this)
             case plotTypes.robot:
                 return plot3dVis(this.cycle.sequentialDataPoints, plotRequest.chartId, this)
             case plotTypes.direction:
