@@ -45,7 +45,8 @@ async function _updateVisualizations(timestamp, plotGroup = _activePlotGroup) {
         groups.get(_activePlotGroup).groupedDataPoints[timestamp].time.highlightLine,
         0,
         true,
-        groups.get(_activePlotGroup).groupedDataPoints[timestamp].time.highlightLine + getScriptOffset() === groups.get(_activePlotGroup).groupedDataPoints[timestamp].time.lineNumber
+        groups.get(_activePlotGroup).groupedDataPoints[timestamp].time.highlightLine + getScriptOffset() === groups.get(_activePlotGroup).groupedDataPoints[timestamp].time.lineNumber,
+        _activePlotGroup
     )
 
     try{

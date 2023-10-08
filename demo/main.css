@@ -40,17 +40,17 @@
     --group-B-background-color-dark: hsl(209, 44%, 14%);
     --group-B-background-color-light: hsl(209, 44%, 90%);
 
-    --group-A-active-color-dark: hsl(208, 21%, 12%);
-    --group-A-active-color-light: hsl(208, 21%, 90%);
+    --group-A-active-color-dark: hsl(213, 50%, 23%);
+    --group-A-active-color-light: hsla(193, 46%, 78%, 70%);
 
-    --group-B-active-color-dark: hsl(209, 44%, 14%);
-    --group-B-active-color-light: hsl(209, 44%, 90%);
+    --group-B-active-color-dark: hsl(213, 49%, 31%);
+    --group-B-active-color-light: hsla(189, 72%, 73%, 0.7);
 
-    --group-A-inactive-color-dark: hsl(208, 21%, 12%);
-    --group-A-inactive-color-light: hsl(208, 21%, 90%);
+    --group-A-inactive-color-dark: hsla(262, 61%, 42%, 0.7);
+    --group-A-inactive-color-light: hsla(263, 55%, 71%, 0.7);
 
-    --group-B-inactive-color-dark: hsl(209, 44%, 14%);
-    --group-B-inactive-color-light: hsl(209, 44%, 90%);
+    --group-B-inactive-color-dark: hsla(261, 83%, 77%, 0.7);
+    --group-B-inactive-color-light: hsla(253, 54%, 90%, 0.7);
 
     /**
     Setting al of the variables to their dark values

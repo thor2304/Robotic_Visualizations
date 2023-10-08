@@ -2,7 +2,7 @@
  * Reads the color map from the css variables
  * @returns {{general: {success: string, warning: string, error: string}, group_colors: {B_inactive: string, B_background: string, A_inactive: string, A_background: string, B_active: string, A_active: string}, legend_colors: {a: string, b: string, c: string, d: string, e: string, f: string}}}
  */
-function readColorMap(){
+function _readColorMap(){
     const r = document.querySelector(':root');
     const rs = getComputedStyle(r);
 
@@ -31,4 +31,10 @@ function readColorMap(){
     };
 }
 
-console.log(readColorMap());
+/**
+ * Get the active color map. This is already taking into account dark/light mode
+ * @returns {{general: {success: string, warning: string, error: string}, group_colors: {B_inactive: string, B_background: string, A_inactive: string, A_background: string, B_active: string, A_active: string}, legend_colors: {a: string, b: string, c: string, d: string, e: string, f: string}}}
+ */
+function getColorMap(){
+    return _readColorMap();
+}
