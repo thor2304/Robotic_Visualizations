@@ -121,14 +121,15 @@ function _getColors(){
 /**
  *
  * @param title {string}
+ * @param forLinePlot {boolean} - If true, the layout will be for a line plot, otherwise it will be for other types of 2d plots
  * @returns Object
  */
-function get2dLayout(title) {
+function get2dLayout(title, forLinePlot = true) {
     const {plotColor, paperColor, gridColor} = _getColors()
 
     return {
         title: title,
-        hovermode:"x unified",
+        hovermode: forLinePlot ? "x unified" : "closest",
         autosize: true,
         margin: {
             l: 0,
@@ -140,15 +141,16 @@ function get2dLayout(title) {
         xaxis: {
             automargin: true,
             spikethickness: -2, // Enabling this removes the color surrounding the spike line
+            showspikes: forLinePlot,
             gridcolor: gridColor,
             gridwidth: 1,
-            showline: true,
+            showline: forLinePlot,
         },
         yaxis: {
             automargin: true,
             gridcolor: gridColor,
             gridwidth: 1,
-            showline: true,
+            showline: forLinePlot,
         },
         plot_bgcolor: plotColor,
         paper_bgcolor: paperColor,

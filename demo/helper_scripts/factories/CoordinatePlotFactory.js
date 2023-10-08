@@ -2,15 +2,15 @@
  * Creates a 2d plot, that shows the values of the datanames provided at the first timestamp of the cycles provided.
  * @param chartName {string} - The name of the chart displayed as the title
  * @param chartId {string} - The id of the htmlElement into which the chart will be created
- * @param dataNames {string []} - An array of strings that are passed to dataPoints[i].traversed_attribute(dataNames[j]).
+ * @param dataNames {CoordinateNames} - An array of strings that are passed to dataPoints[i].traversed_attribute(dataNames[j]).
  * These are the names of the attributes that will be plotted.
  * @param groupController {GroupController} - The plotgroups that together contain all the relevant cycles.
  * @returns {Promise<void>}
  */
 async function plotCoordinates(chartName, chartId, dataNames, groupController){
     const chart = await createDivForPlotlyChart(chartId)
-    const layout = get2dLayout(chartName)
-    layout.shapes.push(createBoundingLines())
+    const layout = get2dLayout(chartName, false)
+    // layout.shapes.push(createBoundingLines())
     layout.xaxis.showline = false
     layout.yaxis.showline = false
     layout.xaxis.range = [0, 1]
@@ -31,9 +31,6 @@ async function plotCoordinates(chartName, chartId, dataNames, groupController){
         layout: layout,
     })
 
-    console.log(plot.data)
-    console.log(plot.layout)
-
     // Below is commented until we want to have an interactive plot of the cycles.
     // for(let plotGroup of plotGroups){
     //     plotGroup.addUpdateInformation(chartId, getAnimationSettings(false))
@@ -46,19 +43,40 @@ async function plotCoordinates(chartName, chartId, dataNames, groupController){
 
 /**
  * @typedef {{x: number, y: number, error: boolean, name: string}} Coordinate
+ * @typedef {{xName: string, yName}[]} CoordinateNames
  */
 
 /**
  * @param ACycles {Cycle[]}
  * @param BCycles {Cycle[]}
- * @param dataNames {string []}
+ * @param dataNames {CoordinateNames}
  * @returns {Coordinate []}
  */
 function extractCoordinates(ACycles, BCycles, dataNames){
-    return [
-        {x: 0.1, y: 0.67, error: false, name: "A"},
-        {x: 0.3, y: 0.52, error: true, name: "B"},
-    ]
+    /**
+     * @type {Coordinate[]}
+     */
+    const ACoordinates = []
+    /**
+     * @type {Coordinate[]}
+     */
+    const BCoordinates = []
+
+    function getCoordinatesForCycleGroup(coordinates, cycles, error) {
+        for (let cycle of cycles) {
+            const dataPoint = cycle.sequentialDataPoints[1]
+            for (let i = 0; i < dataNames.length; i++) {
+                const x = dataPoint.traversed_attribute(dataNames[i].xName)
+                const y = dataPoint.traversed_attribute(dataNames[i].yName)
+                coordinates.push({x: x, y: y, error: error, name: cycle.cycleIndex.toString()})
+            }
+        }
+    }
+
+    getCoordinatesForCycleGroup(ACoordinates, ACycles, true);
+    getCoordinatesForCycleGroup(BCoordinates, BCycles, false);
+
+    return [].concat(ACoordinates, BCoordinates)
 }
 
 /**
@@ -78,7 +96,7 @@ function _generate_traces_coordinate(coordinates) {
             name: coordinates[i].name,
             marker: {
                 color: coordinates[i].error ? 'red' : 'blue',
-                symbol: coordinates[i].error ? 'circle' : 'diamond',
+                symbol: coordinates[i].error ? 'circle-open-dot' : 'diamond-open-dot',
                 size: 20
             }
         })

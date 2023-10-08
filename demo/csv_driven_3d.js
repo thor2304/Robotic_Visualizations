@@ -126,7 +126,12 @@ async function plot_raw_data(data) {
     plotPromises.push(...groupB.getPlotPromises());
     await Promise.all(plotPromises);
 
-    await plotCoordinates("Test ", "test", [""], groups)
+    await plotCoordinates(
+        "received_x, received_y - All cycles",
+        "test",
+        [{xName: "scriptVariables.received_x.value", yName: "scriptVariables.received_y.value"}],
+        groups
+    )
 
     // 5. shared operations for both groups
     finalizePlotting(firstStep);
