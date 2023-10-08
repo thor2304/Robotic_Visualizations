@@ -15,8 +15,8 @@ function get3dLayout(title, range) {
         yaxis: {
             automargin: true,
         },
-        paper_bgcolor: '#303f4b00',
-        plot_bgcolor: '#b7b7b700',
+        paper_bgcolor: getColorMap().plot_colors.paperColor,
+        plot_bgcolor: getColorMap().plot_colors.plotColor,
         scene: {
             aspectmode: "manual",
             aspectratio: {
@@ -58,8 +58,8 @@ function createErrorBar(startX, endX){
         x1: endX,
         y1: 1,
 
-        fillcolor: "#e71818",
-        opacity: 0.2,
+        fillcolor: getColorMap().general.error,
+        opacity: 0.3,
         line: {
             width: 0
         }
@@ -79,42 +79,12 @@ function createBoundingLines(){
         x1: 1,
         y1: 1,
 
-        fillcolor: "rgba(255,255,255)",
+        fillcolor: getColorMap().plot_colors.gridColor,
         opacity: 1,
         line: {
             width: 1,
-            color: _getColors().gridColor
+            color: getColorMap().plot_colors.gridColor
         }
-    }
-}
-
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-    const newColorScheme = event.matches ? "dark" : "light";
-    alert(`To change to ${newColorScheme} mode, you should reload the page while it is the chosen mode`)
-});
-
-/**
- *
- * @returns {{paperColor: string, gridColor: string, plotColor: string}}
- * @private
- */
-function _getColors(){
-    let plotColor = 'rgba(145,0,0,0)'
-    // let paperColor = 'hsl(208, 21%, 12%)'
-    let paperColor = 'hsla(208,21%,12%,0)'
-    let gridColor = "rgba(100,100,100,0.6)"
-
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-        // light mode
-        plotColor = 'rgba(145,0,0,0)'
-        paperColor = 'hsl(210, 29%, 97%)'
-        gridColor = "rgba(96,96,96,0.6)"
-    }
-
-    return {
-        plotColor: plotColor,
-        paperColor: paperColor,
-        gridColor: gridColor
     }
 }
 
@@ -125,7 +95,7 @@ function _getColors(){
  * @returns Object
  */
 function get2dLayout(title, forLinePlot = true) {
-    const {plotColor, paperColor, gridColor} = _getColors()
+    const {plotColor, paperColor, gridColor} = getColorMap().plot_colors
 
     return {
         title: title,

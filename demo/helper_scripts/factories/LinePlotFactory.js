@@ -69,6 +69,11 @@ function generate_traces(dataNames, dataArrays, time) {
     const localMinimums = []
 
     const localMaximums = []
+
+    if (dataNames.length === 0 || dataNames.length > 6) {
+        throw new Error("Invalid number of data names. It must be between 1 and 6. Both inclusive")
+    }
+
     for (let i = 0; i < dataNames.length; i++) {
         localMinimums.push(Math.min(...dataArrays[dataNames[i]]))
         localMaximums.push(Math.max(...dataArrays[dataNames[i]]))
@@ -83,7 +88,7 @@ function generate_traces(dataNames, dataArrays, time) {
         type: 'linesgl',
         name: 'timestamp',
         line: {
-            color: 'rgb(84,130,140)',
+            color: getColorMap().legend_colors.connecting_line,
             width: 2,
         },
         marker: {
@@ -98,8 +103,11 @@ function generate_traces(dataNames, dataArrays, time) {
         traces.push({
             x: time,
             y: dataArrays[dataNames[i]],
-            type: 'scattergl+linesgl',
-            name: dataNames[i]
+            type: 'scattergl',
+            name: dataNames[i],
+            line: {
+                color: getColorMap().legend_colors_array[i]
+            },
         })
     }
 

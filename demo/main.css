@@ -5,8 +5,9 @@
     The color map for js is defined below
      */
     --ungrouped-color: hsl(182, 95%, 8%);
+    --connecting-line-color: rgb(82, 146, 222);
 
-    --error-color-dark: hsla(0, 76%, 47%, 0.7);
+    --error-color-dark: hsl(0, 81%, 50%);
     --error-color-light: hsla(0, 92%, 67%, 0.7);
 
     --warning-color-dark: hsl(45, 100%, 63%);

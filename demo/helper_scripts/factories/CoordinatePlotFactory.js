@@ -87,6 +87,8 @@ function extractCoordinates(ACycles, BCycles, dataNames){
 function _generate_traces_coordinate(coordinates) {
     const traces = []
 
+    const colorMap = getColorMap()
+
     // Generate the traces for the data lines
     for (let i = 0; i < coordinates.length; i++) {
         traces.push({
@@ -95,7 +97,7 @@ function _generate_traces_coordinate(coordinates) {
             type: 'scatter',
             name: coordinates[i].name,
             marker: {
-                color: coordinates[i].error ? 'red' : 'blue',
+                color: coordinates[i].error ? colorMap.general.error : colorMap.general.success,
                 symbol: coordinates[i].error ? 'circle-open-dot' : 'diamond-open-dot',
                 size: 20
             }

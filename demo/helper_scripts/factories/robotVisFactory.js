@@ -25,7 +25,7 @@ async function plot3dVis(dataframes, chartId, plotGroup) {
         mode: 'lines',
         type: 'scatter3d',
         line: {
-            color: 'rgb(82, 146, 222)',
+            color: getColorMap().legend_colors.connecting_line,
             width: 6
         },
         hoverinfo: "skip",
@@ -33,12 +33,7 @@ async function plot3dVis(dataframes, chartId, plotGroup) {
     })
 
     for (let i = 0; i < joints.length; i++) {
-        let joint = datum.robot.joints[joints[i]];
-
-        const greyscale_color = (255 / joints.length) * i
-        const r_color = (124 / joints.length) * i + 100
-        const g_color = 255 - (124 / joints.length) * i
-        const b_color = 200
+        const joint = datum.robot.joints[joints[i]];
 
         traces.push({
             name: joints[i],
@@ -50,10 +45,10 @@ async function plot3dVis(dataframes, chartId, plotGroup) {
             marker: {
                 size: 6,
                 line: {
-                    color: 'rgba(217, 217, 217, 0.14)',
-                    width: 3
+                    color: getColorMap().legend_colors.a,
+                    width: 0.5
                 },
-                color: `rgb(${r_color}, ${g_color}, ${b_color})`,
+                color: getColorMap().legend_colors_array[i],
                 opacity: 0.8
             },
             mode: 'markers',
@@ -115,65 +110,29 @@ async function plot3dVis(dataframes, chartId, plotGroup) {
 
     const box_size = 1
 
-    let layout = {
-        autosize: true,
-        margin: {
-            l: 0,
-            r: 0,
-            b: 0,
-            t: 5,
-            pad: 4
+    const layout = get3dLayout(chartId, box_size)
+    layout.hovermode = 'closest';
+    // Finally, add the slider and use `pad` to position it
+    // nicely next to the buttons.
+    layout.sliders = [{
+        pad: {
+            l: 20,
+            t: overlap_with_slider ? -90 : -35,
+            b: 15,
         },
-        xaxis: {
-            automargin: true,
-        },
-        yaxis: {
-            automargin: true,
-        },
-        paper_bgcolor: '#303f4b00',
-        plot_bgcolor: '#b7b7b700',
-        scene: {
-            aspectmode: "manual",
-            aspectratio: {
-                x: 1, y: 1, z: 1,
-            },
-            xaxis: {
-                title: 'x',
-                range: [-box_size, box_size],
-                color: "red"
-            },
-            yaxis: {
-                title: 'y',
-                range: [-box_size, box_size],
-                color: "green"
-            },
-            zaxis: {
-                title: 'z',
-                range: [-box_size, box_size],
-                color: "blue"
+        currentvalue: {
+            visible: true,
+            prefix: 'stepcount: ',
+            xanchor: 'right',
+            font: {
+                size: 20,
+                // color: '#666'
             }
         },
-        hovermode: 'closest',
-        // Finally, add the slider and use `pad` to position it
-        // nicely next to the buttons.
-        sliders: [{
-            pad: {
-                l: 20,
-                t: overlap_with_slider ? -90 : -35,
-                b: 15,
-            },
-            currentvalue: {
-                visible: true,
-                prefix: 'stepcount: ',
-                xanchor: 'right',
-                font: {
-                    size: 20,
-                    // color: '#666'
-                }
-            },
-            steps: sliderSteps
-        }]
-    }
+        steps: sliderSteps
+    }]
+
+
 
     // Create the plot:
     await Plotly.newPlot(chartId, {

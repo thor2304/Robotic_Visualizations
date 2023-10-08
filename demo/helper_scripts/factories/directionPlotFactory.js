@@ -49,8 +49,8 @@ async function plotDirection(chartName, chartId, dataPoints, timestamps, dataNam
     })
 }
 
-const arrow_tip_ratio = 1.5;
-const arrow_starting_ratio = 0.95;
+const arrow_tip_ratio = 1;
+const arrow_starting_ratio = 0.98;
 
 function createFrameData(dataPoints, i, dataName) {
     const line_data = {
@@ -76,21 +76,21 @@ function createFrameData(dataPoints, i, dataName) {
 function createArrowTraces(datapoints, dataName) {
     const [line, ArrowHead] = createFrameData(datapoints, 0, dataName)
 
+    const colorMap = getColorMap()
+
     line.name = dataName
     line.text = dataName
     line.mode = 'lines'
     line.type = 'scatter3d'
-    line.colorscale = 'Viridis'
     line.line = {
-        // color: 'rgb(82, 146, 222)',
+        color: getColorMap().legend_colors.connecting_line,
         width: 14
     }
 
     ArrowHead.name = ""
     ArrowHead.text = ""
     ArrowHead.type = "cone"
-    // ArrowHead.colorscale = 'Viridis'
-    ArrowHead.color = 'rgb(82, 146, 222)'
+    ArrowHead.colorscale = [[0, getColorMap().legend_colors.connecting_line], [1, getColorMap().legend_colors.connecting_line]]
     ArrowHead.showLegend = false
     ArrowHead.showscale = false
     ArrowHead.sizemode = "absolute"
@@ -106,7 +106,7 @@ function createArrowTraces(datapoints, dataName) {
         mode: 'markers',
         type: 'scatter3d',
         marker: {
-            color: 'rgb(82, 146, 222)',
+            color: getColorMap().legend_colors.connecting_line,
         },
         showLegend: false,
     }
