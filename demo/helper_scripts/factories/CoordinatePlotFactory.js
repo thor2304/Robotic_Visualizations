@@ -10,6 +10,14 @@
 async function plotCoordinates(chartName, chartId, dataNames, groupController){
     const chart = await createDivForPlotlyChart(chartId)
     const layout = get2dLayout(chartName)
+    layout.shapes.push(createBoundingLines())
+    layout.xaxis.showline = false
+    layout.yaxis.showline = false
+    layout.xaxis.range = [0, 1]
+    layout.yaxis.range = [0, 1]
+    layout.xaxis.scaleanchor = "y"
+    layout.xaxis.scaleratio = 1
+    layout.xaxis.constrain = "domain"
 
     const ACycles = groupController.getOptions("A").map((plotgroup) => plotgroup.getCycle())
     const BCycles = groupController.getOptions("B").map((plotgroup) => plotgroup.getCycle())
@@ -18,10 +26,13 @@ async function plotCoordinates(chartName, chartId, dataNames, groupController){
     const traces = _generate_traces_coordinate(coordinates)
 
     // We have no frames here until we want to start animating the 2d plot.
-    await Plotly.newPlot(chart, {
+    const plot = await Plotly.newPlot(chart, {
         data: traces,
         layout: layout,
     })
+
+    console.log(plot.data)
+    console.log(plot.layout)
 
     // Below is commented until we want to have an interactive plot of the cycles.
     // for(let plotGroup of plotGroups){
@@ -34,7 +45,7 @@ async function plotCoordinates(chartName, chartId, dataNames, groupController){
 }
 
 /**
- * @typedef {{x: number, y: number, error: boolean}} Coordinate
+ * @typedef {{x: number, y: number, error: boolean, name: string}} Coordinate
  */
 
 /**
@@ -45,8 +56,8 @@ async function plotCoordinates(chartName, chartId, dataNames, groupController){
  */
 function extractCoordinates(ACycles, BCycles, dataNames){
     return [
-        {x: 0, y: 1, error: false},
-        {x: 1, y: 0.5, error: true},
+        {x: 0.1, y: 0.67, error: false, name: "A"},
+        {x: 0.3, y: 0.52, error: true, name: "B"},
     ]
 }
 
@@ -61,16 +72,18 @@ function _generate_traces_coordinate(coordinates) {
     // Generate the traces for the data lines
     for (let i = 0; i < coordinates.length; i++) {
         traces.push({
-            x: coordinates[i].x,
-            y: coordinates[i].y,
-            type: 'scattergl',
-            name: coordinates[i],
+            x: [coordinates[i].x],
+            y: [coordinates[i].y],
+            type: 'scatter',
+            name: coordinates[i].name,
             marker: {
                 color: coordinates[i].error ? 'red' : 'blue',
                 symbol: coordinates[i].error ? 'circle' : 'diamond',
+                size: 20
             }
         })
     }
+
 
     return traces
 }

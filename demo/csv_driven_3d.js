@@ -126,8 +126,11 @@ async function plot_raw_data(data) {
     plotPromises.push(...groupB.getPlotPromises());
     await Promise.all(plotPromises);
 
+    await plotCoordinates("Test ", "test", [""], groups)
+
     // 5. shared operations for both groups
     finalizePlotting(firstStep);
+
     // end of 5.
 }
 

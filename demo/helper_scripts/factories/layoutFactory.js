@@ -66,6 +66,28 @@ function createErrorBar(startX, endX){
     }
 }
 
+/**
+ * @returns {{yref: string, xref: string, fillcolor: string, line: {color, width: number}, y0: number, x0: number, y1: number, x1: number, type: string, opacity: number}}
+ */
+function createBoundingLines(){
+    return {
+        type: "rect",
+        xref: "paper",
+        yref: "paper",
+        x0: 0,
+        y0: 0,
+        x1: 1,
+        y1: 1,
+
+        fillcolor: "rgba(255,255,255)",
+        opacity: 1,
+        line: {
+            width: 1,
+            color: _getColors().gridColor
+        }
+    }
+}
+
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
     const newColorScheme = event.matches ? "dark" : "light";
     alert(`To change to ${newColorScheme} mode, you should reload the page while it is the chosen mode`)
@@ -73,10 +95,10 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', eve
 
 /**
  *
- * @param title {string}
- * @returns Object
+ * @returns {{paperColor: string, gridColor: string, plotColor: string}}
+ * @private
  */
-function get2dLayout(title) {
+function _getColors(){
     let plotColor = 'rgba(145,0,0,0)'
     // let paperColor = 'hsl(208, 21%, 12%)'
     let paperColor = 'hsla(208,21%,12%,0)'
@@ -88,6 +110,21 @@ function get2dLayout(title) {
         paperColor = 'hsl(210, 29%, 97%)'
         gridColor = "rgba(96,96,96,0.6)"
     }
+
+    return {
+        plotColor: plotColor,
+        paperColor: paperColor,
+        gridColor: gridColor
+    }
+}
+
+/**
+ *
+ * @param title {string}
+ * @returns Object
+ */
+function get2dLayout(title) {
+    const {plotColor, paperColor, gridColor} = _getColors()
 
     return {
         title: title,
@@ -105,11 +142,13 @@ function get2dLayout(title) {
             spikethickness: -2, // Enabling this removes the color surrounding the spike line
             gridcolor: gridColor,
             gridwidth: 1,
+            showline: true,
         },
         yaxis: {
             automargin: true,
             gridcolor: gridColor,
             gridwidth: 1,
+            showline: true,
         },
         plot_bgcolor: plotColor,
         paper_bgcolor: paperColor,

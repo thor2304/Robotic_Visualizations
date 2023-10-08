@@ -1,7 +1,7 @@
 :root {
     --group-a-color: hsl(208, 21%, 12%);
     --group-b-color: hsl(209, 44%, 14%);
-    --ungrouped-color: hsl(272, 55%, 49%);
+    --ungrouped-color: hsl(182, 95%, 8%);
 }
 
 .vis-placeholder h1{
