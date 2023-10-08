@@ -1,9 +1,3 @@
-:root {
-    --group-a-color: hsl(208, 21%, 12%);
-    --group-b-color: hsl(209, 44%, 14%);
-    --ungrouped-color: hsl(182, 95%, 8%);
-}
-
 .vis-placeholder h1{
     text-align: center;
 }
@@ -33,11 +27,11 @@
 }
 
 .group-A {
-    background-color: var(--group-a-color);
+    background-color: var(--group-A-background-color);
 }
 
 .group-B {
-    background-color: var(--group-b-color);
+    background-color: var(--group-B-background-color);
 }
 
 .vis-placeholder h1:only-child::after, .code-placeholder h1:only-child::after{

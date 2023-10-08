@@ -1,6 +1,6 @@
 :root{
-    --highlight-error-line-color: hsla(0, 92%, 67%, 0.7);
-    --burron-text-color: hsl(0, 0%, 0%);
+    --highlight-error-line-color: var(--error-color);
+    --button-text-color: hsl(0, 0%, 0%);
 }
 
 .line.error{
@@ -12,7 +12,7 @@
     background-color: var(--highlight-background-color);
     border: 0.2em solid var(--highlight-border-color);
     border-radius: var(--highlight-border-radius);
-    color: var(--burron-text-color);
+    color: var(--button-text-color);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -20,7 +20,6 @@
         color-scheme: dark;
 
         /*This allows us to change the color, to something that pops a bit more if we wish to*/
-        --highlight-error-line-color: hsla(0, 76%, 47%, 0.7);
-        --burron-text-color: hsl(206, 27%, 54%);
+        --button-text-color: hsl(206, 27%, 54%);
     }
 }

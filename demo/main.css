@@ -1,6 +1,98 @@
 :root{
     --unlocked-color: rgba(231, 231, 231, 0.6);
+
+    /**
+    The color map for js is defined below
+     */
+    --ungrouped-color: hsl(182, 95%, 8%);
+
+    --error-color-dark: hsla(0, 76%, 47%, 0.7);
+    --error-color-light: hsla(0, 92%, 67%, 0.7);
+
+    --warning-color-dark: hsl(45, 100%, 63%);
+    --warning-color-light: hsl(45, 100%, 90%);
+
+    --success-color-dark: hsl(120, 100%, 63%);
+    --success-color-light: hsl(120, 100%, 90%);
+
+
+    --legend-a-color-dark: hsl(207, 75%, 30%);
+    --legend-a-color-light: hsl(207, 75%, 40%);
+
+    --legend-b-color-dark: hsl(254, 33%, 58%);
+    --legend-b-color-light: hsl(254, 33%, 68%);
+
+    --legend-c-color-dark: hsl(188, 70%, 45%);
+    --legend-c-color-light: hsl(188, 70%, 85%);
+
+    --legend-d-color-dark: hsl(27, 71%, 53%);
+    --legend-d-color-light: hsl(0, 100%, 90%);
+
+    --legend-e-color-dark: hsl(173, 93%, 30%);
+    --legend-e-color-light: hsl(155, 94%, 30%);
+
+    --legend-f-color-dark: hsl(309, 64%, 35%);
+    --legend-f-color-light: hsl(309, 64%, 80%);
+
+    --group-A-background-color-dark: hsl(208, 21%, 12%);
+    --group-A-background-color-light: hsl(208, 21%, 90%);
+
+    --group-B-background-color-dark: hsl(209, 44%, 14%);
+    --group-B-background-color-light: hsl(209, 44%, 90%);
+
+    --group-A-active-color-dark: hsl(208, 21%, 12%);
+    --group-A-active-color-light: hsl(208, 21%, 90%);
+
+    --group-B-active-color-dark: hsl(209, 44%, 14%);
+    --group-B-active-color-light: hsl(209, 44%, 90%);
+
+    --group-A-inactive-color-dark: hsl(208, 21%, 12%);
+    --group-A-inactive-color-light: hsl(208, 21%, 90%);
+
+    --group-B-inactive-color-dark: hsl(209, 44%, 14%);
+    --group-B-inactive-color-light: hsl(209, 44%, 90%);
+
+    /**
+    Setting al of the variables to their dark values
+     */
+
+    --error-color: var(--error-color-dark);
+    --warning-color: var(--warning-color-dark);
+    --success-color: var(--success-color-dark);
+    --legend-a-color: var(--legend-a-color-dark);
+    --legend-b-color: var(--legend-b-color-dark);
+    --legend-c-color: var(--legend-c-color-dark);
+    --legend-d-color: var(--legend-d-color-dark);
+    --legend-e-color: var(--legend-e-color-dark);
+    --legend-f-color: var(--legend-f-color-dark);
+    --group-A-background-color: var(--group-A-background-color-dark);
+    --group-A-active-color: var(--group-A-active-color-dark);
+    --group-A-inactive-color: var(--group-A-inactive-color-dark);
+    --group-B-background-color: var(--group-B-background-color-dark);
+    --group-B-active-color: var(--group-B-active-color-dark);
+    --group-B-inactive-color: var(--group-B-inactive-color-dark);
 }
+
+@media(prefers-color-scheme: light){
+    :root{
+        --error-color: var(--error-color-light);
+        --warning-color: var(--warning-color-light);
+        --success-color: var(--success-color-light);
+        --legend-a-color: var(--legend-a-color-light);
+        --legend-b-color: var(--legend-b-color-light);
+        --legend-c-color: var(--legend-c-color-light);
+        --legend-d-color: var(--legend-d-color-light);
+        --legend-e-color: var(--legend-e-color-light);
+        --legend-f-color: var(--legend-f-color-light);
+        --group-A-background-color: var(--group-A-background-color-light);
+        --group-A-active-color: var(--group-A-active-color-light);
+        --group-A-inactive-color: var(--group-A-inactive-color-light);
+        --group-B-background-color: var(--group-B-background-color-light);
+        --group-B-active-color: var(--group-B-active-color-light);
+        --group-B-inactive-color: var(--group-B-inactive-color-light);
+    }
+}
+
 
 h1 {
     font-weight: bolder;
