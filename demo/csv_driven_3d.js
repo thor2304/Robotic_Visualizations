@@ -52,7 +52,7 @@ function createGroup(groupIdentifier) {
     const plotRequests = [
         new PlotRequest(`${namePrefix}3D Robot Arm`, `${idPrefix}3dAnimation`, [], plotTypes.robot),
         new PlotRequest(`${namePrefix}Line Graph`, `${idPrefix}lineGraph`, ["scriptVariables.vg_Vacuum_A.value", "scriptVariables.vg_Vacuum_B.value",], plotTypes.line),
-        new PlotRequest(`${namePrefix}Line Graph of stepS`, `${idPrefix}lineGraph-secomd`, ["scriptVariables.step_count.value"], plotTypes.line),
+        // new PlotRequest(`${namePrefix}Line Graph of stepS`, `${idPrefix}lineGraph-secomd`, ["scriptVariables.step_count.value"], plotTypes.line),
         new PlotRequest(`${namePrefix}3D TCP Vis`, `${idPrefix}3d_tcp_vis`, ["robot.tool.positionError"], plotTypes.direction),
         new PlotRequest(`${namePrefix}variable_table`, `${idPrefix}variable_vis`, [], plotTypes.table),
     ]
@@ -158,32 +158,6 @@ function findMaxOfVariables(dataPoints, variablePathArray) {
     }
 
     return currentMax
-}
-
-/**
- * @param dataframes {DataPoint[]}
- * @param timestamps {Timestamp[]}
- * @param chartId {string}
- * @param errors {TimespanError[]}
- * @param plotGroupIdentifier {PlotGroup}
- * @returns {Promise<void>}
- */
-async function plot_line_graph(dataframes, timestamps, chartId, errors, plotGroupIdentifier) {
-    // const chartName = 'TCP Error'
-    // const dataNames = [
-    //     "robot.tool.positionError.x",
-    //     "robot.tool.positionError.y",
-    //     "robot.tool.positionError.z",
-    //     "robot.tool.positionError.magnitude",
-    // ]
-
-    const chartName = "Vacuum level"
-    const dataNames = [
-        "scriptVariables.vg_Vacuum_A.value",
-        "scriptVariables.vg_Vacuum_B.value",
-    ]
-
-    await plotLineChart(chartName, chartId, dataframes, timestamps, dataNames, errors, plotGroupIdentifier)
 }
 
 load_data_then_call(plot_raw_data).then(r => ("loaded"))

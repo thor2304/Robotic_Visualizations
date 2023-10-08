@@ -77,21 +77,22 @@ function generate_traces(dataNames, dataArrays, time) {
     const minY = Math.min(...localMinimums)
     const maxY = Math.max(...localMaximums)
 
-    traces.push({
-            x: [time[0], time[0]],
-            y: [minY, maxY],
-            type: 'linesgl',
-            name: 'timestamp',
-            line: {
-                color: 'rgb(84,130,140)',
-                width: 2,
-            },
-            marker: {
-                size: 2,
-                visible: false,
-            }
+    const verticalLine = {
+        x: [time[0], time[0]],
+        y: [minY, maxY],
+        type: 'linesgl',
+        name: 'timestamp',
+        line: {
+            color: 'rgb(84,130,140)',
+            width: 2,
+        },
+        marker: {
+            size: 2,
+            visible: false,
         }
-    )
+    }
+    traces.push(verticalLine)
+
     // Generate the traces for the data lines
     for (let i = 0; i < dataNames.length; i++) {
         traces.push({

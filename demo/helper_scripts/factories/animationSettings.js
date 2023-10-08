@@ -1,3 +1,8 @@
+/**
+ *
+ * @param redraw {boolean}
+ * @returns {{mode: string, transition: {duration: number, easing: string}, frame: {duration: number, redraw: boolean}}}
+ */
 function getAnimationSettings(redraw = true) {
     return {
         mode: 'immediate',

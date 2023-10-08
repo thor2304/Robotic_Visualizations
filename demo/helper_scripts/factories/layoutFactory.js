@@ -48,6 +48,7 @@ function get3dLayout(title, range) {
  * @returns {{yref: string, xref: string, fillcolor: string, line: {width: number}, y0: number, x0: number, y1: number, x1: number, type: string, opacity: number}}
  */
 function createErrorBar(startX, endX){
+    //https://plotly.com/javascript/shapes/
     return {
         type: "rect",
         xref: "x",

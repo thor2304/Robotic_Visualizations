@@ -151,7 +151,11 @@ class PlotGroup {
         return plotPromises
     }
 
-
+    /**
+     * Adds a chart to the list of charts that are updating in this plot group.
+     * @param chartId {string}
+     * @param updateInformation {{mode: string, transition: {duration: number, easing: string}, frame: {duration: number, redraw: boolean}}}
+     */
     addUpdateInformation(chartId, updateInformation){
         if (this.updateInformationLookup[chartId]){
             return
