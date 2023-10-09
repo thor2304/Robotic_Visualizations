@@ -110,7 +110,8 @@ async function plot3dVis(dataframes, chartId, plotGroup) {
 
     const box_size = 1
 
-    const layout = get3dLayout(chartId, box_size)
+    const layout = get3dLayout(chartId, box_size, 1.5)
+
     layout.hovermode = 'closest';
     // Finally, add the slider and use `pad` to position it
     // nicely next to the buttons.
@@ -131,8 +132,6 @@ async function plot3dVis(dataframes, chartId, plotGroup) {
         },
         steps: sliderSteps
     }]
-
-
 
     // Create the plot:
     await Plotly.newPlot(chartId, {

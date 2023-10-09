@@ -1,4 +1,11 @@
-function get3dLayout(title, range) {
+/**
+ *
+ * @param title {string}
+ * @param range {number}
+ * @param zoom {number}
+ * @return {{xaxis: {automargin: boolean}, margin: {r: number, b: number, pad: number, t: number, l: number}, plot_bgcolor: string, paper_bgcolor: string, title, yaxis: {automargin: boolean}, autosize: boolean, scene: {xaxis: {color: string, range: (number|*)[], title: string}, aspectmode: string, yaxis: {color: string, range: (number|*)[], title: string}, zaxis: {color: string, range: (number|*)[], title: string}, aspectratio: {x: number, y: number, z: number}}}}
+ */
+function get3dLayout(title, range, zoom=1) {
     return {
         title: title,
         autosize: true,
@@ -20,7 +27,7 @@ function get3dLayout(title, range) {
         scene: {
             aspectmode: "manual",
             aspectratio: {
-                x: 1, y: 1, z: 1,
+                x: zoom, y: zoom, z: zoom,
             },
             xaxis: {
                 title: 'x',
@@ -36,6 +43,11 @@ function get3dLayout(title, range) {
                 title: 'z',
                 range: [-range, range],
                 color: "blue"
+            },
+            camera: {
+                projection: {
+                    type: 'perspective'
+                }
             }
         }
     }
