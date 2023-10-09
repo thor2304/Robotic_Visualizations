@@ -1,3 +1,5 @@
+import {Cycle} from "../datastructures/PlotGroup.js";
+
 /**
  * @type {Array<Array<DataPoint>>}
  */
@@ -14,44 +16,27 @@ const cycles = []
  * @param cycle_index {number} 0-based index of the cycle to get
  * @returns {Cycle}
  */
-function get_cycle(frames, cycle_index=0){
-    if(cycles.length === 0){
-        return reduce_to_cycle(frames, cycle_index)
-    }
-    return cycles[cycle_index]
+export function get_cycle(frames, cycle_index=0){
+    return get_cycles(frames)[cycle_index]
 }
 
 /**
  * @param frames {DataPoint[]}
  * @return {Cycle[]}
  */
-function get_cycles(frames){
+export function get_cycles(frames){
     if(cycles.length === 0){
-        reduce_to_cycle(frames, cycle_index)
+        extract_cycles(frames)
     }
     return cycles
-}
-
-/**
- * This method is safe to call multiple times, since it will only calculate the cycles once
- * @param frames {DataPoint[]} The frames from which cycles are calculated
- * @return {number}
- */
-function get_cycle_count(frames){
-    if(cycles.length === 0){
-        get_cycle(frames, 0)
-    }
-
-    return cycles.length
 }
 
 
 /**
  * @param frames {DataPoint[]}
- * @param cycle_index {number}
- * @returns {Cycle}
+ * @returns {void}
  */
-function reduce_to_cycle(frames, cycle_index = 0) {
+function extract_cycles(frames) {
     const cycle_end = {
         first: 1467 + 80,
         last: 1467 + 88
@@ -95,9 +80,6 @@ function reduce_to_cycle(frames, cycle_index = 0) {
     for (let i = 0; i < rawCycles.length; i++) {
         cycles[i] = new Cycle(rawCycles[i], i)
     }
-
-    return cycles[cycle_index]
-    // return frames
 }
 
 /**
@@ -106,7 +88,7 @@ function reduce_to_cycle(frames, cycle_index = 0) {
  * @param pick_every {number}
  * @returns {Array<K>}
  */
-function pick_every_x_from_array(arr, pick_every = 10) {
+export function pick_every_x_from_array(arr, pick_every = 10) {
     const out = []
 
     for (let i = 0; i < arr.length; i++) {
@@ -123,7 +105,7 @@ function pick_every_x_from_array(arr, pick_every = 10) {
  *  since it is more of a debug option to see what lines are hit during the execution
  * @param rawFrames {DataPoint[]}
  */
-function print_script_lines(rawFrames) {
+export function print_script_lines(rawFrames) {
     const disabled = true
     if(disabled){
         return

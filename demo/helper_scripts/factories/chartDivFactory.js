@@ -3,7 +3,7 @@
  * @param chartId {string}
  * @returns {Promise<HTMLDivElement>}
  */
-async function createDivForPlotlyChart(chartId) {
+export async function createDivForPlotlyChart(chartId) {
     // check whether the div already exists
     if (document.getElementById(chartId) !== null) {
         // Check if it has the correct shape?
@@ -46,7 +46,7 @@ function _createDiv(id) {
  * @param chartIds {Array<String>}
  * @returns {Promise<Record<string, HTMLDivElement>>}
  */
-async function createDivsForPlotlyCharts(chartIds) {
+export async function createDivsForPlotlyCharts(chartIds) {
     /**
      * @type {Record<string, HTMLDivElement>}
      */
@@ -65,7 +65,7 @@ async function createDivsForPlotlyCharts(chartIds) {
  * @param tableHeaders {Array<string>} each entry to this array will be used as the header for a column
  * @returns {Promise<HTMLDivElement>}
  */
-async function createDivForTable(chartId, tableId, tableHeaders) {
+export async function createDivForTable(chartId, tableId, tableHeaders) {
     // check whether the div already exists
     if (document.getElementById(chartId) !== null) {
         // Check if it has the correct shape?

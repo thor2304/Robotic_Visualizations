@@ -1,3 +1,8 @@
+import {getAnimationSettings} from "./animationSettings.js";
+import {getColorMap} from "../ColorMap.js";
+import {get3dLayout} from "./layoutFactory.js";
+import {createDivForPlotlyChart} from "./chartDivFactory.js";
+
 /**
  * Creates a plotly plot with the given data displayed in the form of an arrow for each DataName
  * @param chartName {string} - Name of the chart
@@ -8,7 +13,7 @@
  * @param plotGroup {PlotGroup}
  * @returns {Promise<PlotlyHTMLElement>}
  */
-async function plotDirection(chartName, chartId, dataPoints, timestamps, dataNames, plotGroup) {
+export async function plotDirection(chartName, chartId, dataPoints, timestamps, dataNames, plotGroup) {
     const traces = []
 
     await createDivForPlotlyChart(chartId)

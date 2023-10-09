@@ -1,10 +1,16 @@
+import {getAnimationSettings} from "./animationSettings.js";
+import {getColorMap} from "../ColorMap.js";
+import {updateVisualizations} from "../updateVisualizations.js";
+import {get3dLayout} from "./layoutFactory.js";
+import {createDivForPlotlyChart} from "./chartDivFactory.js";
+
 /**
  * @param dataframes {Array<DataPoint>}
  * @param chartId {String}
  * @param plotGroup {PlotGroup}
  * @returns {Promise<void>}
  */
-async function plot3dVis(dataframes, chartId, plotGroup) {
+export async function plot3dVis(dataframes, chartId, plotGroup) {
     await createDivForPlotlyChart(chartId)
 
     const overlap_with_slider = true;

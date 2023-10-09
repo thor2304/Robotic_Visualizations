@@ -1,17 +1,21 @@
 /**
  * @typedef {number | `${number}`} Timestamp
  */
+import {PlotGroup, PlotRequest, plotTypes} from "./datastructures/PlotGroup.js";
+import {get_cycles, pick_every_x_from_array} from "./helper_scripts/cycle_filtering.js";
+import {getActivePlotGroup, updateVisualizations} from "./helper_scripts/updateVisualizations.js";
+import {populatePickers} from "./helper_scripts/cycle-picker.js";
+import {plotCoordinates} from "./helper_scripts/factories/CoordinatePlotFactory.js";
+import {createButtonAndWarningLine} from "./source_code_visualization/ErrorHighlightingLine.js";
 
-const groups = new GroupController();
+export const groups = new GroupController();
 
 
 const scriptOffset = 1468;
 
-function getScriptOffset() {
+export function getScriptOffset() {
     return scriptOffset
 }
-
-const cycle_index = 1
 
 /**
  * @param firstSepCount {number}
@@ -139,33 +143,6 @@ async function plot_raw_data(data) {
     // end of 5.
 }
 
-/**
- * { [x: string]: {stepcount:string, value: number} }
- * @param dataPoints {Array<DataPoint>}
- * @param variablePathArray {Array<String>} An array of paths that will be passed to DataPoint.traversed_attribute()
- * @returns {Promise<{ [x: string]: {stepcount:number, value: number} }>}  Of the form {variablePath: {stepcount: number, value: number}}
- */
-function findMaxOfVariables(dataPoints, variablePathArray) {
-    const currentMax = {}
-    for (let variablePath of variablePathArray) {
-        currentMax[variablePath] = {
-            stepcount: undefined,
-            value: 0
-        }
-    }
 
-    for (let i = 0; i < dataPoints.length; i++) {
-        const dataPoint = dataPoints[i];
-        for (let variablePath of variablePathArray) {
-            const value = dataPoint.traversed_attribute(variablePath)
-            if (value > currentMax[variablePath].value) {
-                currentMax[variablePath].value = value
-                currentMax[variablePath].stepcount = dataPoint.time.stepCount
-            }
-        }
-    }
-
-    return currentMax
-}
-
+// The .then at the end is used to await the promise
 load_data_then_call(plot_raw_data).then(r => ("loaded"))

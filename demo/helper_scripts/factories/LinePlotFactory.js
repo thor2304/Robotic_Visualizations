@@ -1,3 +1,9 @@
+import {getAnimationSettings} from "./animationSettings.js";
+import {getColorMap} from "../ColorMap.js";
+import {updateVisualizations} from "../updateVisualizations.js";
+import {createErrorBar, get2dLayout} from "./layoutFactory.js";
+import {createDivForPlotlyChart} from "./chartDivFactory.js";
+
 /**
  * Creates a line plot with the given dataPoints and data names
  * @param chartName {string} - The name of the chart displayed as the title
@@ -10,7 +16,7 @@
  * @param plotGroup {PlotGroup}
  * @returns {Promise<void>}
  */
-async function plotLineChart(chartName, chartId, dataPoints, timestamps, dataNames, errors, plotGroup) {
+export async function plotLineChart(chartName, chartId, dataPoints, timestamps, dataNames, errors, plotGroup) {
     const dataArrays = {}
 
     await createDivForPlotlyChart(chartId)

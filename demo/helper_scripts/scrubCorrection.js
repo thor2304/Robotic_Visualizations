@@ -1,10 +1,12 @@
+import {getScriptOffset} from "../csv_driven_3d.js";
+
 /**
  *This adds the preprocessed attribute highlightLine to the data points.
  * This is used to get accurate line highlighting when scrubbing backwards and hitting a line which is outside of the script.
  * @param dataPoints {Array<DataPoint>}
  * @returns {void}
  */
-function addHighlightLineToDataPoints(dataPoints) {
+export function addHighlightLineToDataPoints(dataPoints) {
     let previousLine = 0;
     for (let i = 0; i < dataPoints.length; i++) {
         const scriptLine = dataPoints[i].pointInTime.lineNumber - getScriptOffset();

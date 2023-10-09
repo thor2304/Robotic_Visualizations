@@ -1,8 +1,10 @@
+import {groups} from "../csv_driven_3d.js";
+
 /**
  *
  * @param groups {GroupController}
  */
-function populatePickers(groups) {
+export function populatePickers(groups) {
     const groupIdentifiers = groups.getGroupIdentifiers()
     const counts = []
     for (let i = 0; i < groupIdentifiers.length; i++) {

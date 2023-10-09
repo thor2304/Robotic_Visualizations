@@ -1,3 +1,5 @@
+import {getColorMap} from "../ColorMap.js";
+
 /**
  *
  * @param title {string}
@@ -5,7 +7,7 @@
  * @param zoom {number}
  * @return {{xaxis: {automargin: boolean}, margin: {r: number, b: number, pad: number, t: number, l: number}, plot_bgcolor: string, paper_bgcolor: string, title, yaxis: {automargin: boolean}, autosize: boolean, scene: {xaxis: {color: string, range: (number|*)[], title: string}, aspectmode: string, yaxis: {color: string, range: (number|*)[], title: string}, zaxis: {color: string, range: (number|*)[], title: string}, aspectratio: {x: number, y: number, z: number}}}}
  */
-function get3dLayout(title, range, zoom=1) {
+export function get3dLayout(title, range, zoom=1) {
     return {
         title: title,
         autosize: true,
@@ -59,7 +61,7 @@ function get3dLayout(title, range, zoom=1) {
  * @param endX {number}
  * @returns {{yref: string, xref: string, fillcolor: string, line: {width: number}, y0: number, x0: number, y1: number, x1: number, type: string, opacity: number}}
  */
-function createErrorBar(startX, endX){
+export function createErrorBar(startX, endX){
     //https://plotly.com/javascript/shapes/
     return {
         type: "rect",
@@ -81,7 +83,7 @@ function createErrorBar(startX, endX){
 /**
  * @returns {{yref: string, xref: string, fillcolor: string, line: {color, width: number}, y0: number, x0: number, y1: number, x1: number, type: string, opacity: number}}
  */
-function createBoundingLines(){
+export function createBoundingLines(){
     return {
         type: "rect",
         xref: "paper",
@@ -106,7 +108,7 @@ function createBoundingLines(){
  * @param forLinePlot {boolean} - If true, the layout will be for a line plot, otherwise it will be for other types of 2d plots
  * @returns Object
  */
-function get2dLayout(title, forLinePlot = true) {
+export function get2dLayout(title, forLinePlot = true) {
     const {plotColor, paperColor, gridColor} = getColorMap().plot_colors
 
     return {

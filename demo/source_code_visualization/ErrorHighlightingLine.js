@@ -1,3 +1,6 @@
+import {updateVisualizations} from "../helper_scripts/updateVisualizations.js";
+import {getScriptOffset, groups} from "../csv_driven_3d.js";
+
 const button_container = document.getElementById("Script-control-button-container");
 
 /**
@@ -15,7 +18,7 @@ const all_buttons = [];
  * @param plotGroup {PlotGroupIdentifier}
  * @returns {Promise<void>}
  */
-async function createButtonAndWarningLine(timestamp, name, plotGroup) {
+export async function createButtonAndWarningLine(timestamp, name, plotGroup) {
     // Create and add the button
     const button = document.createElement("button");
     button.innerHTML = `${name}<br>

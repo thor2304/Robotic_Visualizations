@@ -1,7 +1,9 @@
+import {getScriptOffset} from "../csv_driven_3d.js";
+
 /**
  * Used as the return type of the main function defined in this class.
  */
-class TimespanError {
+export class TimespanError {
     /**
      * @param start {DataPoint}
      * @param end {DataPoint}
@@ -15,7 +17,7 @@ class TimespanError {
 }
 
 
-class Limit {
+export class Limit {
     /**
      * @param min {number}
      * @param max {number}
@@ -47,7 +49,7 @@ class Limit {
     }
 }
 
-class ScriptSpan {
+export class ScriptSpan {
     /**
      *
      * @param startLine {number}
@@ -69,7 +71,7 @@ class ScriptSpan {
     }
 }
 
-class VariableController {
+export class VariableController {
     /**
      * @param variableName {string} Must be the traversed path of a variable e.g. "robot.tool.position.x"
      * @param scriptRanges {ScriptSpan[]} Ranges must not overlap, and they must be sorted
@@ -187,7 +189,7 @@ class VariableController {
  * @param dataPoints {DataPoint[]}
  * @returns {TimespanError[]}
  */
-function detectErrors(dataPoints) {
+export function detectErrors(dataPoints) {
     /**
      * @type {TimespanError[]}
      */

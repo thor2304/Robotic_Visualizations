@@ -1,4 +1,11 @@
-class PlotGroup {
+import {plotLineChart} from "../helper_scripts/factories/LinePlotFactory.js";
+import {plot3dVis} from "../helper_scripts/factories/robotVisFactory.js";
+import {plotDirection} from "../helper_scripts/factories/directionPlotFactory.js";
+import {addHighlightLineToDataPoints} from "../helper_scripts/scrubCorrection.js";
+import {detectErrors} from "./timespanError.js";
+import {createDivForTable, createDivsForPlotlyCharts} from "../helper_scripts/factories/chartDivFactory.js";
+
+export class PlotGroup {
     /**
      * @type {Cycle}
      */
@@ -172,6 +179,35 @@ class PlotGroup {
     }
 }
 
+/**
+ * { [x: string]: {stepcount:string, value: number} }
+ * @param dataPoints {Array<DataPoint>}
+ * @param variablePathArray {Array<String>} An array of paths that will be passed to DataPoint.traversed_attribute()
+ * @returns {{ [x: string]: {stepcount:number, value: number} }}  Of the form {variablePath: {stepcount: number, value: number}}
+ */
+export function findMaxOfVariables(dataPoints, variablePathArray) {
+    const currentMax = {}
+    for (let variablePath of variablePathArray) {
+        currentMax[variablePath] = {
+            stepcount: undefined,
+            value: 0
+        }
+    }
+
+    for (let i = 0; i < dataPoints.length; i++) {
+        const dataPoint = dataPoints[i];
+        for (let variablePath of variablePathArray) {
+            const value = dataPoint.traversed_attribute(variablePath)
+            if (value > currentMax[variablePath].value) {
+                currentMax[variablePath].value = value
+                currentMax[variablePath].stepcount = dataPoint.time.stepCount
+            }
+        }
+    }
+
+    return currentMax
+}
+
 
 /**
  * @typedef {"line"| "robot"| "direction"| "table"} PlotType
@@ -182,9 +218,9 @@ class PlotGroup {
  * "line", "robot", "direction", "table"
  * @type {Readonly<{line: string, robot: string, direction: string, table: string}>}
  */
-const plotTypes = createEnum(["line", "robot", "direction", "table"])
+export const plotTypes = createEnum(["line", "robot", "direction", "table"])
 
-class PlotRequest {
+export class PlotRequest {
     plotName = undefined
 
     chartId = undefined
@@ -216,7 +252,7 @@ class PlotRequest {
     }
 }
 
-class Cycle {
+export class Cycle {
     /**
      * Used for storing the data points in this cycle
      * @type {DataPoint[]}

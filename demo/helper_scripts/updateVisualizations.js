@@ -1,4 +1,4 @@
-
+import {getScriptOffset, groups} from "../csv_driven_3d.js";
 
 
 let previousTimestamp = 0;
@@ -13,7 +13,7 @@ let _activePlotGroup = "A";
  * The plot group that is currently active and controlled by the keyboard
  * @returns {PlotGroupIdentifier}
  */
-function getActivePlotGroup(){
+export function getActivePlotGroup(){
     return _activePlotGroup
 }
 
@@ -60,4 +60,4 @@ async function _updateVisualizations(timestamp, plotGroup = _activePlotGroup) {
  * @param plotGroup {PlotGroupIdentifier} This defaults to the return value of {@link getActivePlotGroup}
  * @returns {Promise<void>}
  */
-const updateVisualizations = get_throttled_version_function(_updateVisualizations, 10);
+export const updateVisualizations = get_throttled_version_function(_updateVisualizations, 10);

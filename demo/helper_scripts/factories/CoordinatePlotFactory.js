@@ -1,3 +1,7 @@
+import {getColorMap} from "../ColorMap.js";
+import {get2dLayout} from "./layoutFactory.js";
+import {createDivForPlotlyChart} from "./chartDivFactory.js";
+
 /**
  * Creates a 2d plot, that shows the values of the datanames provided at the first timestamp of the cycles provided.
  * @param chartName {string} - The name of the chart displayed as the title
@@ -7,7 +11,7 @@
  * @param groupController {GroupController} - The plotgroups that together contain all the relevant cycles.
  * @returns {Promise<void>}
  */
-async function plotCoordinates(chartName, chartId, dataNames, groupController){
+export async function plotCoordinates(chartName, chartId, dataNames, groupController){
     const chart = await createDivForPlotlyChart(chartId)
     const layout = get2dLayout(chartName, false)
     // layout.shapes.push(createBoundingLines())
@@ -19,8 +23,8 @@ async function plotCoordinates(chartName, chartId, dataNames, groupController){
     layout.xaxis.scaleratio = 1
     layout.xaxis.constrain = "domain"
 
-    const ACycles = groupController.getOptions("A").map((plotgroup) => plotgroup.getCycle())
-    const BCycles = groupController.getOptions("B").map((plotgroup) => plotgroup.getCycle())
+    const ACycles = groupController.getOptions("A").map((plotGroup) => plotGroup.getCycle())
+    const BCycles = groupController.getOptions("B").map((plotGroup) => plotGroup.getCycle())
 
     const coordinates = extractCoordinates(ACycles, BCycles, dataNames)
     const traces = _generate_traces_coordinate(coordinates)
