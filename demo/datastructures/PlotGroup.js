@@ -9,6 +9,9 @@ class PlotGroup {
      */
     plotRequests;
     _variablesForMaxima;
+    /**
+     * @type {{[p: string]: {stepcount: number, value: number}}}
+     */
     maxima;
     /**
      * @typedef {"A"|"B"} PlotGroupIdentifier

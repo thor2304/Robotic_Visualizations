@@ -10,7 +10,7 @@
     --error-color-dark: hsl(0, 81%, 50%);
     --error-color-light: hsla(0, 92%, 67%, 0.7);
 
-    --warning-color-dark: hsl(45, 100%, 63%);
+    --warning-color-dark: hsl(60, 100%, 50%);
     --warning-color-light: hsl(45, 100%, 90%);
 
     --success-color-dark: hsl(120, 100%, 63%);
@@ -146,6 +146,11 @@ main > *{
     justify-self: right;
     align-self: center;
     height: fit-content;
+}
+
+.warning {
+    /*https://una.im/color-mix-opacity/*/
+    background-color: color-mix(in srgb, var(--warning-color), transparent 70%);
 }
 
 

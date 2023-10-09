@@ -116,9 +116,9 @@ async function plot_raw_data(data) {
 
 
     // 3.1 Per group operations that might interfere with the other group
-    // for (let i = 0; i < variablesForError.length; i++) {
-    //     await createButtonAndErrorLine(maxValues[variablesForError[i]].stepcount, variablesForError[i] + " max", groupA.identifier)
-    // }
+    for (const key of Object.keys(groupA.maxima)) {
+        await createButtonAndWarningLine(groupA.maxima[key].stepcount, key + " max", groupA.identifier)
+    }
     // end of 3.1
 
     // 4. Shared operation for both groups

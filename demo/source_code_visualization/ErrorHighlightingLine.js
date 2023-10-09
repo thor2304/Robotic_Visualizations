@@ -15,7 +15,7 @@ const all_buttons = [];
  * @param plotGroup {PlotGroupIdentifier}
  * @returns {Promise<void>}
  */
-async function createButtonAndErrorLine(timestamp, name, plotGroup) {
+async function createButtonAndWarningLine(timestamp, name, plotGroup) {
     // Create and add the button
     const button = document.createElement("button");
     button.innerHTML = `${name}<br>
@@ -52,13 +52,17 @@ async function createButtonAndErrorLine(timestamp, name, plotGroup) {
         console.log(`Found line for timestamp ${timestamp} and line number ${datapoint.time.lineNumber}`)
     }
 
-    line.classList.add("error")
+    line.classList.add("warning")
 
     button_groups[line] = button_groups[line] || []
 
     if (button_groups[line].length === 0){
+        const hide = getHideDecider()
         line.addEventListener("click", async function() {
             hideAllButtons()
+            if (hide()){
+                return
+            }
             for (let i = 0; i < button_groups[line].length; i++) {
                 button_groups[line][i].style.display = default_display;
             }
@@ -68,6 +72,14 @@ async function createButtonAndErrorLine(timestamp, name, plotGroup) {
     button_groups[line].push(button)
 
     all_buttons.push(button)
+}
+
+function getHideDecider(){
+    let shouldHide = true;
+    return function(){
+        shouldHide = !shouldHide;
+        return shouldHide;
+    }
 }
 
 function hideAllButtons(){
