@@ -1,4 +1,4 @@
-class GroupController {
+export class GroupController {
     /**
      * @private
      * @type {{plotGroup: PlotGroup, options: PlotGroup[]}}

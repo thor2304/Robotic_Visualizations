@@ -7,6 +7,11 @@ import {getActivePlotGroup, updateVisualizations} from "./helper_scripts/updateV
 import {populatePickers} from "./helper_scripts/cycle-picker.js";
 import {plotCoordinates} from "./helper_scripts/factories/CoordinatePlotFactory.js";
 import {createButtonAndWarningLine} from "./source_code_visualization/ErrorHighlightingLine.js";
+import {load_data_then_call} from "./helper_scripts/load_csv_data.js";
+import {convert_EDDE_to_data_frames} from "./helper_scripts/EDDE_loader.js";
+import {makeAllDraggable} from "./fluid_layout/make_draggable.js";
+import {filter_raw_data} from "./helper_scripts/targeted_filtering.js";
+import {GroupController} from "./datastructures/GroupController.js";
 
 export const groups = new GroupController();
 
@@ -37,7 +42,7 @@ function finalizePlotting(firstSepCount) {
  * @param groupIdentifier {PlotGroupIdentifier}
  * @returns {string}
  */
-function getIdPrefix(groupIdentifier) {
+export function getIdPrefix(groupIdentifier) {
     return `${groupIdentifier}-`
 }
 
@@ -78,7 +83,6 @@ async function plot_raw_data(data) {
     // 2. Shared operation for both groups
 
     data = filter_raw_data(data);
-    console.log(data)
     const reduced_data = pick_every_x_from_array(data, 2);
     const rawFrames = await convert_EDDE_to_data_frames(reduced_data); // This method is the cause of all loading time
     // print_script_lines(rawFrames);

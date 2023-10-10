@@ -1,4 +1,4 @@
-class LinkedList{
+export class LinkedList{
     constructor() {
         this.list = [];
         this.indexMap = {};

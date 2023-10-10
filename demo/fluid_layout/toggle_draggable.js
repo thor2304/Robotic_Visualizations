@@ -1,4 +1,4 @@
-const unlock_button = document.querySelector('#lock-layout-button');
+export const unlock_button = document.querySelector('#lock-layout-button');
 const separatorSlider = document.querySelector('#separator-slider');
 
 

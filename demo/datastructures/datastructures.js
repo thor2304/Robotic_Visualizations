@@ -1,3 +1,7 @@
+import {createEnum} from "../helper_scripts/helpers.js";
+
+export {Offset, Position, DataPoint, Tool, Force, Robot, Payload, Joints, Joint, PhysicalIO, ScriptVariable, Register, PointInTime, Controller, SafetyStatus, Variable}
+
 class Offset {
     constructor(x, y, z) {
         this.x = Number.parseFloat(x);
@@ -79,6 +83,14 @@ class Tool {
     }
 }
 
+
+/**
+ * @typedef {"Base"|"Shoulder"|"Elbow"|"wrist 1"|"wrist 2"|"wrist 3"} Joints
+ */
+
+/**
+ * @type {Readonly<{Base: string, Shoulder: string, Elbow: string}>}
+ */
 const Joints = createEnum(["Base", "Shoulder", "Elbow", "wrist 1", "wrist 2", "wrist 3"]);
 const robot_joint_names = {
     "Base": "base",
@@ -252,4 +264,5 @@ class DataPoint {
         }, this);
     }
 }
+
 

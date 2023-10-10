@@ -4,7 +4,7 @@
 let draggables = document.querySelectorAll('.draggable')
 const containers = document.querySelectorAll('.drag-container')
 
-function makeAllDraggable() {
+export function makeAllDraggable() {
     draggables = document.querySelectorAll('.draggable')
 
     draggables.forEach(draggable => {

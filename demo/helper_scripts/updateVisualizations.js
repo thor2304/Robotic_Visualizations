@@ -1,4 +1,7 @@
 import {getScriptOffset, groups} from "../csv_driven_3d.js";
+import {highlight_line} from "../source_code_visualization/line_highlight.js";
+import {update_variable_showcase} from "./variable_table.js";
+import {get_throttled_version_function} from "./factories/ThrottledFunction.js";
 
 
 let previousTimestamp = 0;

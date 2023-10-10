@@ -4,6 +4,8 @@ import {plotDirection} from "../helper_scripts/factories/directionPlotFactory.js
 import {addHighlightLineToDataPoints} from "../helper_scripts/scrubCorrection.js";
 import {detectErrors} from "./timespanError.js";
 import {createDivForTable, createDivsForPlotlyCharts} from "../helper_scripts/factories/chartDivFactory.js";
+import {LinkedList} from "./linked_list.js";
+import {createEnum} from "../helper_scripts/helpers.js";
 
 export class PlotGroup {
     /**

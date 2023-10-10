@@ -5,6 +5,7 @@ import rehypeStringify from 'https://esm.sh/rehype-stringify@9.0.3?bundle'
 import rehypeStarryNight from "https://esm.sh/@microflash/rehype-starry-night@2.1.0?bundle"
 
 import urscript from "./Grammar/URScript_TextMate.js"
+import {code_container} from "./line_highlight.js";
 
 const prefix = 'language-'
 const rehypePrefix = "highlight-"

@@ -10,7 +10,7 @@
  * @param minimum_time_between_calls
  * @returns {function(...[*]): void}
  */
-function get_throttled_version_function(function_to_throttle, minimum_time_between_calls) {
+export function get_throttled_version_function(function_to_throttle, minimum_time_between_calls) {
     let wait = false;
     let storedArgs = null;
 

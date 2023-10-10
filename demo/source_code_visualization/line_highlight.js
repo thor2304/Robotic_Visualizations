@@ -1,5 +1,5 @@
 let code = undefined;
-const code_container = document.getElementById('code-container');
+export const code_container = document.getElementById('code-container');
 
 /**
  * @type {Element}
@@ -19,7 +19,7 @@ const highlight_inactive_line_name = "inactive";
  * @param active {boolean} If the line should be highlighted as active or inactive
  * @param controllingGroup {PlotGroupIdentifier} The group that is controlling the line highlight. This is used to determine if the line should be highlighted as active or inactive
  */
-async function highlight_line(line_number, offset = 0, scrollIntoView = true, active = true, controllingGroup="A") {
+export async function highlight_line(line_number, offset = 0, scrollIntoView = true, active = true, controllingGroup="A") {
     const line = await get_line(line_number, offset);
 
     if (line === undefined) {
@@ -62,7 +62,7 @@ async function highlight_line(line_number, offset = 0, scrollIntoView = true, ac
  * @param offset {number}
  * @returns {Promise<Element>}
  */
-async function get_line(lineNumber, offset = 0) {
+export async function get_line(lineNumber, offset = 0) {
     return new Promise((resolve, reject) => {
         ensure_code()
         if (code === undefined) {

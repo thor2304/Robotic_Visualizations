@@ -1,9 +1,22 @@
+import {computePositionAndRotation} from "../dataframe_driven_robot_arm/computeJointPositions.js";
+import {
+    DataPoint,
+    Joint,
+    Joints,
+    Payload,
+    PhysicalIO,
+    Position, Register,
+    Robot,
+    Tool, Variable
+} from "../datastructures/datastructures.js";
+import {computeTCPPosition, parse_to_bool} from "./helpers.js";
+
 /**
  *
  * @param data {Array<Object>}
  * @returns {Promise<Array<DataPoint>>}
  */
-async function convert_EDDE_to_data_frames(data) {
+export async function convert_EDDE_to_data_frames(data) {
     translate_names(data)
 
     return await parser(data)
@@ -167,7 +180,6 @@ async function create_frame_from_datum(datum, offSetVector, customVariables) {
     const computedPositions = computation[0];
     const computedTCPRotation = computation[1];
     const computedTcpPosition = computeTCPPosition(datum, offSetVector, computedPositions, computedTCPRotation);
-
 
     const base = new Joint(Joints.Base, computedPositions[0], undefined, datum.actual_position_0, datum.target_position_0)
     const shoulder = new Joint(Joints.Shoulder, computedPositions[1], undefined, datum.actual_position_1, datum.target_position_1)

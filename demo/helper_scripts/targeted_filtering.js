@@ -3,7 +3,7 @@
  * @param raw_data {Array<{lineString: string, [key: string]:string}>}
  * @returns {Array<{lineString: string, [key: string]:string}>}
  */
-function filter_raw_data(raw_data){
+export function filter_raw_data(raw_data){
     /**
      *
      * @type {Array<{lineString: string, [key: string]:string}>}

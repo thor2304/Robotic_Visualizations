@@ -1,3 +1,5 @@
+import {get_throttled_version_function} from "../helper_scripts/factories/ThrottledFunction.js";
+
 const separationSlider = document.getElementById('separator-slider');
 const codeContainer = document.getElementById("code-container");
 const visualizationContainer = document.getElementById("visualization-container");
@@ -59,7 +61,7 @@ const updateSplit = _updateSplit;
  * And after changes to the window size.
  * @type {function(): void}
  */
-const updateContainers = _updateContainers;
+export const updateContainers = _updateContainers;
 
 function getSplitResizeFunctions(){
     let internalCodeSplit = 50;

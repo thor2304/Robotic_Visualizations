@@ -2,6 +2,8 @@
 // https://mathjs.org/docs/datatypes/matrices.html#arrays-and-matrices
 
 // jointDHParameters[i] provides an array of [theta, a, d, alpha] for the i-th joint
+import {Position} from "../datastructures/datastructures.js";
+
 const jointDHParameters = [
     [0, 0, 0.089159, math.pi / 2],
     [0, -0.425, 0, 0],
@@ -46,7 +48,7 @@ const last_array = [0, 0, 0, 1]
 
 // input-rotations must be an array of rotation angles, corresponding to the theta value
 // The output is an array where position 0 is the computed positions and position 1 is the computed rotation matrix
-function computePositionAndRotation(inputRotationsPerJoint) {
+export function computePositionAndRotation(inputRotationsPerJoint) {
 
     if (inputRotationsPerJoint.length !== jointDHParameters.length) throw new Error("Input rotations must have the same length as the DH-parameters array");
 

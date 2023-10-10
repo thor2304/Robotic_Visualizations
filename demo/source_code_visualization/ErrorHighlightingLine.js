@@ -1,5 +1,6 @@
 import {updateVisualizations} from "../helper_scripts/updateVisualizations.js";
 import {getScriptOffset, groups} from "../csv_driven_3d.js";
+import {get_line} from "./line_highlight.js";
 
 const button_container = document.getElementById("Script-control-button-container");
 

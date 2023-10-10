@@ -1,3 +1,6 @@
+import {getActivePlotGroup, updateVisualizations} from "./updateVisualizations.js";
+import {groups} from "../csv_driven_3d.js";
+
 async function stepToNextTimestamp() {
     const nextTimestamp = groups.get(getActivePlotGroup()).dataPointsLinked.next();
     await updateVisualizations(nextTimestamp, getActivePlotGroup());

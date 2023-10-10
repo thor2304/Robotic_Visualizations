@@ -1,10 +1,12 @@
+import {Position} from "../datastructures/datastructures.js";
+
 /**
  * Creates an immutable object that has the values presented attributes.
  * The attributes return their value.
  * @param values {Array<String>}
  * @returns {Readonly<{}>}
  */
-function createEnum(values) {
+export function createEnum(values) {
     const enumObject = {};
     for (const val of values) {
         enumObject[val] = val;
@@ -12,7 +14,7 @@ function createEnum(values) {
     return Object.freeze(enumObject);
 }
 
-function evenlyPickItemsFromArray(fromArray, extractionCount) {
+export function evenlyPickItemsFromArray(fromArray, extractionCount) {
     // if we want more items than available, return all items
     if (extractionCount >= fromArray.length) {
         return fromArray;
@@ -41,7 +43,7 @@ function evenlyPickItemsFromArray(fromArray, extractionCount) {
     return result;
 }
 
-function computeTCPPosition(datum, offSetVector, computedPositions, computedRotations) {
+export function computeTCPPosition(datum, offSetVector, computedPositions, computedRotations) {
     const computedTcpOffset =
         math.multiply(computedRotations, offSetVector)
             .toArray();
@@ -56,7 +58,7 @@ function computeTCPPosition(datum, offSetVector, computedPositions, computedRota
  * @param frame {DataPoint}
  * @returns {string[]}
  */
-function extract_available_variables(frame) {
+export function extract_available_variables(frame) {
     const allVariables = Object.keys(frame.scriptVariables)
     /**
      * @type {string[]}
@@ -74,6 +76,6 @@ function extract_available_variables(frame) {
     return variables
 }
 
-function parse_to_bool(value) {
+export function parse_to_bool(value) {
     return value === "1";
 }
