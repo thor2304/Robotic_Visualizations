@@ -124,6 +124,7 @@ export async function plot3dVis(dataframes, chartId, plotGroup) {
     layout.sliders = [{
         pad: {
             l: 20,
+            r: 20,
             t: overlap_with_slider ? -90 : -35,
             b: 15,
         },

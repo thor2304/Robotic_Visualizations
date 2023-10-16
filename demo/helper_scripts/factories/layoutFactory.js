@@ -5,7 +5,7 @@ import {getColorMap} from "../ColorMap.js";
  * @param title {string}
  * @param range {number}
  * @param zoom {number}
- * @return {{xaxis: {automargin: boolean}, margin: {r: number, b: number, pad: number, t: number, l: number}, plot_bgcolor: string, paper_bgcolor: string, title, yaxis: {automargin: boolean}, autosize: boolean, scene: {xaxis: {color: string, range: (number|*)[], title: string}, aspectmode: string, yaxis: {color: string, range: (number|*)[], title: string}, zaxis: {color: string, range: (number|*)[], title: string}, aspectratio: {x: number, y: number, z: number}}}}
+ * @return {{xaxis: {automargin: boolean}, margin: {r: number, b: number, pad: number, t: number, l: number}, plot_bgcolor: string, paper_bgcolor: string, title, yaxis: {automargin: boolean}, autosize: boolean, scene: {xaxis: {color: string, range: (number|*)[], title: string}, aspectmode: string, yaxis: {color: string, range: (number|*)[], title: string}, zaxis: {color: string, range: (number|*)[], title: string}, aspectratio: {x: number, y: number, z: number}}, showlegend: boolean, legend: {x: number, xanchor: string, y: number}}}
  */
 export function get3dLayout(title, range, zoom=1) {
     return {
@@ -51,6 +51,12 @@ export function get3dLayout(title, range, zoom=1) {
                     type: 'perspective'
                 }
             }
+        },
+        showlegend: true,
+        legend: {
+            x: 1,
+            xanchor: 'right',
+            y: 1
         }
     }
 }
@@ -141,5 +147,14 @@ export function get2dLayout(title, forLinePlot = true) {
         //https://plotly.com/javascript/shapes/
         shapes: [
         ],
+        showlegend: true,
+        legend: {
+            //https://plotly.com/javascript/reference/layout/#layout-legend-xanchor
+            x: 1, // this is the paper coordinate of the plot
+            xanchor: 'right', // right means that the position is calculated from the right side of the legend
+            yanchor: 'top',
+            y: 1,
+            // orientation: "h",
+        }
     }
 }

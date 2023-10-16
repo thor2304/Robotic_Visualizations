@@ -17,8 +17,10 @@ export async function plotCoordinates(chartName, chartId, dataNames, groupContro
     // layout.shapes.push(createBoundingLines())
     layout.xaxis.showline = false
     layout.yaxis.showline = false
-    layout.xaxis.range = [0, 1]
-    layout.yaxis.range = [0, 1]
+    // layout.xaxis.range = [0, 1]
+    // layout.yaxis.range = [0, 1]
+    layout.xaxis.autorange = true
+    layout.yaxis.autorange = true
     layout.xaxis.scaleanchor = "y"
     layout.xaxis.scaleratio = 1
     layout.xaxis.constrain = "domain"
@@ -46,15 +48,18 @@ export async function plotCoordinates(chartName, chartId, dataNames, groupContro
 }
 
 /**
- * @typedef {{x: number, y: number, error: boolean, name: string}} Coordinate
- * @typedef {{xName: string, yName}[]} CoordinateNames
+ * @typedef {{x: number, y: number, error: boolean, name: string, cycleIndex: number}} Coordinate
+ */
+
+/**
+ * @typedef {{xName: string, yName:string}[]} CoordinateNames
  */
 
 /**
  * @param ACycles {Cycle[]}
  * @param BCycles {Cycle[]}
  * @param dataNames {CoordinateNames}
- * @returns {Coordinate []}
+ * @returns {Coordinate[]}
  */
 function extractCoordinates(ACycles, BCycles, dataNames){
     /**
@@ -72,7 +77,7 @@ function extractCoordinates(ACycles, BCycles, dataNames){
             for (let i = 0; i < dataNames.length; i++) {
                 const x = dataPoint.traversed_attribute(dataNames[i].xName)
                 const y = dataPoint.traversed_attribute(dataNames[i].yName)
-                coordinates.push({x: x, y: y, error: error, name: cycle.cycleIndex.toString()})
+                coordinates.push({x: x, y: y, error: error, name: cycle.cycleIndex.toString(), cycleIndex: cycle.cycleIndex})
             }
         }
     }
@@ -83,12 +88,20 @@ function extractCoordinates(ACycles, BCycles, dataNames){
     return [].concat(ACoordinates, BCoordinates)
 }
 
+const markers = {
+    past: 'triangle-up-open-dot',
+    current: 'circle-open-dot',
+    future: 'diamond-open-dot',
+    explanation: "circle"
+}
+
 /**
  *
  * @param coordinates {Coordinate []} - An array of strings that are passed to dataPoints[i].traversed_attribute(dataNames[j]).
+ * @param active_number {number} - The index of the cycle that is currently active.
  * @returns {{}[]}
  */
-function _generate_traces_coordinate(coordinates) {
+function _generate_traces_coordinate(coordinates, active_number= 2) {
     const traces = []
 
     const colorMap = getColorMap()
@@ -102,12 +115,34 @@ function _generate_traces_coordinate(coordinates) {
             name: coordinates[i].name,
             marker: {
                 color: coordinates[i].error ? colorMap.general.error : colorMap.general.success,
-                symbol: coordinates[i].error ? 'circle-open-dot' : 'diamond-open-dot',
+                symbol: coordinates[i].cycleIndex === active_number ? markers.current : coordinates[i].cycleIndex < active_number ? markers.past : markers.future,
                 size: 20
             }
         })
     }
 
+    // Generate the traces for the legend explanation
+    traces.push(getTransparentMarkerForLegendExplanation("Error", colorMap.general.error, markers.explanation))
+    traces.push(getTransparentMarkerForLegendExplanation("Success", colorMap.general.success, markers.explanation))
+
+    traces.push(getTransparentMarkerForLegendExplanation("Past", colorMap.general.success, markers.past))
+    traces.push(getTransparentMarkerForLegendExplanation("Current", colorMap.general.success, markers.current))
+    traces.push(getTransparentMarkerForLegendExplanation("Future", colorMap.general.success, markers.future))
 
     return traces
+}
+
+function getTransparentMarkerForLegendExplanation(text, color, symbol){
+    return {
+        x: [],
+        y: [], // We need to put something in here for it to show up. But at the same time we do not want to show the data
+        type: 'scatter',
+        name: text,
+        marker: {
+            color: color,
+            symbol: symbol,
+            size: 20
+        },
+        legendGroup: "legendExplanation",
+    }
 }
