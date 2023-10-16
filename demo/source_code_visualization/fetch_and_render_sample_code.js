@@ -1,23 +1,37 @@
 import {renderMarkDownToHTML} from "./render_using_rehype.js";
 import {CodeBlock} from "./CodeBlock.js";
 import {loadJson, save} from "../file_upload/Cache.js";
-import {MyFile} from "../file_upload/MyFile.js";
+import {MyFile} from "../file_upload/Datastructures/MyFile.js";
 
 export const scriptFileName = "script"
 
 window.addEventListener("DOMContentLoaded", async () => {
-    const code = await fetch_and_render_sample_code()
-    const markdown = code.toMarkdown()
-
     const code_container = document.getElementById("code-container")
     if (!code_container) {
-        console.error("Could not find code-container")
+        console.warn("Could not find code-container. Will not continue to fetch and render code visualization")
         return
     }
+
+    const code = await getCode()
+    console.log(code)
+    const markdown = code.toMarkdown()
+
     renderMarkDownToHTML(markdown, code_container)
 })
 
+/**
+ * @return {Promise<CodeBlock>}
+ */
 async function getCode() {
+    const code = await getCodeFile()
+    return new CodeBlock(extract_extension(code.name), code.content)
+}
+
+/**
+ *
+ * @return {Promise<MyFile>}
+ */
+async function getCodeFile() {
     const script = await loadJson(scriptFileName)
     if (script) {
         return script
@@ -40,10 +54,7 @@ async function fetch_sample_code() {
     return new MyFile(filename, await response.text());
 }
 
-async function fetch_and_render_sample_code() {
-    const code = await getCode();
-    return new CodeBlock(extract_extension(code.name), code.content);
-}
+
 
 function extract_extension(filename) {
     const last_dot = filename.lastIndexOf(".");

@@ -1,4 +1,4 @@
-import {parsejson} from "./readDirectoryFromCache.js";
+import {parsejson} from "./customParseJson.js";
 
 const db = new Promise((resolve, reject) => {
     const request = indexedDB.open("MyTestDatabase", 4);
@@ -59,7 +59,9 @@ export async function loadJson(name) {
 }
 
 export function has(name){
-    return load(name).then((result) => result !== undefined)
+    return load(name).then((result) => {
+        return result !== undefined
+    })
 }
 
 export async function remove(name) {
@@ -69,5 +71,6 @@ export async function remove(name) {
         .delete(name);
     request.onsuccess = (event) => {
         // It's gone!
+        console.log("Deleted file: " + name)
     };
 }

@@ -1,5 +1,5 @@
-import {MyDirectory} from "./MyDirectory.js";
-import {MyFile} from "./MyFile.js";
+import {MyDirectory} from "./Datastructures/MyDirectory.js";
+import {MyFile} from "./Datastructures/MyFile.js";
 
 export function parsejson(json) {
     if (json === undefined) {

@@ -1,7 +1,7 @@
 import {dataFileName, parseData} from "../helper_scripts/load_csv_data.js";
 import * as zip from "https://deno.land/x/zipjs/index.js";
-import {MyDirectory} from "./MyDirectory.js";
-import {MyFile} from "./MyFile.js";
+import {MyDirectory} from "./Datastructures/MyDirectory.js";
+import {MyFile} from "./Datastructures/MyFile.js";
 import {has, loadJson, save} from "./Cache.js";
 import {scriptFileName} from "../source_code_visualization/fetch_and_render_sample_code.js";
 
@@ -68,6 +68,7 @@ async function loadZipFile(file) {
 async function loadScriptFile(file) {
     const text = await loadTextFromFile(file);
     const myfile = new MyFile(file.name, text)
+    console.log("Saving script file")
     save(scriptFileName, myfile)
 }
 
@@ -76,6 +77,7 @@ async function loadScriptFile(file) {
  */
 export async function handleFile(file) {
     if (file.name.endsWith(".csv")) {
+
         await loadCsvFile(file)
     } else if (file.name.endsWith(".zip")) {
         await loadZipFile(file)
@@ -83,12 +85,11 @@ export async function handleFile(file) {
         await loadScriptFile(file)
     }
 
-    checkFilesAndRedirect()
+    await checkFilesAndRedirect()
 }
 
-function checkFilesAndRedirect() {
-    if (has(dataFileName) && has(scriptFileName)) {
-        console.log("Redirecting to main.html")
+async function checkFilesAndRedirect() {
+    if (await has(dataFileName) && await has(scriptFileName)) {
         window.location.href = "../main.html"
     }
 }

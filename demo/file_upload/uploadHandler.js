@@ -9,7 +9,9 @@ export function onFile() {
     const file = upload.files[0];
     const name = file.name.replace(/.[^/.]+$/, '');
     console.log(`${name} selected`)
-    handleFile(file);
+    handleFile(file).then(r => {
+
+    });
 }
 
 upload.addEventListener('dragenter', function (e) {
