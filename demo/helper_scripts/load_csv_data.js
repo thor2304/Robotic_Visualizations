@@ -1,6 +1,10 @@
 import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+import {MyFile} from "../file_upload/MyFile.js";
+import {loadJson, save} from "../file_upload/Cache.js";
 
 const dataFolder ='../../Robot_control/EDDE_data/WITH_POWER'
+
+export const dataFileName = "dataFile"
 
 /**
  * Uses d3 to load a csv document, then calls the provided callback function
@@ -8,13 +12,28 @@ const dataFolder ='../../Robot_control/EDDE_data/WITH_POWER'
  * @param data_delimiter {string} delimiter used in the csv file, could be tab, space, comma, etc.
  */
 export async function load_data_then_call(callback, data_delimiter = ','){
+    let cached = await loadJson(dataFileName)
+    if (!cached){
+        cached = await fetch_sample_data()
+        save(dataFileName, cached)
+    }
+
+    const out = parseData(cached.content, data_delimiter)
+    await callback(out)
+}
+
+/**
+ *
+ * @return {Promise<MyFile>}
+ */
+async function fetch_sample_data(){
     const runName = "2_4_partial"
     const filePath = `${dataFolder}/${runName}/${runName}-0.csv`
 
-
     const text = await d3.text(filePath);
-    const out = parseData(text, data_delimiter)
-    await callback(out)
+    console.log("Fetching sample data")
+
+    return new MyFile(filePath, text)
 }
 
 /**
