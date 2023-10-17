@@ -16,7 +16,7 @@ const cycles = []
  * @param cycle_index {number} 0-based index of the cycle to get
  * @returns {Cycle}
  */
-export function get_cycle(frames, cycle_index=0){
+export function get_cycle(frames, cycle_index = 0) {
     return get_cycles(frames)[cycle_index]
 }
 
@@ -24,8 +24,8 @@ export function get_cycle(frames, cycle_index=0){
  * @param frames {DataPoint[]}
  * @return {Cycle[]}
  */
-export function get_cycles(frames){
-    if(cycles.length === 0){
+export function get_cycles(frames) {
+    if (cycles.length === 0) {
         extract_cycles(frames)
     }
     return cycles
@@ -37,14 +37,14 @@ export function get_cycles(frames){
  * @returns {void}
  */
 function extract_cycles(frames) {
-    const cycle_end = {
+    const between_cycles = {
         first: 1467 + 80,
         last: 1467 + 88
     }
 
     const final_area = {
         first: 1467 + 71,
-        last: cycle_end.last
+        last: between_cycles.last
     }
 
     const cycle_start = {
@@ -52,11 +52,17 @@ function extract_cycles(frames) {
         last: 1467 + 130
     }
 
+    console.log(frames)
+
     let cycle_active = false
     let end_area_hit = false
 
     for (let i = 0; i < frames.length; i++) {
-        if (frames[i].time.lineNumber >= cycle_start.first && frames[i].time.lineNumber <= cycle_start.last && (!cycle_active || end_area_hit)) {
+        const frameLine = frames[i].time.lineNumber
+
+        const withinCycleStart = frameLine >= cycle_start.first && frameLine <= cycle_start.last
+        if (withinCycleStart && (!cycle_active || end_area_hit)) {
+            // Start of a new cycle
             cycle_active = true
             end_area_hit = false
             rawCycles.push([])
@@ -66,11 +72,13 @@ function extract_cycles(frames) {
             continue
         }
 
-        if (frames[i].time.lineNumber >= cycle_end.first && frames[i].time.lineNumber <= cycle_end.last) {
+        const isBetween_cycles = frameLine >= between_cycles.first && frameLine <= between_cycles.last
+        if (isBetween_cycles) {
             cycle_active = false
         }
 
-        if (frames[i].time.lineNumber >= final_area.first && frames[i].time.lineNumber <= final_area.last && !end_area_hit) {
+        const inFinalArea = frameLine >= final_area.first && frameLine <= final_area.last
+        if (inFinalArea) {
             end_area_hit = true
         }
 
@@ -107,7 +115,7 @@ export function pick_every_x_from_array(arr, pick_every = 10) {
  */
 export function print_script_lines(rawFrames) {
     const disabled = true
-    if(disabled){
+    if (disabled) {
         return
     }
 

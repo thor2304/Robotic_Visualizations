@@ -10,7 +10,7 @@ export function onFile() {
     const name = file.name.replace(/.[^/.]+$/, '');
     console.log(`${name} selected`)
     handleFile(file).then(r => {
-
+        // Empty .then to ensure that the promise is resolved
     });
 }
 

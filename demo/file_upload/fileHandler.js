@@ -59,7 +59,7 @@ async function loadZipFile(file) {
         }
 
         console.log(files)
-        save("files", files)
+        await save("files", files)
     }
 
 // close the ZipReader
@@ -72,7 +72,7 @@ async function loadScriptFile(file) {
     const text = await loadTextFromFile(file);
     const myfile = new MyFile(file.name, text)
     console.log("Saving script file")
-    save(scriptFileName, myfile)
+    await save(scriptFileName, myfile)
 }
 
 /**
@@ -80,10 +80,9 @@ async function loadScriptFile(file) {
  */
 export async function handleFile(file) {
     if (file.name.endsWith(".csv")) {
-
         await loadCsvFile(file)
     } else if (file.name.endsWith(".zip")) {
-        handleFolder(await loadZipFile(file))
+        await handleFolder(await loadZipFile(file))
     } else if (file.name.endsWith(".script")) {
         await loadScriptFile(file)
     }
@@ -92,10 +91,20 @@ export async function handleFile(file) {
 }
 
 async function checkFilesAndRedirect() {
-    if (await has(dataFileName) && await has(scriptFileName)) {
-        window.location.href = "../main.html"
+    if (
+        await has(dataFileName)
+        // && await has(scriptFileName)
+    ) {
+        redirectToTool()
+    }else {
+        console.log("Not all files loaded")
     }
 }
+
+function redirectToTool() {
+    window.location.href = "../main.html"
+}
+
 
 /**
  *
@@ -119,7 +128,7 @@ async function loadTextFromFile(file) {
  */
 async function loadCsvFile(file) {
     const text = await loadTextFromFile(file);
-    const myfile = new MyFile(file.name, text)
-    save(dataFileName, myfile)
+    const myFile = new MyFile(file.name, text)
+    await save(dataFileName, myFile)
     return parseData(text);
 }

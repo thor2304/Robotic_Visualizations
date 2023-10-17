@@ -1,7 +1,7 @@
 /**
  * @typedef {number | `${number}`} Timestamp
  */
-import {PlotGroup, PlotRequest, plotTypes} from "./datastructures/PlotGroup.js";
+import {Cycle, PlotGroup, PlotRequest, plotTypes} from "./datastructures/PlotGroup.js";
 import {get_cycles, pick_every_x_from_array} from "./helper_scripts/cycle_filtering.js";
 import {getActivePlotGroup, updateVisualizations} from "./helper_scripts/updateVisualizations.js";
 import {populatePickers} from "./helper_scripts/cycle-picker.js";
@@ -12,6 +12,7 @@ import {convert_EDDE_to_data_frames} from "./helper_scripts/EDDE_loader.js";
 import {makeAllDraggable} from "./fluid_layout/make_draggable.js";
 import {filter_raw_data} from "./helper_scripts/targeted_filtering.js";
 import {GroupController} from "./datastructures/GroupController.js";
+import {convertFlightRecordDataToDataPoints} from "./file_upload/flightRecordTranslations.js";
 
 export const groups = new GroupController();
 
@@ -21,6 +22,9 @@ const scriptOffset = 1468;
 export function getScriptOffset() {
     return scriptOffset
 }
+
+// The .then at the end is used to await the promise
+load_data_then_call(plot_raw_data).then(r => ("loaded"))
 
 /**
  * @param firstSepCount {number}
@@ -71,9 +75,10 @@ function createGroup(groupIdentifier) {
 
 /**
  * @param data {Array<Object>}
+ * @param dataSource {"EDDE" | "FlightRecord"|"RTDE"}
  * @returns {Promise<void>}
  */
-async function plot_raw_data(data) {
+async function plot_raw_data(data, dataSource = "EDDE") {
     const groupA = createGroup("A");
     const groupB = createGroup("B");
 
@@ -81,10 +86,16 @@ async function plot_raw_data(data) {
     await groupB.createDivsForPlots();
 
     // 2. Shared operation for both groups
+    let rawFrames;
 
-    data = filter_raw_data(data);
-    const reduced_data = pick_every_x_from_array(data, 2);
-    const rawFrames = await convert_EDDE_to_data_frames(reduced_data); // This method is the cause of all loading time
+    if (dataSource === "FlightRecord") {
+        rawFrames = await convertFlightRecordDataToDataPoints(data);
+    } else if (dataSource === "EDDE" || dataSource === "RTDE") {
+        data = filter_raw_data(data);
+        data = pick_every_x_from_array(data, 2);
+        rawFrames = await convert_EDDE_to_data_frames(data); // This method is the cause of all loading time
+    }
+
     // print_script_lines(rawFrames);
     // end of 2.
 
@@ -93,6 +104,8 @@ async function plot_raw_data(data) {
     const withErrors = [];
     const withoutErrors = [];
 
+    console.log(withErrors, withoutErrors)
+
     for (let i = 0; i < cycles.length; i++) {
         const cycle = cycles[i];
         if (cycle.hasError()) {
@@ -100,6 +113,10 @@ async function plot_raw_data(data) {
         } else {
             withoutErrors.push(cycle)
         }
+    }
+
+    if (cycles.length === 0) {
+        withErrors.push(new Cycle(rawFrames, 0))
     }
 
     groups.initialize(groupA, groupB)
@@ -111,12 +128,17 @@ async function plot_raw_data(data) {
         groups.addOption(newGroup)
     }
 
+    if (withoutErrors.length === 0) {
+        withoutErrors.push(new Cycle([rawFrames[0]], 1))
+    }
+
     groupB.setCycle(withoutErrors[0])
     for (let i = 1; i < withoutErrors.length; i++) {
         const newGroup = createGroup("B")
         newGroup.setCycle(withoutErrors[i])
         groups.addOption(newGroup)
     }
+
 
     const firstStep = groupA.cycle.sequentialDataPoints[0].time.stepCount;
 
@@ -146,7 +168,3 @@ async function plot_raw_data(data) {
 
     // end of 5.
 }
-
-
-// The .then at the end is used to await the promise
-load_data_then_call(plot_raw_data).then(r => ("loaded"))

@@ -14,7 +14,11 @@ export function parsejson(json) {
         if (value.isDirectory) {
             return new MyDirectory(value.name, value.children)
         } else if (value.isFile) {
-            return new MyFile(value.name, value.content)
+            const file = new MyFile(value.name, value.content);
+            if(value.dataSource){
+                file.setDataSource(value.dataSource)
+            }
+            return file
         }
         return value
     })

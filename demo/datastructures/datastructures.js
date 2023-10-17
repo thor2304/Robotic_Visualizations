@@ -259,8 +259,14 @@ class DataPoint {
     }
 
     traversed_attribute(path) {
+        const dp = this;
         return path.split('.').reduce(function (o, p) {
-            return o[p];
+            try {
+                return o[p];
+            } catch (e) {
+                console.error(`Accessing path ${path} failed`,dp, e)
+                return undefined;
+            }
         }, this);
     }
 }

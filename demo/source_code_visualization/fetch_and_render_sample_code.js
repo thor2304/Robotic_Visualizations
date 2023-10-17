@@ -13,7 +13,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     }
 
     const code = await getCode()
-    console.log(code)
+    // console.log(code)
     const markdown = code.toMarkdown()
 
     renderMarkDownToHTML(markdown, code_container)
@@ -38,7 +38,7 @@ async function getCodeFile() {
     }
 
     const code = await fetch_sample_code()
-    save(scriptFileName, code)
+    await save(scriptFileName, code)
     return code
 }
 

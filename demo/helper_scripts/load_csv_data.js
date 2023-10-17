@@ -8,18 +8,26 @@ export const dataFileName = "dataFile"
 
 /**
  * Uses d3 to load a csv document, then calls the provided callback function
- * @param callback {function(Object[])} a function that takes the parsed csv data as an argument
+ * @param callback {function(Object[], string)} a function that takes the parsed csv data as an argument, as well as a string that specifies the data source
  * @param data_delimiter {string} delimiter used in the csv file, could be tab, space, comma, etc.
  */
 export async function load_data_then_call(callback, data_delimiter = ','){
     let cached = await loadJson(dataFileName)
+    console.log(cached)
     if (!cached){
         cached = await fetch_sample_data()
-        save(dataFileName, cached)
+        await save(dataFileName, cached)
     }
 
     const out = parseData(cached.content, data_delimiter)
-    await callback(out)
+
+    let dataSource = cached.dataSource
+
+    if (!dataSource){
+        dataSource = "EDDE"
+    }
+
+    await callback(out, dataSource)
 }
 
 /**
@@ -33,7 +41,9 @@ async function fetch_sample_data(){
     const text = await d3.text(filePath);
     console.log("Fetching sample data")
 
-    return new MyFile(filePath, text)
+    const out = new MyFile(filePath, text)
+    out.setDataSource("EDDE")
+    return out
 }
 
 /**

@@ -19,7 +19,7 @@ import {computeTCPPosition, parse_to_bool} from "./helpers.js";
 export async function convert_EDDE_to_data_frames(data) {
     translate_names(data)
 
-    return await parser(data)
+    return await parser(data, await get_custom_map())
 }
 
 function extractExpectedWeight(datum) {
@@ -228,12 +228,11 @@ async function create_frame_from_datum(datum, offSetVector, customVariables) {
 
 /**
  * @returns {Promise<CustomVariableConfiguration>}
+ * @param custom_map_file_name {string} The name of the custom map file. Must be located in demo/customizations folder
  */
-async function get_custom_map() {
-    const server_url = window.location.origin + "/Robotic_Visualizations/";
-    const file_location = "demo/helper_scripts/allow_list.json";
-
-    const response = await fetch(server_url + file_location);
+export async function get_custom_map(custom_map_file_name = "EDDE_allow_list.json") {
+    const server_url = window.location.origin + "/Robotic_Visualizations/demo/customizations/";
+    const response = await fetch(server_url + custom_map_file_name);
     return new CustomVariableConfiguration(await response.json());
 }
 
@@ -378,9 +377,10 @@ class CustomVariableConfiguration {
 
 /**
  * @param data {Array<Object>}
+ * @param customVariableConfiguration {CustomVariableConfiguration}
  * @returns {Promise<Array<DataPoint>>}
  */
-async function parser(data) {
+export async function parser(data, customVariableConfiguration) {
     // console.log("data received, now going to loop over the data and generate the frames->")
     const firstData = data[0];
     const res = computePositionAndRotation([firstData.actual_q_0, firstData.actual_q_1, firstData.actual_q_2, firstData.actual_q_3, firstData.actual_q_4, firstData.actual_q_5]);
@@ -398,8 +398,7 @@ async function parser(data) {
     const offSetVector = math.matrix([0, 0, 0]);
     // const offSetVector = math.multiply(math.inv(rotationMatrix), tcpOffsets);
 
-    const customVariables = await get_custom_map();
-    console.log("customVariables", customVariables)
+    console.log("customVariables", customVariableConfiguration)
 
     /**
      * @type {DataPoint[]}
@@ -409,7 +408,7 @@ async function parser(data) {
     // Generate the uniquely positioned frames
     // This is the slowest part of this function
     for (let i = 0; i < data.length; i++) {
-        const dataPoint = await create_frame_from_datum(data[i], offSetVector, customVariables);
+        const dataPoint = await create_frame_from_datum(data[i], offSetVector, customVariableConfiguration);
         frames.push(dataPoint)
     }
 
@@ -452,12 +451,13 @@ const EDDE_translations = {
 /**
  * Modifies the attributes of the objects within the data Array
  * @param data {Array<Object>}
+ * @param translations {Object<string, string>} Maps RTDE names to the names of the other format
  */
-function translate_names(data) {
+export function translate_names(data, translations = EDDE_translations) {
     for (let i = 0; i < data.length; i++) {
-        for (const RTDE_name of Object.keys(EDDE_translations)) {
+        for (const RTDE_name of Object.keys(translations)) {
             if (data[i][RTDE_name] === undefined) {
-                data[i][RTDE_name] = data[i][EDDE_translations[RTDE_name]]
+                data[i][RTDE_name] = data[i][translations[RTDE_name]]
                 // data[i][EDDE_translations[RTDE_name]] = undefined
             }
         }
