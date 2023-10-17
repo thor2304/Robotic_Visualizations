@@ -1,5 +1,8 @@
 import {parsejson} from "./customParseJson.js";
 
+//https://github.com/mdn/dom-examples/blob/main/indexeddb-examples/idbindex/scripts/main.js
+// https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB
+
 const db = new Promise((resolve, reject) => {
     const request = indexedDB.open("MyTestDatabase", 4);
     request.onerror = (event) => {

@@ -4,6 +4,9 @@ import {MyDirectory} from "./Datastructures/MyDirectory.js";
 import {MyFile} from "./Datastructures/MyFile.js";
 import {has, loadJson, save} from "./Cache.js";
 import {scriptFileName} from "../source_code_visualization/fetch_and_render_sample_code.js";
+import {handleFolder} from "./ZipHandler.js";
+
+// https://gildas-lormeau.github.io/zip.js/api/index.html
 
 console.log(await loadJson("files"))
 
@@ -80,7 +83,7 @@ export async function handleFile(file) {
 
         await loadCsvFile(file)
     } else if (file.name.endsWith(".zip")) {
-        await loadZipFile(file)
+        handleFolder(await loadZipFile(file))
     } else if (file.name.endsWith(".script")) {
         await loadScriptFile(file)
     }

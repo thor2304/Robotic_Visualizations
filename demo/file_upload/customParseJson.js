@@ -1,6 +1,7 @@
 import {MyDirectory} from "./Datastructures/MyDirectory.js";
 import {MyFile} from "./Datastructures/MyFile.js";
 
+//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse
 export function parsejson(json) {
     if (json === undefined) {
         return undefined

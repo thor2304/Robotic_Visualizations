@@ -2,6 +2,7 @@
 // Project: https://github.com/gildas-lormeau/zip.js
 // Definitions by: Louis Grignon <https://github.com/lgrignon>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
+// https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/zip.js/index.d.ts
 
 interface FileEntry {}
 
