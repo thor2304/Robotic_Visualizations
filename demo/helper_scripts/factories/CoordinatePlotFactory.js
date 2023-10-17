@@ -73,7 +73,7 @@ function extractCoordinates(ACycles, BCycles, dataNames){
 
     function getCoordinatesForCycleGroup(coordinates, cycles, error) {
         for (let cycle of cycles) {
-            const dataPoint = cycle.sequentialDataPoints[1]
+            const dataPoint = cycle.sequentialDataPoints[1] || cycle.sequentialDataPoints[0]
             for (let i = 0; i < dataNames.length; i++) {
                 const x = dataPoint.traversed_attribute(dataNames[i].xName)
                 const y = dataPoint.traversed_attribute(dataNames[i].yName)

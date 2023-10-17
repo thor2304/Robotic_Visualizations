@@ -41,6 +41,15 @@ export const FlightRecordTranslations = {
  */
 export async function convertFlightRecordDataToDataPoints(data){
     translate_names(data, FlightRecordTranslations)
-
+    addStepCountToDataPoints(data);
     return await parser(data, await get_custom_map("flight_record_variable_config.json"))
+}
+
+function addStepCountToDataPoints(dataPoints) {
+    let stepCount = 0;
+    for (const dataPoint of dataPoints) {
+        dataPoint.vars = dataPoint.vars || [];
+        dataPoint.vars.push(`step_count_dummy;${stepCount}`);
+        stepCount++;
+    }
 }

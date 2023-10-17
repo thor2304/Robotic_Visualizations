@@ -77,7 +77,7 @@ function extract_variables(datum) {
         // This is one candidate for where we could parse the data type of the variable
         // We could also do it directly in the Variable type instead if we want to
         out.push(new Variable(variableSplit[0], variableSplit[1]))
-        if (variableSplit[0].startsWith("s")) {
+        if (variableSplit[0].startsWith("step")) {
             out.push(new Variable('step_count', variableSplit[1]))
         }
     }
