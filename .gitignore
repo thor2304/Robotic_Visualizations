@@ -5,3 +5,5 @@
 /Robot_control/EDDE_data
 /Robot_control/full_polyscope_file_dump
 !/Robot_control/**/*.py
+/demo/file_upload/recording20220311_14_15_56/
+*.zip

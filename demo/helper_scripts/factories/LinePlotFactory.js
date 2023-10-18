@@ -19,7 +19,7 @@ import {createDivForPlotlyChart} from "./chartDivFactory.js";
 export async function plotLineChart(chartName, chartId, dataPoints, timestamps, dataNames, errors, plotGroup) {
     const dataArrays = {}
 
-    await createDivForPlotlyChart(chartId)
+    const chart = await createDivForPlotlyChart(chartId)
 
     for (let i = 0; i < dataNames.length; i++) {
         dataArrays[dataNames[i]] = []
@@ -44,9 +44,6 @@ export async function plotLineChart(chartName, chartId, dataPoints, timestamps, 
             }]
         }
     }
-
-
-    const chart = document.getElementById(chartId)
 
     const layout = get2dLayout(chartName)
     for(let timespanError of errors){

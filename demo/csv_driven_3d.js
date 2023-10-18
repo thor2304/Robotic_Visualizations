@@ -63,6 +63,7 @@ function createGroup(groupIdentifier) {
     const namePrefix = `${groupIdentifier}: `
 
     const plotRequests = [
+        new PlotRequest(`${namePrefix} Bar Chart`, `${idPrefix}barchart`, ["controller.executionTime"], plotTypes.bar),
         new PlotRequest(`${namePrefix}3D Robot Arm`, `${idPrefix}3dAnimation`, [], plotTypes.robot),
         // new PlotRequest(`${namePrefix}Line Graph`, `${idPrefix}lineGraph`, ["scriptVariables.vg_Vacuum_A.value", "scriptVariables.vg_Vacuum_B.value",], plotTypes.line),
         new PlotRequest(`${namePrefix}Line Graph of TCP position`, `${idPrefix}lineGraph-joints`, [
