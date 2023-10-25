@@ -1,0 +1,103 @@
+:root{
+    /*The color parameters for light mode*/
+    --highlight-background-color: hsl(210, 29%, 97%);
+    --highlight-border-color: hsl(210, 9%, 77%);
+    --highlight-border-between-color: hsla(210, 9%, 77%, 50%);
+    --highlight-code-highlight: hsl(210, 9%, 83%);
+
+    /*Constants that override the provided stylesheet from rehype*/
+    --highlight-border-radius: .5em;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        color-scheme: dark;
+
+        /*To change the color scheme of the rehype highlight*/
+        --highlight-background-color: hsl(240, 20%, 2%);
+        --highlight-border-color: hsl(208, 21%, 12%);
+        --highlight-border-between-color: hsla(208, 21%, 12%, 50%);
+        --highlight-code-highlight: hsl(208, 19%, 13%);
+    }
+}
+
+/*Make the source code block sticky, to make the scrolling experience smoother*/
+.highlight {
+    position: sticky;
+    top: 1em;
+    overflow-x: auto;
+}
+
+pre {
+    margin: .5em 0;
+
+    height: calc(100vh - 6em);
+    overflow-y: auto;
+}
+
+#code-container {
+    /*This is necessary to force the container to respect flex, and not the content*/
+    min-width: 0;
+}
+
+
+.highlight pre .line {
+    margin: 0;
+    padding: .18em;
+    /*Lines between code lines*/
+    border-bottom: .1em solid var(--highlight-border-between-color);
+}
+
+.highlight pre .line span{
+    padding: 0;
+    margin: 0;
+}
+
+.line.active.controlling-group-A{
+    background-color: var(--group-A-active-color);
+}
+
+.line.active.controlling-group-B{
+    background-color: var(--group-B-active-color);
+}
+
+.line.inactive.controlling-group-A{
+    background-color: var(--group-A-inactive-color);
+}
+
+.line.inactive.controlling-group-B{
+    background-color: var(--group-B-inactive-color);
+}
+
+/*https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/color-mix*/
+.line.inactive.error.controlling-group-A{
+    background-color: color-mix(in hsl, var(--highlight-error-line-color), var(--group-A-inactive-color));
+}
+
+.line.inactive.error.controlling-group-B{
+    background-color: color-mix(in hsl, var(--highlight-error-line-color), var(--group-B-inactive-color));
+}
+
+.line.active.error.controlling-group-A{
+    /*background-color: var(--highlight-active-line-color);*/
+    background-color: color-mix(in hsl, var(--highlight-error-line-color), var(--group-A-active-color));
+}
+
+.line.active.error.controlling-group-B{
+    /*background-color: var(--highlight-active-line-color);*/
+    background-color: color-mix(in hsl, var(--highlight-error-line-color), var(--group-B-active-color));
+}
+
+.highlight pre :last-child {
+    border-bottom-style: none;
+}
+
+.highlight {
+    background: var(--highlight-background-color);
+    border: .15em solid var(--highlight-border-color);
+
+    margin: .25em;
+}
+
+
+

@@ -1,0 +1,55 @@
+.vis-placeholder h1{
+    text-align: center;
+}
+
+.vis-placeholder, .code-placeholder{
+    /*box-sizing: border-box;*/
+    width: auto;
+    /*height: 20em;*/
+    min-height: 20em;
+    border: .2em solid hsl(240, 20%, 2%);
+    background-color: var(--ungrouped-color);
+    border-radius: .5em;
+    margin: .25em .25em .75em;
+
+    /*Cool background gradient courtesy of:
+    https://www.stefanjudis.com/blog/a-css-based-background-grid-generator/
+    */
+    --grid-line-color: hsla(240, 20%, 2%, 50%);
+    --grid-thickness: .05em;
+    background-image: linear-gradient(var(--grid-line-color) var(--grid-thickness), transparent var(--grid-thickness), transparent calc(100% - var(--grid-thickness)), var(--grid-line-color) calc(100% - var(--grid-thickness))), linear-gradient(90deg, var(--grid-line-color) var(--grid-thickness), transparent var(--grid-thickness), transparent calc(100% - var(--grid-thickness)), var(--grid-line-color) calc(100% - var(--grid-thickness)));
+    background-size: 25% 25%;
+
+/*    Center child elements*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.group-A {
+    background-color: var(--group-A-background-color);
+}
+
+.group-B {
+    background-color: var(--group-B-background-color);
+}
+
+.vis-placeholder h1:only-child::after, .code-placeholder h1:only-child::after{
+    content: "Loading...";
+    text-align: center;
+}
+
+@media(prefers-color-scheme: light) {
+    .vis-placeholder, .code-placeholder{
+        border-color: hsl(210, 9%, 77%);
+        background: hsl(210, 29%, 97%);
+        --grid-line-color: hsla(210, 9%, 77%, 100%);
+        background-image: linear-gradient(var(--grid-line-color) var(--grid-thickness), transparent var(--grid-thickness), transparent calc(100% - var(--grid-thickness)), var(--grid-line-color) calc(100% - var(--grid-thickness))), linear-gradient(90deg, var(--grid-line-color) var(--grid-thickness), transparent var(--grid-thickness), transparent calc(100% - var(--grid-thickness)), var(--grid-line-color) calc(100% - var(--grid-thickness)));
+        background-size: 10% 25%;
+    }
+}
+
+.loaded{
+    /*height: fit-content;*/
+    background-image: none;
+}

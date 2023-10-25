@@ -1,0 +1,212 @@
+{
+  "wildcard": "*",
+  "picked_variables": [
+    {
+      "name": "Actual current j* [A]",
+      "type": "float",
+      "count": 6,
+      "start": 0,
+      "unit": "Watt"
+    },
+    {
+      "name": "Target current j* [A]",
+      "type": "float",
+      "count": 6,
+      "start": 0,
+      "unit": "Watt"
+    },
+    {
+      "name": "Target moment j* [Nm]",
+      "type": "float",
+      "count": 6,
+      "start": 0,
+      "unit": "Nm"
+    },
+    {
+      "name": "Target position j* [rad]",
+      "type": "float",
+      "count": 6,
+      "start": 0,
+      "unit": "rad"
+    },
+    {
+      "name": "Actual TCP velocity r* [rad/s]",
+      "indexes": [
+        "x",
+        "y",
+        "z"
+      ],
+      "type": "float",
+      "unit": "rad/s"
+    },
+    {
+      "name": "Target TCP pose r* [rad]",
+      "indexes": [
+        "x",
+        "y",
+        "z"
+      ],
+      "type": "float",
+      "unit": "rad"
+    },
+    {
+      "name": "Target TCP pose * [rad]",
+      "indexes": [
+        "x",
+        "y",
+        "z"
+      ],
+      "type": "float",
+      "unit": "m"
+    },
+    {
+      "name": "Actual TCP pose r* [rad]",
+      "indexes": [
+        "x",
+        "y",
+        "z"
+      ],
+      "type": "float",
+      "unit": "rad"
+    },
+    {
+      "name": "Actual TCP pose * [rad]",
+      "indexes": [
+        "x",
+        "y",
+        "z"
+      ],
+      "type": "float",
+      "unit": "m"
+    },
+    {
+      "name": "CoG * [m]",
+      "indexes": [
+        "x",
+        "y",
+        "z"
+      ],
+      "type": "float",
+      "unit": "m"
+    },
+    {
+      "name": "Actual TCP velocity * [m/s]",
+      "indexes": [
+        "x",
+        "y",
+        "z"
+      ],
+      "type": "float",
+      "unit": "m/s"
+    },
+    {
+      "name": "Actual momentum norm [N]",
+      "type": "float",
+      "unit": "N"
+    },
+    {
+      "name": "Actual velocity j* [rad/s]",
+      "type": "float",
+      "count": 6,
+      "start": 0,
+      "unit": "rad/s"
+    },
+    {
+      "name": "Target velocity j* [rad/s]",
+      "type": "float",
+      "count": 6,
+      "start": 0,
+      "unit": "rad/s"
+    },
+    {
+      "name": "Target acceleration j* [rad/s^2]",
+      "type": "float",
+      "count": 6,
+      "start": 0,
+      "unit": "rad/s^2"
+    },
+    {
+      "name": "Actual acceleration j* [rad/s^2]",
+      "type": "float",
+      "count": 6,
+      "start": 0,
+      "unit": "rad/s^2"
+    },
+    {
+      "name": "Arm current [A]",
+      "type": "float",
+      "unit": "A"
+    },
+    {
+      "name": "Arm Voltage [V]",
+      "type": "float",
+      "unit": "V"
+    },
+    {
+      "name": "joint_voltage_*",
+      "type": "float",
+      "count": 6,
+      "start": 0,
+      "unit": "Volt"
+    },
+    {
+      "name": "Elbow position * [m]",
+      "indexes": [
+        "x",
+        "y",
+        "z"
+      ],
+      "type": "float",
+      "unit": "m/s"
+    },
+    {
+      "name": "Elbow velocity * [m]",
+      "indexes": [
+        "x",
+        "y",
+        "z"
+      ],
+      "type": "float",
+      "unit": "m/s"
+    },
+    {
+      "name": "Tool accelerometer * [m/s^2]",
+      "indexes": [
+        "x",
+        "y",
+        "z"
+      ],
+      "type": "float",
+      "unit": "m/s^2"
+    },
+    {
+      "name": "TCP force * [N]",
+      "indexes": [
+        "x",
+        "y",
+        "z"
+      ],
+      "type": "float",
+      "unit": "N"
+    },
+    {
+      "name": "TCP force r* [N]",
+      "indexes": [
+        "x",
+        "y",
+        "z"
+      ],
+      "type": "float",
+      "unit": "N"
+    },
+    {
+      "name": "Temperature j* [C]",
+      "count": 6,
+      "start": 0,
+      "type": "float",
+      "unit": "Celsius"
+    }
+  ],
+  "computed_variables": [
+  ]
+}

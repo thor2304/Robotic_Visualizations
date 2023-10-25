@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="auto">
+<head>
+    <meta charset="UTF-8">
+    <title>Contextual Visualizations</title>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./icons/favicon-16x16.png">
+    <link rel="icon" type="image/x-icon" href="./icons/favicon.ico">
+    <link rel="mask-icon" href="./icons/safari-pinned-tab.svg" color="#5bbad5">
+
+    <script src="https://cdn.plot.ly/plotly-2.25.2.min.js"></script>
+    <!--    <script defer src="https://cdn.jsdelivr.net/npm/d3@7/+esm"></script>-->
+    <script src="https://unpkg.com/mathjs@11.8.0/lib/browser/math.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+            crossorigin="anonymous"></script>
+
+    <!-- This supports light and dark mode automatically. -->
+    <link rel="stylesheet" href="https://esm.sh/@wooorm/starry-night@2/style/both.css">
+    <!--    Stylesheet for code numbers from rehype-starry-night-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@microflash/rehype-starry-night@2.1.1/index.min.css">
+
+    <script defer type="module" src="./helper_scripts/bootstrap-dark-mode.js"></script>
+
+    <script defer type="module" src="./helper_scripts/helpers.js"></script>
+
+    <script defer type="module" src="./helper_scripts/load_csv_data.js"></script>
+    <script defer type="module" src="datastructures/datastructures.js"></script>
+    <script defer type="module" src="datastructures/linked_list.js"></script>
+    <script defer type="module" src="./helper_scripts/keyboardControl.js"></script>
+
+    <script defer type="module" src="./helper_scripts/factories/animationSettings.js"></script>
+    <script defer type="module" src="./helper_scripts/factories/layoutFactory.js"></script>
+    <script defer type="module" src="./helper_scripts/factories/LinePlotFactory.js"></script>
+    <script defer type="module" src="./helper_scripts/factories/directionPlotFactory.js"></script>
+    <script defer type="module" src="./helper_scripts/factories/chartDivFactory.js"></script>
+    <script defer type="module" src="./helper_scripts/factories/robotVisFactory.js"></script>
+    <script defer type="module" src="./helper_scripts/factories/ThrottledFunction.js"></script>
+    <script defer type="module" src="./helper_scripts/factories/CoordinatePlotFactory.js"></script>
+
+    <script defer type="module" src="./helper_scripts/updateVisualizations.js"></script>
+    <script defer type="module" src="datastructures/timespanError.js"></script>
+    <script defer type="module" src="./helper_scripts/scrubCorrection.js"></script>
+    <script defer type="module" src="datastructures/PlotGroup.js"></script>
+    <script defer type="module" src="datastructures/GroupController.js"></script>
+    <script defer type="module" src="./helper_scripts/cycle-picker.js"></script>
+
+    <link rel="stylesheet" href="./source_code_visualization/source_code.css">
+    <link rel="stylesheet" href="source_code_visualization/placeholders.css">
+    <link rel="stylesheet" href="./source_code_visualization/line-control.css">
+
+    <script defer type="module" src="./source_code_visualization/render_using_rehype.js"></script>
+    <script defer type="module" src="source_code_visualization/fetch_and_render_sample_code.js"></script>
+    <script defer type="module" src="source_code_visualization/line_highlight.js"></script>
+    <script defer type="module" src="./source_code_visualization/ErrorHighlightingLine.js"></script>
+
+
+    <script defer type="module" src="csv_driven_3d.js"></script>
+    <script defer type="module" src="helper_scripts/cycle_filtering.js"></script>
+    <script defer type="module" src="helper_scripts/targeted_filtering.js"></script>
+    <script defer type="module" src="./dataframe_driven_robot_arm/computeJointPositions.js"></script>
+    <script defer type="module" src="./helper_scripts/EDDE_loader.js"></script>
+    <script defer type="module" src="./helper_scripts/variable_table.js"></script>
+    <script defer type="module" src="./helper_scripts/ColorMap.js"></script>
+
+    <script defer type="module" src="fluid_layout/toggle_draggable.js"></script>
+    <script defer type="module" src="fluid_layout/make_draggable.js"></script>
+    <script defer type="module" src="fluid_layout/column_resize.js"></script>
+    <script defer type="module" src="fluid_layout/window_resizing.js"></script>
+
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+<header>
+    <div id="header-title">
+        <p id="filler"></p>
+        <h1>This cycle is a partial pickup. Only one suction cup grabbed the tile</h1>
+        <button id="lock-layout-button" class="btn btn-primary m-2"></button>
+    </div>
+</header>
+<!--<div class="p-2">-->
+<!--    <p>Multiple Cycles are now presented at the same time. They update independently of each other.-->
+<!--        The 4 at the top belong to group A and the bottom 4 belong to Group B. </p>-->
+<!--</div>-->
+<main>
+    <div id="visualization-container" class="visualization-container drag-container">
+        <div id="dropdown-container" class="container text-center p-2">
+            <div class="row align-items-center">
+                <div class="col">
+                    <label id="dropdown-A-label" for="dropdown-A" class="form-label">
+                        Visualization A: Errors detected
+                    </label>
+                    <select class="form-select group-A" id="dropdown-A">
+                    </select>
+                </div>
+                <div class="col">
+                    <label id="dropdown-B-label" for="dropdown-B" class="form-label">
+                        Visualization B: No Errors detected
+                    </label>
+                    <select class="form-select group-B" id="dropdown-B">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div id="test" class="vis-placeholder"></div>
+    </div>
+
+    <hr id="separator-slider"><!----------------------------------------------------------------------------------->
+
+
+    <div class="code-container" id="code-container">
+        <!--        <h1>Code goes here</h1>-->
+        <div id="Script-control-button-container">
+
+        </div>
+    </div>
+</main>
+<footer>
+</footer>
+</body>
+</html>
