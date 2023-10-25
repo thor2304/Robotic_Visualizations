@@ -5,7 +5,6 @@ import {Cycle, PlotGroup, PlotRequest, plotTypes} from "./datastructures/PlotGro
 import {get_cycles, pick_every_x_from_array} from "./helper_scripts/cycle_filtering.js";
 import {getActivePlotGroup, updateVisualizations} from "./helper_scripts/updateVisualizations.js";
 import {populatePickers} from "./helper_scripts/cycle-picker.js";
-import {plotCoordinates} from "./helper_scripts/factories/CoordinatePlotFactory.js";
 import {createButtonAndWarningLine} from "./source_code_visualization/ErrorHighlightingLine.js";
 import {load_data_then_call} from "./helper_scripts/load_csv_data.js";
 import {convert_EDDE_to_data_frames} from "./helper_scripts/EDDE_loader.js";
@@ -163,13 +162,6 @@ async function plot_raw_data(data, dataSource = "EDDE") {
     const plotPromises = groupA.getPlotPromises();
     plotPromises.push(...groupB.getPlotPromises());
     await Promise.all(plotPromises);
-
-    await plotCoordinates(
-        "received_x, received_y - All cycles",
-        "test",
-        [{xName: "robot.tool.position.x", yName: "robot.tool.position.y"}],
-        groups
-    )
 
     // 5. shared operations for both groups
     finalizePlotting(firstStep);
