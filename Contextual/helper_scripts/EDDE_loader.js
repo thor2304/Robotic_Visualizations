@@ -231,7 +231,7 @@ async function create_frame_from_datum(datum, offSetVector, customVariables) {
  * @param custom_map_file_name {string} The name of the custom map file. Must be located in demo/customizations folder
  */
 export async function get_custom_map(custom_map_file_name = "EDDE_allow_list.json") {
-    const server_url = window.location.origin + "/Robotic_Visualizations/demo/customizations/";
+    const server_url = window.location.origin + "/Robotic_Visualizations/Contextual/customizations/";
     const response = await fetch(server_url + custom_map_file_name);
     return new CustomVariableConfiguration(await response.json());
 }
