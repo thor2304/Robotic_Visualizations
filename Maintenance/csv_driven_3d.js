@@ -89,7 +89,7 @@ async function showStrain(rawFrames) {
 
     const strainDisplay = document.getElementById("strain-display")
 
-    if (life.filter(l => isNaN(l)).length === life.length) {
+    if (life === undefined || life === null || life.filter(l => isNaN(l)).length === life.length) {
         const strainDisplayText = document.createElement("p")
         strainDisplayText.innerText = `No strain data available`
         strainDisplay.appendChild(strainDisplayText)
