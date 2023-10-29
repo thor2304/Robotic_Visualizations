@@ -79,6 +79,7 @@ async function loadScriptFile(file) {
  * @param file {File}
  */
 export async function handleFile(file) {
+    console.log("Handling file: " + file.name)
     if (file.name.endsWith(".csv")) {
         await loadCsvFile(file)
     } else if (file.name.endsWith(".zip")) {

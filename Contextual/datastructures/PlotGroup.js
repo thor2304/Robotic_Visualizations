@@ -7,6 +7,7 @@ import {createDivForTable, createDivsForPlotlyCharts} from "../helper_scripts/fa
 import {LinkedList} from "./linked_list.js";
 import {createEnum} from "../helper_scripts/helpers.js";
 import {plotBarChart} from "../helper_scripts/factories/BarChartFactory.js";
+import {plotCoordinates} from "../helper_scripts/factories/CoordinatePlotFactory.js";
 
 export class PlotGroup {
     /**
@@ -152,6 +153,8 @@ export class PlotGroup {
                 return Promise.resolve()
             case plotTypes.bar:
                 return plotBarChart(plotRequest.plotName, plotRequest.chartId, this.cycle.sequentialDataPoints, this.cycle.timestamps, plotRequest.dataNames[0], this.cycle.errors, this)
+            case plotTypes.coordinate:
+                return plotCoordinates(plotRequest.plotName, plotRequest.chartId, plotRequest.dataNames, this)
         }
     }
 
@@ -220,10 +223,10 @@ export function findMaxOfVariables(dataPoints, variablePathArray) {
 
 // noinspection JSValidateTypes
 /**
- * "line", "robot", "direction", "table", "bar"
- * @type {Readonly<{line: string, robot: string, direction: string, table: string, bar: string}>}
+ * "line", "robot", "direction", "table", "bar", "coordinate"
+ * @type {Readonly<{line: string, robot: string, direction: string, table: string, bar: string, coordinate: string}>}
  */
-export const plotTypes = createEnum(["line", "robot", "direction", "table", "bar"])
+export const plotTypes = createEnum(["line", "robot", "direction", "table", "bar", "coordinate"])
 
 export class PlotRequest {
     plotName = undefined

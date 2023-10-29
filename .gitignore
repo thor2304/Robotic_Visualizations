@@ -8,3 +8,4 @@
 /demo/file_upload/recording20220311_14_15_56/
 *.zip
 /*/file_upload/recording20220311_14_15_56/
+**/**/ur_service_*/

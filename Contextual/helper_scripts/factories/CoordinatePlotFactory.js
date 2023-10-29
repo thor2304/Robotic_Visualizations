@@ -9,9 +9,10 @@ import {createDivForPlotlyChart} from "./chartDivFactory.js";
  * @param dataNames {CoordinateNames} - An array of strings that are passed to dataPoints[i].traversed_attribute(dataNames[j]).
  * These are the names of the attributes that will be plotted.
  * @param groupController {GroupController} - The plotgroups that together contain all the relevant cycles.
+ * @param plotGroup {PlotGroup} - The plotgroup that this plot belongs to.
  * @returns {Promise<void>}
  */
-export async function plotCoordinates(chartName, chartId, dataNames, groupController){
+export async function plotCoordinates(chartName, chartId, dataNames, groupController, plotGroup) {
     const chart = await createDivForPlotlyChart(chartId)
     const layout = get2dLayout(chartName, false)
     // layout.shapes.push(createBoundingLines())
@@ -61,7 +62,7 @@ export async function plotCoordinates(chartName, chartId, dataNames, groupContro
  * @param dataNames {CoordinateNames}
  * @returns {Coordinate[]}
  */
-function extractCoordinates(ACycles, BCycles, dataNames){
+function extractCoordinates(ACycles, BCycles, dataNames) {
     /**
      * @type {Coordinate[]}
      */
@@ -77,7 +78,13 @@ function extractCoordinates(ACycles, BCycles, dataNames){
             for (let i = 0; i < dataNames.length; i++) {
                 const x = dataPoint.traversed_attribute(dataNames[i].xName)
                 const y = dataPoint.traversed_attribute(dataNames[i].yName)
-                coordinates.push({x: x, y: y, error: error, name: cycle.cycleIndex.toString(), cycleIndex: cycle.cycleIndex})
+                coordinates.push({
+                    x: x,
+                    y: y,
+                    error: error,
+                    name: cycle.cycleIndex.toString(),
+                    cycleIndex: cycle.cycleIndex
+                })
             }
         }
     }
@@ -101,25 +108,50 @@ const markers = {
  * @param active_number {number} - The index of the cycle that is currently active.
  * @returns {{}[]}
  */
-function _generate_traces_coordinate(coordinates, active_number= 2) {
+function _generate_traces_coordinate(coordinates, active_number = 1) {
     const traces = []
 
     const colorMap = getColorMap()
 
-    // Generate the traces for the data lines
-    for (let i = 0; i < coordinates.length; i++) {
-        traces.push({
-            x: [coordinates[i].x],
-            y: [coordinates[i].y],
-            type: 'scatter',
-            name: coordinates[i].name,
-            marker: {
-                color: coordinates[i].error ? colorMap.general.error : colorMap.general.success,
-                symbol: coordinates[i].cycleIndex === active_number ? markers.current : coordinates[i].cycleIndex < active_number ? markers.past : markers.future,
-                size: 20
-            }
-        })
-    }
+    const past_coordinates = coordinates.filter((coordinate) => coordinate.cycleIndex < active_number)
+    const future_coordinates = coordinates.filter((coordinate) => coordinate.cycleIndex > active_number)
+    const active_coordinate = coordinates.filter((coordinate) => coordinate.cycleIndex === active_number)
+
+    traces.push({
+        x: past_coordinates.map((coordinate) => coordinate.x),
+        y: past_coordinates.map((coordinate) => coordinate.y),
+        type: 'scatter',
+        name: "Past",
+        marker: {
+            color: past_coordinates.map((coordinate) => coordinate.error ? colorMap.general.error : colorMap.general.success),
+            symbol: markers.past,
+            size: 20
+        }
+    })
+
+    traces.push({
+        x: future_coordinates.map((coordinate) => coordinate.x),
+        y: future_coordinates.map((coordinate) => coordinate.y),
+        type: 'scatter',
+        name: "Future",
+        marker: {
+            color: future_coordinates.map((coordinate) => coordinate.error ? colorMap.general.error : colorMap.general.success),
+            symbol: markers.future,
+            size: 20
+        }
+    })
+
+    traces.push({
+        x: active_coordinate.map((coordinate) => coordinate.x),
+        y: active_coordinate.map((coordinate) => coordinate.y),
+        type: 'scatter',
+        name: "Current",
+        marker: {
+            color: active_coordinate.map((coordinate) => coordinate.error ? colorMap.general.error : colorMap.general.success),
+            symbol: markers.current,
+            size: 20
+        }
+    })
 
     // Generate the traces for the legend explanation
     traces.push(getTransparentMarkerForLegendExplanation("Error", colorMap.general.error, markers.explanation))
@@ -132,7 +164,7 @@ function _generate_traces_coordinate(coordinates, active_number= 2) {
     return traces
 }
 
-function getTransparentMarkerForLegendExplanation(text, color, symbol){
+function getTransparentMarkerForLegendExplanation(text, color, symbol) {
     return {
         x: [],
         y: [], // We need to put something in here for it to show up. But at the same time we do not want to show the data

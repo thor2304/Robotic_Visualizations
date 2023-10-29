@@ -15,6 +15,7 @@ export async function load_data_then_call(callback, data_delimiter = ','){
     let cached = await loadJson(dataFileName)
     console.log(cached)
     if (!cached){
+        console.log("Fetching sample data", cached)
         cached = await fetch_sample_data()
         await save(dataFileName, cached)
     }

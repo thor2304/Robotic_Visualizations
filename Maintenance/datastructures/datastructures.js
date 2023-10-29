@@ -89,7 +89,7 @@ class Tool {
  */
 
 /**
- * @type {Readonly<{Base: string, Shoulder: string, Elbow: string}>}
+ * @type {Readonly<{Base: string, Shoulder: string, Elbow: string, "wrist 1": string, "wrist 2": string, "wrist 3": string}>}
  */
 const Joints = createEnum(["Base", "Shoulder", "Elbow", "wrist 1", "wrist 2", "wrist 3"]);
 const robot_joint_names = {
@@ -127,6 +127,10 @@ class SafetyStatus {
 }
 
 class Robot {
+    /**
+     *
+     * @type {Object<Joints, Joint>}
+     */
     joints = {};
 
     constructor(tool, joints, payload, protectiveStop, blend) {
@@ -234,6 +238,9 @@ class DataPoint {
 
         this.pointInTime = new PointInTime(timestamp, lineNumber, lineString, this.scriptVariables["step_count"]);
         this.controller = new Controller(executionTime, cpuUsage, installedMemory, memoryUsage);
+        /**
+         * @type {Robot}
+         */
         this.robot = robot;
 
         for (let i = 0; i < physicalIOBlocks.length; i++) {

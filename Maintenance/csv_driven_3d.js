@@ -12,6 +12,8 @@ import {makeAllDraggable} from "./fluid_layout/make_draggable.js";
 import {filter_raw_data} from "./helper_scripts/targeted_filtering.js";
 import {GroupController} from "./datastructures/GroupController.js";
 import {convertFlightRecordDataToDataPoints} from "./file_upload/flightRecordTranslations.js";
+import {calculateRemainingLife} from "./strain/lifetimeCalculation.js";
+import {Joints} from "./datastructures/datastructures.js";
 
 export const groups = new GroupController();
 
@@ -80,6 +82,20 @@ function createGroup(groupIdentifier) {
     return new PlotGroup(plotRequests, variablesForMaxima, groupIdentifier)
 }
 
+async function showStrain(rawFrames) {
+    const life = await calculateRemainingLife(rawFrames)
+    console.log("Strain:", life)
+
+    const strainDisplay = document.getElementById("strain-display")
+
+    Object.keys(Joints).forEach((joint, index) => {
+        const strainDisplayText = document.createElement("p")
+        strainDisplayText.innerText = `Remaining life of ${joint}: ${life[index].toFixed(2)} seconds`
+        strainDisplay.appendChild(strainDisplayText)
+    })
+
+}
+
 /**
  * @param data {Array<Object>}
  * @param dataSource {"EDDE" | "FlightRecord"|"RTDE"}
@@ -96,12 +112,14 @@ async function plot_raw_data(data, dataSource = "EDDE") {
     let rawFrames;
 
     if (dataSource === "FlightRecord") {
+        // data = pick_every_x_from_array(data, 10);
         rawFrames = await convertFlightRecordDataToDataPoints(data);
     } else if (dataSource === "EDDE" || dataSource === "RTDE") {
         data = filter_raw_data(data);
         data = pick_every_x_from_array(data, 2);
         rawFrames = await convert_EDDE_to_data_frames(data); // This method is the cause of all loading time
     }
+    await showStrain(rawFrames);
 
     // print_script_lines(rawFrames);
     // end of 2.
