@@ -7,10 +7,9 @@
 /*}*/
 
 .area {
-    width: 98%;
-    height: 98%;
-    position: absolute;
-    border: 4px dashed #000;
+    width: 90vw;
+    height: 90vh;
+    border: .2em dashed #000;
     background-image: url("../icons/android-chrome-256x256.png");
     background-position: center;
     background-repeat: no-repeat;
@@ -18,7 +17,7 @@
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-    filter: alpha(opacity=50);
+    filter: alpha(opacity=70);
     -khtml-opacity: 0.5;
     -moz-opacity: 0.5;
     opacity: 0.5;
