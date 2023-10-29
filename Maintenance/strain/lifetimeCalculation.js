@@ -30,7 +30,7 @@ function getLifeForJoint(dataPoints, jointNumber, motorCollection) {
  */
 export async function calculateRemainingLife(dataPoints) {
     const motorParamRaw = await loadJson("motorParams.json")
-    if (motorParamRaw === null) {
+    if (motorParamRaw == null) {
         console.log("No motor params found. Maybe you did not load a flight record?")
         return undefined
     }

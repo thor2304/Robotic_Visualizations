@@ -134,19 +134,25 @@ main > *{
 
 /*For the header and the unlock button*/
 #header-title{
-    grid-template-columns: 1fr auto 1fr;
+    grid-template-columns: 1fr auto auto;
     display: grid;
     justify-content: center;
     align-content: center;
 }
 
-#lock-layout-button{
+#header-title > h1{
+    padding: .25em;
+}
+
+#header-title > button{
     padding: 0.5rem;
     font-size: 1.5rem;
     justify-self: right;
     align-self: center;
     height: fit-content;
 }
+
+
 
 .warning {
     /*https://una.im/color-mix-opacity/*/

@@ -84,9 +84,17 @@ function createGroup(groupIdentifier) {
 
 async function showStrain(rawFrames) {
     const life = await calculateRemainingLife(rawFrames)
+
     console.log("Strain:", life)
 
     const strainDisplay = document.getElementById("strain-display")
+
+    if (life.filter(l => isNaN(l)).length === life.length) {
+        const strainDisplayText = document.createElement("p")
+        strainDisplayText.innerText = `No strain data available`
+        strainDisplay.appendChild(strainDisplayText)
+        return
+    }
 
     Object.keys(Joints).forEach((joint, index) => {
         const strainDisplayText = document.createElement("p")
