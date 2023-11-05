@@ -3,17 +3,15 @@ import {get2dLayout} from "./layoutFactory.js";
 import {createDivForPlotlyChart} from "./chartDivFactory.js";
 import {getAnimationSettings} from "./animationSettings.js";
 
-function getLayoutForCoordinates(chartName) {
+function getLayoutForCoordinates(chartName, xMin, xMax, yMin, yMax) {
     const layout = get2dLayout(chartName, false)
     // layout.shapes.push(createBoundingLines())
     layout.xaxis.showline = false
     layout.xaxis.showticklabels = false
     layout.yaxis.showline = false
     layout.yaxis.showticklabels = false
-    // layout.xaxis.range = [0, 1]
-    // layout.yaxis.range = [0, 1]
-    layout.xaxis.autorange = true
-    layout.yaxis.autorange = true
+    layout.xaxis.range = [xMin, xMax]
+    layout.yaxis.range = [yMin, yMax]
     layout.xaxis.scaleanchor = "y"
     layout.xaxis.scaleratio = 1
     layout.xaxis.constrain = "domain"
@@ -42,6 +40,36 @@ function getFramesForTCP(groupController) {
     return frames;
 }
 
+function getRanges(traces, frames) {
+    const minTraceX = Math.min(...traces.map((trace) => Math.min(...trace.x)))
+    const minFrameX = Math.min(...frames.map((frame) => Math.min(...frame.data[0].x)))
+    const minX = Math.min(minTraceX, minFrameX)
+
+    const maxTraceX = Math.max(...traces.map((trace) => Math.max(...trace.x)))
+    const maxFrameX = Math.max(...frames.map((frame) => Math.max(...frame.data[0].x)))
+    const maxX = Math.max(maxTraceX, maxFrameX)
+
+    const minTraceY = Math.min(...traces.map((trace) => Math.min(...trace.y)))
+    const minFrameY = Math.min(...frames.map((frame) => Math.min(...frame.data[0].y)))
+    const minY = Math.min(minTraceY, minFrameY)
+
+    const maxTraceY = Math.max(...traces.map((trace) => Math.max(...trace.y)))
+    const maxFrameY = Math.max(...frames.map((frame) => Math.max(...frame.data[0].y)))
+    const maxY = Math.max(maxTraceY, maxFrameY)
+
+    const xRange = maxX - minX
+    const yRange = maxY - minY
+
+    const xPadding = xRange * 0.05
+    const yPadding = yRange * 0.05
+
+    const xMin = minX - xPadding
+    const xMax = maxX + xPadding
+    const yMin = minY - yPadding
+    const yMax = maxY + yPadding
+    return {xMin, xMax, yMin, yMax};
+}
+
 /**
  * Creates a 2d plot, that shows the values of the datanames provided at the first timestamp of the cycles provided.
  * @param chartName {string} - The name of the chart displayed as the title
@@ -54,13 +82,14 @@ function getFramesForTCP(groupController) {
  */
 export async function plotCoordinates(chartName, chartId, dataNames, groupController, plotGroup) {
     const chart = await createDivForPlotlyChart(chartId)
-    const layout = getLayoutForCoordinates(chartName);
-
     const traces = createTraces(groupController, dataNames);
 
     // We have no frames here until we want to start animating the 2d plot.
 
     const frames = getFramesForTCP(groupController);
+    const {xMin, xMax, yMin, yMax} = getRanges(traces, frames);
+
+    const layout = getLayoutForCoordinates(chartName, xMin, xMax, yMin, yMax);
 
     const plot = await Plotly.newPlot(chart, {
         data: traces,
@@ -84,7 +113,9 @@ function createTraces(groupController, dataNames) {
 
     const coordinates = extractCoordinates(ACycles, BCycles, dataNames)
     const activeCycle = groupController.get("A").getCycle().cycleIndex
-    return _generate_traces_coordinate(coordinates, activeCycle);
+    const TCP_x = groupController.get("A").getCycle().sequentialDataPoints[activeCycle].robot.tool.position.x
+    const TCP_y = groupController.get("A").getCycle().sequentialDataPoints[activeCycle].robot.tool.position.y
+    return _generate_traces_coordinate(coordinates, activeCycle, TCP_x, TCP_y);
 }
 
 export function updateCoordinatePlot(chartId, dataNames, groupController) {
@@ -94,9 +125,11 @@ export function updateCoordinatePlot(chartId, dataNames, groupController) {
 
     const frames = getFramesForTCP(groupController);
 
+    const {xMin, xMax, yMin, yMax} = getRanges(traces, frames);
+
     Plotly.react(chart, {
         data: traces,
-        layout: getLayoutForCoordinates(chart.layout.title),
+        layout: getLayoutForCoordinates(chart.layout.title, xMin, xMax, yMin, yMax),
         frames: frames,
     }).then();
 }
@@ -161,9 +194,11 @@ const markers = {
  *
  * @param coordinates {Coordinate []} - An array of strings that are passed to dataPoints[i].traversed_attribute(dataNames[j]).
  * @param active_number {number} - The index of the cycle that is currently active.
+ * @param TCP_x {number} - The x coordinate of the TCP at the active cycle
+ * @param TCP_y {number} - The y coordinate of the TCP at the active cycle
  * @returns {{}[]}
  */
-function _generate_traces_coordinate(coordinates, active_number = 1) {
+function _generate_traces_coordinate(coordinates, active_number = 1, TCP_x, TCP_y) {
     const traces = []
 
     const colorMap = getColorMap()
@@ -173,8 +208,8 @@ function _generate_traces_coordinate(coordinates, active_number = 1) {
     const active_coordinate = coordinates.filter((coordinate) => coordinate.cycleIndex === active_number)
 
     traces.push({
-        x: [0],
-        y: [0],
+        x: [TCP_x],
+        y: [TCP_y],
         type: 'scatter',
         mode: 'markers',
         name: "", // Robot. This is empty to get rid of the ugly grey box
