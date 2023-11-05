@@ -64,19 +64,19 @@ function createGroup(groupIdentifier) {
     const namePrefix = `${groupIdentifier}: `
 
     const plotRequests = [
-        new PlotRequest(`${namePrefix} Bar Chart`, `${idPrefix}barchart`, ["controller.executionTime"], plotTypes.bar),
+        // new PlotRequest(`${namePrefix} Bar Chart`, `${idPrefix}barchart`, ["controller.executionTime"], plotTypes.bar),
         new PlotRequest(`${namePrefix}3D Robot Arm`, `${idPrefix}3dAnimation`, [], plotTypes.robot),
         // new PlotRequest(`${namePrefix}Line Graph`, `${idPrefix}lineGraph`, ["scriptVariables.vg_Vacuum_A.value", "scriptVariables.vg_Vacuum_B.value",], plotTypes.line),
-        new PlotRequest(`${namePrefix}Line Graph of TCP position`, `${idPrefix}lineGraph-joints`, [
-            "custom.Actual TCP pose rx [rad]",
-            "custom.Actual TCP pose ry [rad]",
-            "custom.Actual TCP pose rz [rad]",
-            "robot.joints.wrist_3.position.x",
-            "robot.joints.wrist_3.position.y",
-            "robot.joints.wrist_3.position.z",
-        ], plotTypes.line),
-        new PlotRequest(`${namePrefix}3D TCP Vis`, `${idPrefix}3d_tcp_vis`, ["robot.tool.positionError"], plotTypes.direction),
-        new PlotRequest(`${namePrefix}variable_table`, `${idPrefix}variable_vis`, [], plotTypes.table),
+        // new PlotRequest(`${namePrefix}Line Graph of TCP position`, `${idPrefix}lineGraph-joints`, [
+        //     "custom.Actual TCP pose rx [rad]",
+        //     "custom.Actual TCP pose ry [rad]",
+        //     "custom.Actual TCP pose rz [rad]",
+        //     "robot.joints.wrist_3.position.x",
+        //     "robot.joints.wrist_3.position.y",
+        //     "robot.joints.wrist_3.position.z",
+        // ], plotTypes.line),
+        // new PlotRequest(`${namePrefix}3D TCP Vis`, `${idPrefix}3d_tcp_vis`, ["robot.tool.positionError"], plotTypes.direction),
+        // new PlotRequest(`${namePrefix}variable_table`, `${idPrefix}variable_vis`, [], plotTypes.table),
     ]
 
     return new PlotGroup(plotRequests, variablesForMaxima, groupIdentifier)
