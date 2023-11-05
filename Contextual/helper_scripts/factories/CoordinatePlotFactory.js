@@ -17,7 +17,9 @@ export async function plotCoordinates(chartName, chartId, dataNames, groupContro
     const layout = get2dLayout(chartName, false)
     // layout.shapes.push(createBoundingLines())
     layout.xaxis.showline = false
+    layout.xaxis.showticklabels = false
     layout.yaxis.showline = false
+    layout.yaxis.showticklabels = false
     // layout.xaxis.range = [0, 1]
     // layout.yaxis.range = [0, 1]
     layout.xaxis.autorange = true
@@ -121,36 +123,48 @@ function _generate_traces_coordinate(coordinates, active_number = 1) {
         x: past_coordinates.map((coordinate) => coordinate.x),
         y: past_coordinates.map((coordinate) => coordinate.y),
         type: 'scatter',
-        name: "Past",
+        mode: 'markers',
+        name: "", // Past. This is empty to get rid of the ugly grey box
+        showlegend: false,
         marker: {
             color: past_coordinates.map((coordinate) => coordinate.error ? colorMap.general.error : colorMap.general.success),
             symbol: markers.past,
             size: 20
-        }
+        },
+        text: past_coordinates.map((coordinate) => coordinate.cycleIndex.toString()),
+        hovertemplate: "(%{x}, %{y}) number: %{text} Past"
     })
 
     traces.push({
         x: future_coordinates.map((coordinate) => coordinate.x),
         y: future_coordinates.map((coordinate) => coordinate.y),
         type: 'scatter',
-        name: "Future",
+        mode: 'markers',
+        name: "", // Future. This is empty to get rid of the ugly grey box
+        showlegend: false,
         marker: {
             color: future_coordinates.map((coordinate) => coordinate.error ? colorMap.general.error : colorMap.general.success),
             symbol: markers.future,
-            size: 20
-        }
+            size: 20,
+        },
+        text: future_coordinates.map((coordinate) => coordinate.cycleIndex.toString()),
+        hovertemplate: "(%{x}, %{y}) number: %{text} Future"
     })
 
     traces.push({
         x: active_coordinate.map((coordinate) => coordinate.x),
         y: active_coordinate.map((coordinate) => coordinate.y),
         type: 'scatter',
-        name: "Current",
+        mode: 'markers',
+        name: "", // Current. This is empty to get rid of the ugly grey box
+        showlegend: false,
         marker: {
             color: active_coordinate.map((coordinate) => coordinate.error ? colorMap.general.error : colorMap.general.success),
             symbol: markers.current,
             size: 20
-        }
+        },
+        text: active_coordinate.map((coordinate) => coordinate.cycleIndex.toString()),
+        hovertemplate: "(%{x}, %{y}) number: %{text} Current"
     })
 
     // Generate the traces for the legend explanation
@@ -166,8 +180,8 @@ function _generate_traces_coordinate(coordinates, active_number = 1) {
 
 function getTransparentMarkerForLegendExplanation(text, color, symbol) {
     return {
-        x: [],
-        y: [], // We need to put something in here for it to show up. But at the same time we do not want to show the data
+        x: [0],
+        y: [0], // We need to put something in here for it to show up. But at the same time we do not want to show the data
         type: 'scatter',
         name: text,
         marker: {
@@ -176,5 +190,6 @@ function getTransparentMarkerForLegendExplanation(text, color, symbol) {
             size: 20
         },
         legendGroup: "legendExplanation",
+        visible: "legendonly"
     }
 }

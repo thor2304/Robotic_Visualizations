@@ -96,6 +96,8 @@ async function plot_raw_data(data, dataSource = "EDDE") {
         rawFrames = await convert_EDDE_to_data_frames(data); // This method is the cause of all loading time
     }
 
+    // console.log(rawFrames[rawFrames.length - 1])
+
     // print_script_lines(rawFrames);
     // end of 2.
 
@@ -157,7 +159,7 @@ async function plot_raw_data(data, dataSource = "EDDE") {
     await Promise.all(plotPromises);
 
     await plotCoordinates(
-        "received_x, received_y - All cycles",
+        "Pickup positions",
         "test",
         [{xName: "robot.tool.position.x", yName: "robot.tool.position.y"}],
         groups
