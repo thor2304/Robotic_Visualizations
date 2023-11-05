@@ -80,10 +80,10 @@ function createGroup(groupIdentifier) {
  */
 async function plot_raw_data(data, dataSource = "EDDE") {
     const groupA = createGroup("A");
-    const groupB = createGroup("B");
+    // const groupB = createGroup("B");
 
     await groupA.createDivsForPlots();
-    await groupB.createDivsForPlots();
+    // await groupB.createDivsForPlots();
 
     // 2. Shared operation for both groups
     let rawFrames;
@@ -121,7 +121,7 @@ async function plot_raw_data(data, dataSource = "EDDE") {
         withErrors.push(new Cycle(rawFrames, 0))
     }
 
-    groups.initialize(groupA, groupB)
+    groups.initialize(groupA)
 
     groupA.setCycle(withErrors[0])
     for (let i = 1; i < withErrors.length; i++) {
@@ -130,13 +130,19 @@ async function plot_raw_data(data, dataSource = "EDDE") {
         groups.addOption(newGroup)
     }
 
-    if (withoutErrors.length === 0) {
-        withoutErrors.push(new Cycle([rawFrames[0]], 1))
-    }
+    // if (withoutErrors.length === 0) {
+    //     withoutErrors.push(new Cycle([rawFrames[0]], withErrors.length))
+    // }
+    //
+    // groupB.setCycle(withoutErrors[0])
+    // for (let i = 1; i < withoutErrors.length; i++) {
+    //     const newGroup = createGroup("B")
+    //     newGroup.setCycle(withoutErrors[i])
+    //     groups.addOption(newGroup)
+    // }
 
-    groupB.setCycle(withoutErrors[0])
-    for (let i = 1; i < withoutErrors.length; i++) {
-        const newGroup = createGroup("B")
+    for (let i = 0; i < withoutErrors.length; i++) {
+        const newGroup = createGroup("A")
         newGroup.setCycle(withoutErrors[i])
         groups.addOption(newGroup)
     }
@@ -155,7 +161,7 @@ async function plot_raw_data(data, dataSource = "EDDE") {
 
     // 4. Shared operation for both groups
     const plotPromises = groupA.getPlotPromises();
-    plotPromises.push(...groupB.getPlotPromises());
+    // plotPromises.push(...groupB.getPlotPromises());
     await Promise.all(plotPromises);
 
     await plotCoordinates(

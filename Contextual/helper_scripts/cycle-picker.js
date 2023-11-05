@@ -38,8 +38,8 @@ function addOptions(groupIdentifier, groupPicker, plotGroups) {
     for (let i = 0; i < plotGroups.length; i++) {
         const plotGroup = plotGroups[i];
         const option = document.createElement("option")
-        option.innerText = `${plotGroup.getCycle().cycleIndex}`
-        option.value = i
+        option.innerText = `${plotGroup.getCycle().cycleIndex} ${plotGroup.getCycle().hasError() ? " (error)" : ""}`
+        option.value = i.toString()
         if (i === 0) {
             option.selected = true
         }
