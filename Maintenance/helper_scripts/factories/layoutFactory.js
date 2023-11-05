@@ -34,17 +34,20 @@ export function get3dLayout(title, range, zoom=1) {
             xaxis: {
                 title: 'x',
                 range: [-range, range],
-                color: "red"
+                color: "red",
+                showticklabels: false,
             },
             yaxis: {
                 title: 'y',
                 range: [-range, range],
-                color: "green"
+                color: "green",
+                showticklabels: false,
             },
             zaxis: {
                 title: 'z',
                 range: [-range, range],
-                color: "blue"
+                color: "blue",
+                showticklabels: false,
             },
             camera: {
                 projection: {
