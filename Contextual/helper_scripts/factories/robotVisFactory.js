@@ -7,10 +7,11 @@ import {createDivForPlotlyChart} from "./chartDivFactory.js";
 /**
  * @param dataframes {Array<DataPoint>}
  * @param chartId {String}
+ * @param chartTitle {String}
  * @param plotGroup {PlotGroup}
  * @returns {Promise<void>}
  */
-export async function plot3dVis(dataframes, chartId, plotGroup) {
+export async function plot3dVis(dataframes, chartId, chartTitle, plotGroup) {
     await createDivForPlotlyChart(chartId)
 
     const overlap_with_slider = true;
@@ -116,7 +117,7 @@ export async function plot3dVis(dataframes, chartId, plotGroup) {
 
     const box_size = 1
 
-    const layout = get3dLayout(chartId, box_size, 1.5)
+    const layout = get3dLayout(chartTitle, box_size, 1.5)
 
     layout.hovermode = 'closest';
     // Finally, add the slider and use `pad` to position it

@@ -146,7 +146,7 @@ export class PlotGroup {
             case plotTypes.line:
                 return plotLineChart(plotRequest.plotName, plotRequest.chartId, this.cycle.sequentialDataPoints, this.cycle.timestamps, plotRequest.dataNames, this.cycle.errors, this)
             case plotTypes.robot:
-                return plot3dVis(this.cycle.sequentialDataPoints, plotRequest.chartId, this)
+                return plot3dVis(this.cycle.sequentialDataPoints, plotRequest.chartId, plotRequest.plotName, this)
             case plotTypes.direction:
                 return plotDirection(plotRequest.plotName, plotRequest.chartId, this.cycle.sequentialDataPoints, this.cycle.timestamps, plotRequest.dataNames, this)
             case plotTypes.table:

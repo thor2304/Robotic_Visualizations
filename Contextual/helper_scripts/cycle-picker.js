@@ -14,6 +14,7 @@ export function populatePickers(groups) {
         counts.push(plotGroups.length)
         addOptions(groupIdentifier, groupSelector, plotGroups)
     }
+    //TODO: Calculate error percentage and not error percentage not just the percentage for each picker
 
     const sum = counts.reduce((a, b) => a + b, 0)
 
