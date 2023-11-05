@@ -1,19 +1,9 @@
 import {getColorMap} from "../ColorMap.js";
 import {get2dLayout} from "./layoutFactory.js";
 import {createDivForPlotlyChart} from "./chartDivFactory.js";
+import {getAnimationSettings} from "./animationSettings.js";
 
-/**
- * Creates a 2d plot, that shows the values of the datanames provided at the first timestamp of the cycles provided.
- * @param chartName {string} - The name of the chart displayed as the title
- * @param chartId {string} - The id of the htmlElement into which the chart will be created
- * @param dataNames {CoordinateNames} - An array of strings that are passed to dataPoints[i].traversed_attribute(dataNames[j]).
- * These are the names of the attributes that will be plotted.
- * @param groupController {GroupController} - The plotgroups that together contain all the relevant cycles.
- * @param plotGroup {PlotGroup} - The plotgroup that this plot belongs to.
- * @returns {Promise<void>}
- */
-export async function plotCoordinates(chartName, chartId, dataNames, groupController, plotGroup) {
-    const chart = await createDivForPlotlyChart(chartId)
+function getLayoutForCoordinates(chartName) {
     const layout = get2dLayout(chartName, false)
     // layout.shapes.push(createBoundingLines())
     layout.xaxis.showline = false
@@ -27,28 +17,90 @@ export async function plotCoordinates(chartName, chartId, dataNames, groupContro
     layout.xaxis.scaleanchor = "y"
     layout.xaxis.scaleratio = 1
     layout.xaxis.constrain = "domain"
+    return layout;
+}
 
-    const ACycles = groupController.getOptions("A").map((plotGroup) => plotGroup.getCycle())
-    const BCycles = groupController.getOptions("B").map((plotGroup) => plotGroup.getCycle())
+function getFramesForTCP(groupController) {
+    const frames = [];
+    const datapoints = groupController.get("A").getCycle().sequentialDataPoints
+    const timestamps = groupController.get("A").getCycle().timestamps
 
-    const coordinates = extractCoordinates(ACycles, BCycles, dataNames)
-    const traces = _generate_traces_coordinate(coordinates)
+    for (let i = 0; i < timestamps.length; i++) {
+        try {
+            frames.push({
+                name: timestamps[i],
+                data: [{
+                    x: [datapoints[i].robot.joints.wrist_3.position.x],
+                    y: [datapoints[i].robot.joints.wrist_3.position.y],
+                }]
+            })
+
+        } catch (e) {
+            console.error(e, datapoints[i], i)
+        }
+    }
+    return frames;
+}
+
+/**
+ * Creates a 2d plot, that shows the values of the datanames provided at the first timestamp of the cycles provided.
+ * @param chartName {string} - The name of the chart displayed as the title
+ * @param chartId {string} - The id of the htmlElement into which the chart will be created
+ * @param dataNames {CoordinateNames} - An array of strings that are passed to dataPoints[i].traversed_attribute(dataNames[j]).
+ * These are the names of the attributes that will be plotted.
+ * @param groupController {GroupController} - The plotgroups that together contain all the relevant cycles.
+ * @param plotGroup {PlotGroup} - The plotgroup that this plot belongs to.
+ * @returns {Promise<void>}
+ */
+export async function plotCoordinates(chartName, chartId, dataNames, groupController, plotGroup) {
+    const chart = await createDivForPlotlyChart(chartId)
+    const layout = getLayoutForCoordinates(chartName);
+
+    const traces = createTraces(groupController, dataNames);
 
     // We have no frames here until we want to start animating the 2d plot.
+
+    const frames = getFramesForTCP(groupController);
+
     const plot = await Plotly.newPlot(chart, {
         data: traces,
         layout: layout,
+        frames: frames,
     })
 
     // Below is commented until we want to have an interactive plot of the cycles.
-    // for(let plotGroup of plotGroups){
-    //     plotGroup.addUpdateInformation(chartId, getAnimationSettings(false))
-    // }
+    for (let plotGroup of groupController.getOptions("A")) {
+        plotGroup.addUpdateInformation(chartId, getAnimationSettings(false))
+    }
     //
     // chart.on('plotly_click', async function (data) {
     //     // In the future, we want to be able to click on a point and have the corresponding plotgroup changed to reflect that cycle.
     // })
 }
+
+function createTraces(groupController, dataNames) {
+    const ACycles = groupController.getOptions("A").map((plotGroup) => plotGroup.getCycle())
+    const BCycles = groupController.getOptions("B").map((plotGroup) => plotGroup.getCycle())
+
+    const coordinates = extractCoordinates(ACycles, BCycles, dataNames)
+    const activeCycle = groupController.get("A").getCycle().cycleIndex
+    return _generate_traces_coordinate(coordinates, activeCycle);
+}
+
+export function updateCoordinatePlot(chartId, dataNames, groupController) {
+    const chart = document.getElementById(chartId)
+
+    const traces = createTraces(groupController, dataNames);
+
+    const frames = getFramesForTCP(groupController);
+
+    Plotly.react(chart, {
+        data: traces,
+        layout: getLayoutForCoordinates(chart.layout.title),
+        frames: frames,
+    }).then();
+}
+
 
 /**
  * @typedef {{x: number, y: number, error: boolean, name: string, cycleIndex: number}} Coordinate
@@ -101,7 +153,8 @@ const markers = {
     past: 'triangle-up-open-dot',
     current: 'circle-open-dot',
     future: 'diamond-open-dot',
-    explanation: "circle"
+    explanation: "circle",
+    robot: "circle-open-dot"
 }
 
 /**
@@ -118,6 +171,21 @@ function _generate_traces_coordinate(coordinates, active_number = 1) {
     const past_coordinates = coordinates.filter((coordinate) => coordinate.cycleIndex < active_number)
     const future_coordinates = coordinates.filter((coordinate) => coordinate.cycleIndex > active_number)
     const active_coordinate = coordinates.filter((coordinate) => coordinate.cycleIndex === active_number)
+
+    traces.push({
+        x: [0],
+        y: [0],
+        type: 'scatter',
+        mode: 'markers',
+        name: "", // Robot. This is empty to get rid of the ugly grey box
+        showlegend: false,
+        marker: {
+            color: colorMap.legend_colors.a,
+            symbol: markers.robot,
+            size: 20
+        },
+        hovertemplate: "(%{x}, %{y}) Current TCP Position"
+    })
 
     traces.push({
         x: past_coordinates.map((coordinate) => coordinate.x),

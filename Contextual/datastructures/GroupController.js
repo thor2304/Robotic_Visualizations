@@ -1,3 +1,5 @@
+import {updateCoordinatePlot} from "../helper_scripts/factories/CoordinatePlotFactory.js";
+
 export class GroupController {
     /**
      * @private
@@ -44,6 +46,7 @@ export class GroupController {
         this[groupIdentifier].plotGroup = activePlotGroup;
         // This updates the visualizations to use this new cycle
         activePlotGroup.getPlotPromises().forEach(promise => promise.then())
+        updateCoordinatePlot("test", [{xName: "robot.tool.position.x", yName: "robot.tool.position.y"}], this)
     }
 
     /**

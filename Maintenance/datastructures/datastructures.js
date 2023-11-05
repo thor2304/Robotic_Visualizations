@@ -89,9 +89,17 @@ class Tool {
  */
 
 /**
+ * @typedef {"base"|"shoulder"|"elbow"|"wrist_1"|"wrist_2"|"wrist_3"} Joint_name
+ */
+
+/**
  * @type {Readonly<{Base: string, Shoulder: string, Elbow: string, "wrist 1": string, "wrist 2": string, "wrist 3": string}>}
  */
 const Joints = createEnum(["Base", "Shoulder", "Elbow", "wrist 1", "wrist 2", "wrist 3"]);
+
+/**
+ * @type {{Shoulder: Joint_name, "wrist 3": Joint_name, "wrist 2": Joint_name, "wrist 1": Joint_name, Elbow: Joint_name, Base: Joint_name}}
+ */
 const robot_joint_names = {
     "Base": "base",
     "Shoulder": "shoulder",
@@ -102,8 +110,19 @@ const robot_joint_names = {
 }
 
 class Joint {
+    /**
+     *
+     * @param joint {string}
+     * @param position {Position}
+     * @param targetPosition {Position}
+     * @param angle {string}
+     * @param targetAngle {string}
+     */
     constructor(joint, position, targetPosition, angle, targetAngle) {
         this.joint = joint;
+        /**
+         * @type {Joint_name}
+         */
         this.joint_name = robot_joint_names[joint];
         this.position = position;
         this.targetPosition = targetPosition;
@@ -129,10 +148,18 @@ class SafetyStatus {
 class Robot {
     /**
      *
-     * @type {Object<Joints, Joint>}
+     * @type {Object<Joint_name, Joint>}
      */
     joints = {};
 
+    /**
+     *
+     * @param tool {Tool}
+     * @param joints {Joint[]}
+     * @param payload {Payload}
+     * @param protectiveStop {string}
+     * @param blend {string}
+     */
     constructor(tool, joints, payload, protectiveStop, blend) {
         // Tool is a Tool object
         // Joints is a list of Joint objects
