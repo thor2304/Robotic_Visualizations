@@ -14,19 +14,20 @@ export function populatePickers(groups) {
         counts.push(plotGroups.length)
         addOptions(groupIdentifier, groupSelector, plotGroups)
     }
-    //TODO: Calculate error percentage and not error percentage not just the percentage for each picker
 
     const sum = counts.reduce((a, b) => a + b, 0)
 
     for (let i = 0; i < groupIdentifiers.length; i++) {
         const label = document.getElementById(`dropdown-${groupIdentifiers[i]}-label`)
-        addPercentageDisplay(label, counts[i] / sum * 100)
+        const groupSelector = document.getElementById(`dropdown-${groupIdentifiers[i]}`)
+        addPercentageDisplay(label,  groupSelector.errorCount / sum * 100, ` have errors`)
+        addPercentageDisplay(label,  groupSelector.notErrorCount / sum * 100, ` does not have errors`)
     }
 }
 
-function addPercentageDisplay(pickerLabel, percentage) {
+function addPercentageDisplay(pickerLabel, percentage, suffixText) {
     const percentageDisplay = document.createElement("span")
-    percentageDisplay.innerText = ` (${percentage}% of cycles)`
+    percentageDisplay.innerText = ` (${percentage}% of cycles${suffixText})`
     pickerLabel.appendChild(percentageDisplay)
 }
 
@@ -36,6 +37,8 @@ function addPercentageDisplay(pickerLabel, percentage) {
  * @param plotGroups {PlotGroup[]}
  */
 function addOptions(groupIdentifier, groupPicker, plotGroups) {
+    let errors = 0;
+    let notErrors = 0;
     for (let i = 0; i < plotGroups.length; i++) {
         const plotGroup = plotGroups[i];
         const option = document.createElement("option")
@@ -45,6 +48,12 @@ function addOptions(groupIdentifier, groupPicker, plotGroups) {
             option.selected = true
         }
         groupPicker.appendChild(option)
+
+        if (plotGroup.getCycle().hasError()) {
+            errors++
+        } else {
+            notErrors++
+        }
     }
 
     groupPicker.addEventListener("change", () => {
@@ -52,5 +61,7 @@ function addOptions(groupIdentifier, groupPicker, plotGroups) {
         groups.set(groupIdentifier, selected)
     })
 
+    groupPicker.errorCount = errors
+    groupPicker.notErrorCount = notErrors
 }
 
