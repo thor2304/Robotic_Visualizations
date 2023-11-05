@@ -6,7 +6,13 @@ const LN = 35000
 
 const ratedSpeed = 2 * Math.PI * 2000 / 101 / 60
 
-// Per robot and joint
+/**
+ * Per robot and joint
+ * @param dataPoints {DataPoint[]}
+ * @param jointNumber {number}
+ * @param motorCollection {MotorCollection}
+ * @returns {number} Expected life in seconds
+ */
 
 function getLifeForJoint(dataPoints, jointNumber, motorCollection) {
     const speeds = dataPoints.map(dp => Math.abs(dp.custom[`Actual velocity j${jointNumber} [rad/s]`]))
@@ -27,6 +33,7 @@ function getLifeForJoint(dataPoints, jointNumber, motorCollection) {
 /**
  *
  * @param dataPoints {DataPoint[]}
+ * @returns {Promise<number[]|undefined>} Remaining life in seconds for each joint
  */
 export async function calculateRemainingLife(dataPoints) {
     const motorParamRaw = await loadJson("motorParams.json")

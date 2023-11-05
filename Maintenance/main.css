@@ -171,3 +171,12 @@ img{
     max-height: 90%;
     /*width: 90%; !*Since we change the width of the parent we want the image to constantly fill it out*!*/
 }
+
+th, td {
+    padding: .5em;
+    text-align: left;
+}
+
+td {
+    border-top: black .1em solid;
+}

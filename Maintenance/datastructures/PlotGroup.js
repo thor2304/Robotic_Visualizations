@@ -95,7 +95,9 @@ export class PlotGroup {
                 this.addGroupClass(divs[plotRequest.chartId])
             }
         }
-        createDivForTable(table.chartId, table.plotName, ["Variable", "Value"]).then(div => this.addGroupClass(div))
+        if (table !== undefined) {
+            createDivForTable(table.chartId, table.plotName, ["Variable", "Value"]).then(div => this.addGroupClass(div))
+        }
     }
 
     /**

@@ -2,29 +2,40 @@ import {getActivePlotGroup} from "./updateVisualizations.js";
 import {getIdPrefix, groups} from "../csv_driven_3d.js";
 import {extract_available_variables} from "./helpers.js";
 
-function createRowInTable(traversed_variable_name, timestamp, tblBody) {
+function createRowInTableWithVariable(traversed_variable_name, timestamp, tblBody) {
     const variable = groups.get(getActivePlotGroup()).groupedDataPoints[timestamp].traversed_attribute(traversed_variable_name)
 
     if(variable === undefined) {
         return
     }
-    // const variable_value = variable.value
-    const variable_value = variable
+    createRowInTable([traversed_variable_name, variable], tblBody)
+}
 
-
+export function createRowInTable(column_contents, tblBody) {
     const row = document.createElement("tr");
 
-    const var_name = document.createElement("td");
-    var_name.appendChild(document.createTextNode(traversed_variable_name));
-
-    const var_value = document.createElement("td");
-    var_value.appendChild(document.createTextNode(variable_value));
-
-    row.appendChild(var_name);
-    row.appendChild(var_value);
+    for(let i = 0; i < column_contents.length; i++) {
+        const column = document.createElement("td");
+        column.appendChild(document.createTextNode(column_contents[i]));
+        row.appendChild(column);
+    }
 
     tblBody.appendChild(row);
-    tblBody.childDict[traversed_variable_name] = row
+    if (tblBody.childDict === undefined) {
+        tblBody.childDict = {}
+    }
+    tblBody.childDict[column_contents[0]] = row
+}
+
+export function getTblBodyFromDiv(div) {
+    for(let i = 0; i < div.childNodes.length; i++) {
+        if(div.childNodes[i].nodeName === 'TBODY') {
+            return div.childNodes[i];
+        }
+        if (div.childNodes[i].nodeName === 'TABLE') {
+            return getTblBodyFromDiv(div.childNodes[i]);
+        }
+    }
 }
 
 export async function update_variable_showcase(timestamp) {
@@ -32,16 +43,7 @@ export async function update_variable_showcase(timestamp) {
         `${getIdPrefix(getActivePlotGroup())}variable_vis`
     )
 
-    let tblBodyID = 0;
-
-    for(let i = 0; i < variable_showcase.childNodes.length; i++) {
-        if(variable_showcase.childNodes[i].nodeName === 'TBODY') {
-            tblBodyID = i;
-            break;
-        }
-    }
-
-    const tblBody = variable_showcase.childNodes[tblBodyID];
+    const tblBody = getTblBodyFromDiv(variable_showcase);
 
     if (tblBody.childDict === undefined) {
         tblBody.childDict = {}
@@ -80,7 +82,7 @@ export async function update_variable_showcase(timestamp) {
     for (let i = 0; i < available_variable_names.length; i++) {
         const name = available_variable_names[i];
         if(tblBody.childDict[name] === undefined) {
-            createRowInTable(name, timestamp, tblBody);
+            createRowInTableWithVariable(name, timestamp, tblBody);
         }
 
         tblBody.childDict[name].childNodes[1].innerText = groups.get(getActivePlotGroup()).groupedDataPoints[timestamp].traversed_attribute(name)

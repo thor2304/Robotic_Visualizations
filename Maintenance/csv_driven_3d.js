@@ -12,8 +12,7 @@ import {makeAllDraggable} from "./fluid_layout/make_draggable.js";
 import {filter_raw_data} from "./helper_scripts/targeted_filtering.js";
 import {GroupController} from "./datastructures/GroupController.js";
 import {convertFlightRecordDataToDataPoints} from "./file_upload/flightRecordTranslations.js";
-import {calculateRemainingLife} from "./strain/lifetimeCalculation.js";
-import {Joints} from "./datastructures/datastructures.js";
+import {showStrain} from "./strain/showstrain.js";
 
 export const groups = new GroupController();
 
@@ -82,27 +81,7 @@ function createGroup(groupIdentifier) {
     return new PlotGroup(plotRequests, variablesForMaxima, groupIdentifier)
 }
 
-async function showStrain(rawFrames) {
-    const life = await calculateRemainingLife(rawFrames)
 
-    console.log("Strain:", life)
-
-    const strainDisplay = document.getElementById("strain-display")
-
-    if (life === undefined || life === null || life.filter(l => isNaN(l)).length === life.length) {
-        const strainDisplayText = document.createElement("p")
-        strainDisplayText.innerText = `No strain data available`
-        strainDisplay.appendChild(strainDisplayText)
-        return
-    }
-
-    Object.keys(Joints).forEach((joint, index) => {
-        const strainDisplayText = document.createElement("p")
-        strainDisplayText.innerText = `Remaining life of ${joint}: ${life[index].toFixed(2)} seconds`
-        strainDisplay.appendChild(strainDisplayText)
-    })
-
-}
 
 /**
  * @param data {Array<Object>}

@@ -67,12 +67,15 @@ export async function createDivsForPlotlyCharts(chartIds) {
  */
 export async function createDivForTable(chartId, tableId, tableHeaders) {
     // check whether the div already exists
-    if (document.getElementById(chartId) !== null) {
+    let div = document.getElementById(chartId);
+    if (div !== null) {
         // Check if it has the correct shape?
-        return document.getElementById(chartId)
+        if (div.childNodes.length === 1 && div.childNodes[0].nodeName === "TABLE") {
+            return div
+        }
+    } else {
+        div = _createDiv(chartId)
     }
-
-    const div = _createDiv(chartId)
 
     const table = document.createElement("table")
     table.id = tableId
@@ -83,7 +86,7 @@ export async function createDivForTable(chartId, tableId, tableHeaders) {
     table.appendChild(tableBody)
     tableBody.appendChild(headerRow)
 
-    for (let header of tableHeaders){
+    for (let header of tableHeaders) {
         const tableHead = document.createElement("th")
         tableHead.innerText = header
         headerRow.appendChild(tableHead)
