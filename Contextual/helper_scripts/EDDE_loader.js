@@ -146,6 +146,10 @@ const method_map = {
     "subtract": (a, b) => a - b,
     "multiply": (a, b) => a * b,
     "divide": (a, b) => a / b,
+    "aboveNumber": (a, b) => a > b ? 1 : 0,
+    "aboveBool": (a, b) => a > b,
+    "belowNumber": (a, b) => a < b ? 1 : 0,
+    "belowBool": (a, b) => a < b,
 }
 
 /**
@@ -161,9 +165,22 @@ function createCustom(customVariables, datum) {
         out[variable.name] = variable.type === "float" ? Number.parseFloat(datum[variable.name]) : datum[variable.name]
     }
 
+    const vars = datum.vars
+    const varLookup = {}
+    for (let i = 0; i < vars.length; i++) {
+        const variableSplit = vars[i].split(';')
+        varLookup[`vars.${variableSplit[0]}`] = variableSplit[1]
+    }
+
     for (let i = 0; i < customVariables.computed_variables.length; i++) {
         const variable = customVariables.computed_variables[i]
-        out[variable.name] = method_map[variable.method](datum[variable.arguments[0]], datum[variable.arguments[1]])
+
+        const method = method_map[variable.method]
+
+        const arg1 = variable.arguments[0].startsWith("vars.") ? varLookup[variable.arguments[0]] : datum[variable.arguments[0]]
+        const arg2 = typeof variable.arguments[1] !== "string" ? variable.arguments[1] : variable.arguments[1].startsWith("vars.") ? varLookup[variable.arguments[1]] : datum[variable.arguments[1]]
+
+        out[variable.name] = method(arg1, arg2)
     }
 
     return out
@@ -411,6 +428,8 @@ export async function parser(data, customVariableConfiguration) {
         const dataPoint = await create_frame_from_datum(data[i], offSetVector, customVariableConfiguration);
         frames.push(dataPoint)
     }
+
+    console.log("frames", frames)
 
     return frames;
 }

@@ -189,6 +189,22 @@
       ],
       "count": 6,
       "method": "subtract"
+    },
+    {
+      "name": "is_holding_A",
+      "arguments": [
+        "vars.vg_Vacuum_A",
+        10
+      ],
+      "method": "aboveNumber"
+    },
+    {
+      "name": "is_holding_B",
+      "arguments": [
+        "vars.vg_Vacuum_B",
+        10
+      ],
+      "method": "aboveNumber"
     }
   ]
 }
