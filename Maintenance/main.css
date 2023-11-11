@@ -120,7 +120,7 @@ main > *{
     margin: .25em;
 
     /*Spacing of the sub elements*/
-    flex: 50%;
+    flex: 0.99;
 }
 
 #separator-slider{

@@ -13,6 +13,7 @@ import {filter_raw_data} from "./helper_scripts/targeted_filtering.js";
 import {GroupController} from "./datastructures/GroupController.js";
 import {convertFlightRecordDataToDataPoints} from "./file_upload/flightRecordTranslations.js";
 import {showStrain} from "./strain/showstrain.js";
+import {updateContainers} from "./fluid_layout/column_resize.js";
 
 export const groups = new GroupController();
 
@@ -40,6 +41,7 @@ function finalizePlotting(firstSepCount) {
     updateVisualizations(firstSepCount, getActivePlotGroup())
 
     makeAllDraggable()
+    updateContainers()
 }
 
 /**
