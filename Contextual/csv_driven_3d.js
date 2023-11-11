@@ -124,6 +124,7 @@ async function plot_raw_data(data, dataSource = "EDDE") {
     }
 
     groups.initialize(groupA)
+    groups.addRawFrames(rawFrames)
 
     groupA.setCycle(withErrors[0])
     for (let i = 1; i < withErrors.length; i++) {

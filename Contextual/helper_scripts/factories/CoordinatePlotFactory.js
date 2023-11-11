@@ -40,21 +40,27 @@ function getFramesForTCP(groupController) {
     return frames;
 }
 
-function getRanges(traces, frames) {
+/**
+ *
+ * @param traces {Object[]}
+ * @param dataPoints {DataPoint[]}
+ * @return {{yMin: number, yMax: number, xMax: number, xMin: number}}
+ */
+function getRanges(traces, dataPoints) {
     const minTraceX = Math.min(...traces.map((trace) => Math.min(...trace.x)))
-    const minFrameX = Math.min(...frames.map((frame) => Math.min(...frame.data[0].x)))
+    const minFrameX = Math.min(...dataPoints.map((datapoint) => datapoint.robot.joints.wrist_3.position.x))
     const minX = Math.min(minTraceX, minFrameX)
 
     const maxTraceX = Math.max(...traces.map((trace) => Math.max(...trace.x)))
-    const maxFrameX = Math.max(...frames.map((frame) => Math.max(...frame.data[0].x)))
+    const maxFrameX = Math.max(...dataPoints.map((datapoint) => datapoint.robot.joints.wrist_3.position.x))
     const maxX = Math.max(maxTraceX, maxFrameX)
 
     const minTraceY = Math.min(...traces.map((trace) => Math.min(...trace.y)))
-    const minFrameY = Math.min(...frames.map((frame) => Math.min(...frame.data[0].y)))
+    const minFrameY = Math.min(...dataPoints.map((datapoint) => datapoint.robot.joints.wrist_3.position.y))
     const minY = Math.min(minTraceY, minFrameY)
 
     const maxTraceY = Math.max(...traces.map((trace) => Math.max(...trace.y)))
-    const maxFrameY = Math.max(...frames.map((frame) => Math.max(...frame.data[0].y)))
+    const maxFrameY = Math.max(...dataPoints.map((datapoint) => datapoint.robot.joints.wrist_3.position.y))
     const maxY = Math.max(maxTraceY, maxFrameY)
 
     const xRange = maxX - minX
@@ -87,7 +93,7 @@ export async function plotCoordinates(chartName, chartId, dataNames, groupContro
     // We have no frames here until we want to start animating the 2d plot.
 
     const frames = getFramesForTCP(groupController);
-    const {xMin, xMax, yMin, yMax} = getRanges(traces, frames);
+    const {xMin, xMax, yMin, yMax} = getRanges(traces, groupController.rawFrames);
 
     const layout = getLayoutForCoordinates(chartName, xMin, xMax, yMin, yMax);
 
@@ -96,6 +102,13 @@ export async function plotCoordinates(chartName, chartId, dataNames, groupContro
         layout: layout,
         frames: frames,
     })
+
+    plot.ranges = {
+        xMin: xMin,
+        xMax: xMax,
+        yMin: yMin,
+        yMax: yMax
+    }
 
     // Below is commented until we want to have an interactive plot of the cycles.
     for (let plotGroup of groupController.getOptions("A")) {
@@ -121,11 +134,11 @@ function createTraces(groupController, dataNames) {
 export function updateCoordinatePlot(chartId, dataNames, groupController) {
     const chart = document.getElementById(chartId)
 
+    const {xMin, xMax, yMin, yMax} = chart.ranges
+
     const traces = createTraces(groupController, dataNames);
 
     const frames = getFramesForTCP(groupController);
-
-    const {xMin, xMax, yMin, yMax} = getRanges(traces, frames);
 
     Plotly.react(chart, {
         data: traces,

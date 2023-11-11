@@ -81,4 +81,11 @@ export class GroupController {
         return ["A"]
     }
 
+    /**
+     *
+     * @param rawFrames {DataPoint[]}
+     */
+    addRawFrames(rawFrames) {
+        this.rawFrames = rawFrames;
+    }
 }
