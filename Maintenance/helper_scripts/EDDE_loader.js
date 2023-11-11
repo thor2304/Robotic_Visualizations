@@ -163,7 +163,11 @@ function createCustom(customVariables, datum) {
 
     for (let i = 0; i < customVariables.computed_variables.length; i++) {
         const variable = customVariables.computed_variables[i]
-        out[variable.name] = method_map[variable.method](datum[variable.arguments[0]], datum[variable.arguments[1]])
+        try {
+            out[variable.name] = method_map[variable.method](datum[variable.arguments[0]], datum[variable.arguments[1]])
+        } catch (e) {
+            console.error("Error while computing custom variable", variable, e)
+        }
     }
 
     return out
@@ -231,7 +235,7 @@ async function create_frame_from_datum(datum, offSetVector, customVariables) {
  * @param custom_map_file_name {string} The name of the custom map file. Must be located in demo/customizations folder
  */
 export async function get_custom_map(custom_map_file_name = "EDDE_allow_list.json") {
-    const server_url = window.location.origin + "/Robotic_Visualizations/Contextual/customizations/";
+    const server_url = window.location.origin + "/Robotic_Visualizations/Maintenance/customizations/";
     const response = await fetch(server_url + custom_map_file_name);
     return new CustomVariableConfiguration(await response.json());
 }
