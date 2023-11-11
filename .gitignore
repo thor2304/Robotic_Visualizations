@@ -9,3 +9,6 @@
 *.zip
 /*/file_upload/recording20220311_14_15_56/
 **/**/ur_service_*/
+
+*.conf
+*.n3

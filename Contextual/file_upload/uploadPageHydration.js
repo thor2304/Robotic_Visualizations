@@ -8,4 +8,4 @@ async function clearCaches(){
     await remove(scriptFileName)
 }
 
-clearCaches().then(() => console.log("Cleared caches"))
+document.getElementById("clear-cache-button").addEventListener("click", clearCaches)

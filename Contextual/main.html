@@ -75,12 +75,16 @@
     <script defer type="module" src="fluid_layout/column_resize.js"></script>
     <script defer type="module" src="fluid_layout/window_resizing.js"></script>
 
+    <script defer type="module" src="file_upload/uploadPageHydration.js"></script>
+
     <link rel="stylesheet" href="main.css">
 </head>
 <body>
 <header>
     <div id="header-title">
-        <p id="filler"></p>
+        <button id="clear-cache-button" class="btn btn-danger m-2">
+            Clear file cache<br> (Delete the files stored locally)
+        </button>
         <h1>This cycle is a partial pickup. Only one suction cup grabbed the tile</h1>
         <button id="lock-layout-button" class="btn btn-primary m-2"></button>
     </div>
@@ -94,6 +98,7 @@
         <div id="dropdown-container" class="container text-center p-2">
             <div class="row align-items-center">
                 <div class="col">
+                    <p id="error-density-A"></p>
                     <label id="dropdown-A-label" for="dropdown-A" class="form-label">
                         Choose a Cycle
                     </label>
@@ -101,6 +106,7 @@
                     </select>
                 </div>
 <!--                <div class="col">-->
+<!--                <p id="error-density-B"></p>-->
 <!--                    <label id="dropdown-B-label" for="dropdown-B" class="form-label">-->
 <!--                        Visualization B: No Errors detected-->
 <!--                    </label>-->

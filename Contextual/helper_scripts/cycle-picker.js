@@ -18,16 +18,16 @@ export function populatePickers(groups) {
     const sum = counts.reduce((a, b) => a + b, 0)
 
     for (let i = 0; i < groupIdentifiers.length; i++) {
-        const label = document.getElementById(`dropdown-${groupIdentifiers[i]}-label`)
+        const label = document.getElementById(`error-density-${groupIdentifiers[i]}`)
         const groupSelector = document.getElementById(`dropdown-${groupIdentifiers[i]}`)
-        addPercentageDisplay(label,  groupSelector.errorCount / sum * 100, ` have errors`)
-        addPercentageDisplay(label,  groupSelector.notErrorCount / sum * 100, ` does not have errors`)
+        addPercentageDisplay(label,  groupSelector.errorCount / sum * 100, true)
+        // addPercentageDisplay(label,  groupSelector.notErrorCount / sum * 100, false)
     }
 }
 
-function addPercentageDisplay(pickerLabel, percentage, suffixText) {
+function addPercentageDisplay(pickerLabel, percentage, hasError = true) {
     const percentageDisplay = document.createElement("span")
-    percentageDisplay.innerText = ` (${percentage}% of cycles${suffixText})`
+    percentageDisplay.innerText = ` Errors were ${hasError ? "" : "not " }detected in ${percentage}% of the provided cycles`
     pickerLabel.appendChild(percentageDisplay)
 }
 
