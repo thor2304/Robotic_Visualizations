@@ -75,6 +75,9 @@ export async function createDivForTable(chartId, tableId, tableHeaders) {
         }
     } else {
         div = _createDiv(chartId)
+
+        //Add the div to the container that has the visualizations
+        document.getElementById("visualization-container").appendChild(div)
     }
 
     const table = document.createElement("table")
@@ -94,8 +97,6 @@ export async function createDivForTable(chartId, tableId, tableHeaders) {
 
     div.appendChild(table)
 
-    //Add the div to the container that has the visualizations
-    document.getElementById("visualization-container").appendChild(div)
 
     return div
 }
