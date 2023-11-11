@@ -92,6 +92,8 @@ export class VariableController {
          * @private
          */
         this._observedErrors = []
+
+        this._minimumErrorLength = 0.1 // seconds
     }
 
     /**
@@ -141,9 +143,13 @@ export class VariableController {
      * @private
      */
     _closeError(endDataPoint) {
-        const error = new TimespanError(this._activeErrorStart, endDataPoint, this.variableName)
-        this._observedErrors.push(error)
-
+        const errorLength = endDataPoint.time.timestamp - this._activeErrorStart.time.timestamp
+        console.log("errorLength", errorLength)
+        if (errorLength >= this._minimumErrorLength){ // Only add the error if it is longer than the minimum error length
+            // This is done to allow for a short ramp up of the pump
+            const error = new TimespanError(this._activeErrorStart, endDataPoint, this.variableName)
+            this._observedErrors.push(error)
+        }
         this._hasActiveError = false
     }
 
