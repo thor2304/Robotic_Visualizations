@@ -27,6 +27,7 @@ export function getActivePlotGroup(){
  * @private
  */
 async function _updateVisualizations(timestamp, plotGroup = _activePlotGroup) {
+    console.log(timestamp, plotGroup)
     if (timestamp === previousTimestamp && plotGroup === _activePlotGroup){
         return
     }

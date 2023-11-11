@@ -14,6 +14,7 @@ import {GroupController} from "./datastructures/GroupController.js";
 import {convertFlightRecordDataToDataPoints} from "./file_upload/flightRecordTranslations.js";
 import {showStrain} from "./strain/showstrain.js";
 import {updateContainers} from "./fluid_layout/column_resize.js";
+import {registerSliderTimestamps} from "./helper_scripts/slider-control.js";
 
 export const groups = new GroupController();
 
@@ -106,6 +107,8 @@ async function plot_raw_data(data, dataSource = "EDDE") {
         data = pick_every_x_from_array(data, 2);
         rawFrames = await convert_EDDE_to_data_frames(data); // This method is the cause of all loading time
     }
+
+    registerSliderTimestamps(rawFrames)
 
     await showStrain(rawFrames);
 

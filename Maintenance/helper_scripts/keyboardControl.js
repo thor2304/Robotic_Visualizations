@@ -1,9 +1,11 @@
 import {getActivePlotGroup, updateVisualizations} from "./updateVisualizations.js";
 import {groups} from "../csv_driven_3d.js";
+import {updateSliderStep} from "./slider-control.js";
 
 async function stepToNextTimestamp() {
     const nextTimestamp = groups.get(getActivePlotGroup()).dataPointsLinked.next();
     await updateVisualizations(nextTimestamp, getActivePlotGroup());
+    updateSliderStep(nextTimestamp)
 }
 
 async function stepToPreviousTimestamp(){
@@ -12,6 +14,7 @@ async function stepToPreviousTimestamp(){
         return;
     }
     await updateVisualizations(previousTimeStamp, getActivePlotGroup());
+    updateSliderStep(previousTimeStamp)
 }
 
 const right_arrow = "ArrowRight";

@@ -180,3 +180,34 @@ th, td {
 td {
     border-top: black .1em solid;
 }
+
+#time-slider-div{
+    position: fixed;
+    bottom: 0;
+    width: calc(100% - 3em);
+    box-sizing: border-box;
+    margin: 1.5em;
+    padding: .5em;
+    text-align: center;
+    background-color: var(--group-B-background-color);
+    border-radius: .5em;
+}
+
+#time-slider{
+    width: 100%;
+}
+
+.sliderticks {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
+}
+
+.sliderticks span {
+    display: flex;
+    justify-content: center;
+    width: 1px;
+    height: 10px;
+    background: #d3d3d3;
+    line-height: 40px;
+}
