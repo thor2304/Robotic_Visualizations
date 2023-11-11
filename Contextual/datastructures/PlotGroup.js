@@ -173,13 +173,14 @@ export class PlotGroup {
      * Adds a chart to the list of charts that are updating in this plot group.
      * @param chartId {string}
      * @param updateInformation {{mode: string, transition: {duration: number, easing: string}, frame: {duration: number, redraw: boolean}}}
+     * @param frames
      */
-    addUpdateInformation(chartId, updateInformation){
+    addUpdateInformation(chartId, updateInformation, frames){
         if (this.updateInformationLookup[chartId]){
             return
         }
         this.updateInformationLookup[chartId] = true
-        this.updateInformation.push([chartId, updateInformation])
+        this.updateInformation.push([chartId, updateInformation, frames])
     }
 
     getUpdateInformation(){

@@ -36,6 +36,8 @@ async function _updateVisualizations(timestamp, plotGroup = _activePlotGroup) {
         return
     }
 
+    const start = performance.now();
+
     previousTimestamp = timestamp.toString()
 
     _activePlotGroup = plotGroup
@@ -46,7 +48,9 @@ async function _updateVisualizations(timestamp, plotGroup = _activePlotGroup) {
 
     const updatingPlots = groups.get(_activePlotGroup).getUpdateInformation()
     for (let i = 0; i < updatingPlots.length; i++) {
-        calls.push(Plotly.animate(updatingPlots[i][0], [timestamp], updatingPlots[i][1]))
+        const frameLookup = updatingPlots[i][2]
+        const frame = frameLookup === undefined ? [timestamp] : frameLookup[timestamp]
+        calls.push(Plotly.animate(updatingPlots[i][0], frame, updatingPlots[i][1]))
     }
 
     calls.push(update_variable_showcase(timestamp))
@@ -62,6 +66,10 @@ async function _updateVisualizations(timestamp, plotGroup = _activePlotGroup) {
         await Promise.allSettled(calls);
     }catch (e){
     }
+
+    const end = performance.now();
+
+    console.log("Update took " + (end - start) + " milliseconds")
 }
 
 /**

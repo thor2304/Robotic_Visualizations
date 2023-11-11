@@ -102,15 +102,7 @@ export async function plot3dVis(dataframes, chartId, chartTitle, plotGroup) {
         sliderSteps.push({
             method: 'animate',
             label: timestamps[i],
-            args: [[timestamps[i]],
-                {
-                    mode: 'immediate',
-                    transition: {
-                        duration: 0,
-                        easing: 'linear'
-                    },
-                    frame: {duration: 300},
-                }],
+            args: [[timestamps[i]], getAnimationSettings()],
             execute: false
         });
     }
@@ -145,10 +137,15 @@ export async function plot3dVis(dataframes, chartId, chartTitle, plotGroup) {
     await Plotly.newPlot(chartId, {
         data: traces,
         layout: layout,
-        frames: frames,
+        // frames: frames,
     });
 
-    plotGroup.addUpdateInformation(chartId, getAnimationSettings())
+    const frameLookup = {}
+    for (let i = 0; i < frames.length; i++) {
+        frameLookup[frames[i].name] = frames[i]
+    }
+
+    plotGroup.addUpdateInformation(chartId, getAnimationSettings(), frameLookup)
 
     const robotArmvis = document.getElementById(chartId)
     robotArmvis.on('plotly_sliderchange', async function (e) {

@@ -100,7 +100,7 @@ export async function plotCoordinates(chartName, chartId, dataNames, groupContro
     const plot = await Plotly.newPlot(chart, {
         data: traces,
         layout: layout,
-        frames: frames,
+        // frames: frames,
     })
 
     plot.ranges = {
@@ -110,9 +110,14 @@ export async function plotCoordinates(chartName, chartId, dataNames, groupContro
         yMax: yMax
     }
 
+    const frameLookup = {}
+    for (let i = 0; i < frames.length; i++) {
+        frameLookup[frames[i].name] = frames[i]
+    }
+
     // Below is commented until we want to have an interactive plot of the cycles.
     for (let plotGroup of groupController.getOptions("A")) {
-        plotGroup.addUpdateInformation(chartId, getAnimationSettings(false))
+        plotGroup.addUpdateInformation(chartId, getAnimationSettings(false), frameLookup)
     }
     //
     // chart.on('plotly_click', async function (data) {

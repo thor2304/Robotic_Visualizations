@@ -45,11 +45,15 @@ export async function plotDirection(chartName, chartId, dataPoints, timestamps, 
 
     // console.log(frames)
 
-    plotGroup.addUpdateInformation(chartId, getAnimationSettings())
+    const frameLookup = {}
+    for (let i = 0; i < frames.length; i++) {
+        frameLookup[frames[i].name] = frames[i]
+    }
+    plotGroup.addUpdateInformation(chartId, getAnimationSettings(), frameLookup)
 
     return await Plotly.newPlot(chartId, {
         data: traces,
-        frames: frames,
+        // frames: frames,
         layout: layout,
     })
 }

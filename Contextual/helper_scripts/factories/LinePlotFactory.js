@@ -54,10 +54,15 @@ export async function plotLineChart(chartName, chartId, dataPoints, timestamps, 
     await Plotly.newPlot(chart, {
         data: traces,
         layout: layout,
-        frames: frames,
+        // frames: frames,
     })
 
-    plotGroup.addUpdateInformation(chartId, getAnimationSettings(false))
+    const frameLookup = {}
+    for (let i = 0; i < frames.length; i++) {
+        frameLookup[frames[i].name] = frames[i]
+    }
+
+    plotGroup.addUpdateInformation(chartId, getAnimationSettings(false), frameLookup)
 
     chart.on('plotly_click', async function (data) {
         const timestamp = await createAnnotationForClick(data, chartId, false);
