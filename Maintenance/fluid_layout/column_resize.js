@@ -1,7 +1,6 @@
 import {get_throttled_version_function} from "../helper_scripts/factories/ThrottledFunction.js";
 
 // const separationSlider = document.getElementById('separator-slider');
-const codeContainer = document.getElementById("code-container");
 const visualizationContainer = document.getElementById("visualization-container");
 
 let buttonDown = false;
@@ -19,7 +18,15 @@ let plotly_containers = document.querySelectorAll('.js-plotly-plot');
 const main_container = document.querySelector('main');
 setTimeout(() => {
     plotly_containers = document.querySelectorAll('.js-plotly-plot');
-}, 5000)
+}, 30_000)
+
+setTimeout(() => {
+    plotly_containers = document.querySelectorAll('.js-plotly-plot');
+}, 5_000)
+
+setTimeout(() => {
+    plotly_containers = document.querySelectorAll('.js-plotly-plot');
+}, 15_000)
 
 document.body.addEventListener('mousemove', async (e) => {
     // TODO: Add a an event for charts loaded, that this can tie into along with the draggable functionality
@@ -36,7 +43,7 @@ document.body.addEventListener('mousemove', async (e) => {
         const codeSplit = rightSplit;
         const vizSplit = leftSplit;
 
-        await updateSplit(codeSplit, vizSplit);
+        // await updateSplit(codeSplit, vizSplit);
         await updateContainers();
     }
 })
@@ -64,8 +71,8 @@ const updateSplit = _updateSplit;
 export const updateContainers = _updateContainers;
 
 function getSplitResizeFunctions(){
-    let internalCodeSplit = 50;
-    let internalVizSplit = 50;
+    let internalCodeSplit = 0;
+    let internalVizSplit = 100;
 
     const _updateSplit = (codeSplit, vizSplit) => {
         internalCodeSplit = codeSplit;
@@ -73,8 +80,7 @@ function getSplitResizeFunctions(){
     }
 
     const _updateContainers = () => {
-        console.log("updateContainers");
-        codeContainer.style.flex = `${internalCodeSplit}%`
+        // codeContainer.style.flex = `${internalCodeSplit}%`
         visualizationContainer.style.flex = `${internalVizSplit}%`
 
         // the following are boundaries for when to resize the plotly charts
@@ -109,5 +115,4 @@ function getSplitResizeFunctions(){
     const throttleUpdateSplit = get_throttled_version_function(_updateSplit, 50);
 
     return [throttleUpdateContainers, throttleUpdateSplit]
-
 }

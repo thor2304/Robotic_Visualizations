@@ -121,24 +121,24 @@ export async function plot3dVis(dataframes, chartId, plotGroup) {
     layout.hovermode = 'closest';
     // Finally, add the slider and use `pad` to position it
     // nicely next to the buttons.
-    layout.sliders = [{
-        pad: {
-            l: 20,
-            r: 20,
-            t: overlap_with_slider ? -90 : -35,
-            b: 15,
-        },
-        currentvalue: {
-            visible: true,
-            prefix: 'stepcount: ',
-            xanchor: 'right',
-            font: {
-                size: 20,
-                // color: '#666'
-            }
-        },
-        steps: sliderSteps
-    }]
+    // layout.sliders = [{
+    //     pad: {
+    //         l: 20,
+    //         r: 20,
+    //         t: overlap_with_slider ? -90 : -35,
+    //         b: 15,
+    //     },
+    //     currentvalue: {
+    //         visible: true,
+    //         prefix: 'stepcount: ',
+    //         xanchor: 'right',
+    //         font: {
+    //             size: 20,
+    //             // color: '#666'
+    //         }
+    //     },
+    //     steps: sliderSteps
+    // }]
 
     // Create the plot:
     await Plotly.newPlot(chartId, {

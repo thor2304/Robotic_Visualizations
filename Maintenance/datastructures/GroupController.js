@@ -21,13 +21,16 @@ export class GroupController {
 
     /**
      * @param groupA {PlotGroup}
-     * @param groupB {PlotGroup}
+     * @param groupB {PlotGroup?}
      * @returns {void}
      */
     initialize(groupA, groupB){
         this.A.plotGroup = groupA;
-        this.B.plotGroup = groupB;
         this.addOption(groupA);
+        if (groupB === undefined){
+            return;
+        }
+        this.B.plotGroup = groupB;
         this.addOption(groupB);
     }
 

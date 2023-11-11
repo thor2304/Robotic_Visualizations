@@ -90,10 +90,8 @@ function createGroup(groupIdentifier) {
  */
 async function plot_raw_data(data, dataSource = "EDDE") {
     const groupA = createGroup("A");
-    const groupB = createGroup("B");
 
     await groupA.createDivsForPlots();
-    await groupB.createDivsForPlots();
 
     // 2. Shared operation for both groups
     let rawFrames;
@@ -106,70 +104,19 @@ async function plot_raw_data(data, dataSource = "EDDE") {
         data = pick_every_x_from_array(data, 2);
         rawFrames = await convert_EDDE_to_data_frames(data); // This method is the cause of all loading time
     }
+
     await showStrain(rawFrames);
 
-    // print_script_lines(rawFrames);
-    // end of 2.
+    groups.initialize(groupA)
 
-    const cycles = get_cycles(rawFrames);
-
-    const withErrors = [];
-    const withoutErrors = [];
-
-    console.log(withErrors, withoutErrors)
-
-    for (let i = 0; i < cycles.length; i++) {
-        const cycle = cycles[i];
-        if (cycle.hasError()) {
-            withErrors.push(cycle)
-        } else {
-            withoutErrors.push(cycle)
-        }
-    }
-
-    if (cycles.length === 0) {
-        withErrors.push(new Cycle(rawFrames, 0))
-    }
-
-    groups.initialize(groupA, groupB)
-
-    groupA.setCycle(withErrors[0])
-    for (let i = 1; i < withErrors.length; i++) {
-        const newGroup = createGroup("A")
-        newGroup.setCycle(withErrors[i])
-        groups.addOption(newGroup)
-    }
-
-    if (withoutErrors.length === 0) {
-        withoutErrors.push(new Cycle([rawFrames[0]], 1))
-    }
-
-    groupB.setCycle(withoutErrors[0])
-    for (let i = 1; i < withoutErrors.length; i++) {
-        const newGroup = createGroup("B")
-        newGroup.setCycle(withoutErrors[i])
-        groups.addOption(newGroup)
-    }
+    groupA.setCycle(new Cycle(rawFrames, 0))
 
 
     const firstStep = groupA.cycle.sequentialDataPoints[0].time.stepCount;
 
     // populatePickers(groups)
 
+    await Promise.all(groupA.getPlotPromises());
 
-    // 3.1 Per group operations that might interfere with the other group
-    // for (const key of Object.keys(groupA.maxima)) {
-    //     await createButtonAndWarningLine(groupA.maxima[key].stepcount, key + " max", groupA.identifier)
-    // }
-    // end of 3.1
-
-    // 4. Shared operation for both groups
-    const plotPromises = groupA.getPlotPromises();
-    plotPromises.push(...groupB.getPlotPromises());
-    await Promise.all(plotPromises);
-
-    // 5. shared operations for both groups
     finalizePlotting(firstStep);
-
-    // end of 5.
 }
