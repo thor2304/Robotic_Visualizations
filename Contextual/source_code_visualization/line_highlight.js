@@ -1,3 +1,5 @@
+import {get_throttled_version_function} from "../helper_scripts/factories/ThrottledFunction.js";
+
 let code = undefined;
 export const code_container = document.getElementById('code-container');
 
@@ -51,10 +53,16 @@ export async function highlight_line(line_number, offset = 0, scrollIntoView = t
     }
 
     if(scrollIntoView){
-        line.scrollIntoView( {block: "nearest", inline: "nearest", behavior: "smooth"})
+        throttled_scroll_to_line(line);
     }
 
     previous_highlighted_line = line;
+}
+
+const throttled_scroll_to_line = get_throttled_version_function(scrollToLine, 600);
+
+function scrollToLine(line) {
+    line.scrollIntoView( {block: "nearest", inline: "nearest", behavior: "smooth"})
 }
 
 /**
