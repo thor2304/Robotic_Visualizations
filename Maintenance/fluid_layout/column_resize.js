@@ -1,15 +1,15 @@
 import {get_throttled_version_function} from "../helper_scripts/factories/ThrottledFunction.js";
 
-const separationSlider = document.getElementById('separator-slider');
+// const separationSlider = document.getElementById('separator-slider');
 const codeContainer = document.getElementById("code-container");
 const visualizationContainer = document.getElementById("visualization-container");
 
 let buttonDown = false;
 
-separationSlider.addEventListener('mousedown', (e) => {
-    e.preventDefault();
-    buttonDown = true;
-})
+// separationSlider.addEventListener('mousedown', (e) => {
+//     e.preventDefault();
+//     buttonDown = true;
+// })
 
 document.body.addEventListener("mouseup", (event) => {
     buttonDown = false;

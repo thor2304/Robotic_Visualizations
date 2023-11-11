@@ -4,7 +4,7 @@
 import {Cycle, PlotGroup, PlotRequest, plotTypes} from "./datastructures/PlotGroup.js";
 import {get_cycles, pick_every_x_from_array} from "./helper_scripts/cycle_filtering.js";
 import {getActivePlotGroup, updateVisualizations} from "./helper_scripts/updateVisualizations.js";
-import {populatePickers} from "./helper_scripts/cycle-picker.js";
+// import {populatePickers} from "./helper_scripts/cycle-picker.js";
 import {createButtonAndWarningLine} from "./source_code_visualization/ErrorHighlightingLine.js";
 import {load_data_then_call} from "./helper_scripts/load_csv_data.js";
 import {convert_EDDE_to_data_frames} from "./helper_scripts/EDDE_loader.js";
@@ -154,13 +154,13 @@ async function plot_raw_data(data, dataSource = "EDDE") {
 
     const firstStep = groupA.cycle.sequentialDataPoints[0].time.stepCount;
 
-    populatePickers(groups)
+    // populatePickers(groups)
 
 
     // 3.1 Per group operations that might interfere with the other group
-    for (const key of Object.keys(groupA.maxima)) {
-        await createButtonAndWarningLine(groupA.maxima[key].stepcount, key + " max", groupA.identifier)
-    }
+    // for (const key of Object.keys(groupA.maxima)) {
+    //     await createButtonAndWarningLine(groupA.maxima[key].stepcount, key + " max", groupA.identifier)
+    // }
     // end of 3.1
 
     // 4. Shared operation for both groups

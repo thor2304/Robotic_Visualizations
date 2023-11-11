@@ -1,5 +1,5 @@
 import {getScriptOffset, groups} from "../csv_driven_3d.js";
-import {highlight_line} from "../source_code_visualization/line_highlight.js";
+// import {highlight_line} from "../source_code_visualization/line_highlight.js";
 import {update_variable_showcase} from "./variable_table.js";
 import {get_throttled_version_function} from "./factories/ThrottledFunction.js";
 
@@ -44,13 +44,13 @@ async function _updateVisualizations(timestamp, plotGroup = _activePlotGroup) {
     }
 
     calls.push(update_variable_showcase(timestamp))
-    await highlight_line(
-        groups.get(_activePlotGroup).groupedDataPoints[timestamp].time.highlightLine,
-        0,
-        true,
-        groups.get(_activePlotGroup).groupedDataPoints[timestamp].time.highlightLine + getScriptOffset() === groups.get(_activePlotGroup).groupedDataPoints[timestamp].time.lineNumber,
-        _activePlotGroup
-    )
+    // await highlight_line(
+    //     groups.get(_activePlotGroup).groupedDataPoints[timestamp].time.highlightLine,
+    //     0,
+    //     true,
+    //     groups.get(_activePlotGroup).groupedDataPoints[timestamp].time.highlightLine + getScriptOffset() === groups.get(_activePlotGroup).groupedDataPoints[timestamp].time.lineNumber,
+    //     _activePlotGroup
+    // )
 
     try{
         await Promise.allSettled(calls);
