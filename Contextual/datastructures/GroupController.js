@@ -46,7 +46,7 @@ export class GroupController {
         this[groupIdentifier].plotGroup = activePlotGroup;
         // This updates the visualizations to use this new cycle
         activePlotGroup.getPlotPromises().forEach(promise => promise.then())
-        updateCoordinatePlot("test", [{xName: "robot.tool.position.x", yName: "robot.tool.position.y"}], this)
+        updateCoordinatePlot("test", [{xName: "custom.target_x", yName: "custom.target_y"}], this)
     }
 
     /**

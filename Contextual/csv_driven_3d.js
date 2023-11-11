@@ -170,7 +170,7 @@ async function plot_raw_data(data, dataSource = "EDDE") {
     await plotCoordinates(
         "Pickup positions",
         "test",
-        [{xName: "robot.tool.position.x", yName: "robot.tool.position.y"}],
+        [{xName: "custom.target_x", yName: "custom.target_y"}],
         groups
     )
 

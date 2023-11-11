@@ -91,6 +91,7 @@ function getSplitResizeFunctions(){
         // Since the plotly charts have set width, they somehow override the flex container
         // We need to manually update the width of the plotly charts
         plotly_containers.forEach((plotly_container) => {
+            console.log("plotly_container", plotly_container)
             // console.log("plotly_container.layout", plotly_container.layout)
             // console.log("plotly_container", plotly_container)
             const difference = true_target_size - plotly_container.layout.width;

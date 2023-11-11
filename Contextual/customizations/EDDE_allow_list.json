@@ -205,6 +205,22 @@
         10
       ],
       "method": "aboveNumber"
+    },
+    {
+      "name": "target_x",
+      "arguments": [
+        "vars.corner_1_x",
+        "vars.received_x"
+      ],
+      "method": "add"
+    },
+    {
+      "name": "target_y",
+      "arguments": [
+        "vars.corner_1_y",
+        "vars.received_y"
+      ],
+      "method": "add"
     }
   ]
 }

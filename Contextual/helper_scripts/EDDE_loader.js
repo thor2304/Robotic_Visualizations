@@ -142,7 +142,7 @@ function extract_registers(datum) {
  * @type {{add: (function(*, *)), subtract: (function(*, *)), divide: (function(*, *)), multiply: (function(*, *))}}
  */
 const method_map = {
-    "add": (a, b) => a + b,
+    "add": (a, b) => Number.parseFloat(a) + Number.parseFloat(b),
     "subtract": (a, b) => a - b,
     "multiply": (a, b) => a * b,
     "divide": (a, b) => a / b,

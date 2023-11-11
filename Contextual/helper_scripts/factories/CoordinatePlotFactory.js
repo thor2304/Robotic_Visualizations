@@ -120,6 +120,12 @@ export async function plotCoordinates(chartName, chartId, dataNames, groupContro
     // })
 }
 
+/**
+ *
+ * @param groupController {GroupController}
+ * @param dataNames {CoordinateNames}
+ * @return {{}[]}
+ */
 function createTraces(groupController, dataNames) {
     const ACycles = groupController.getOptions("A").map((plotGroup) => plotGroup.getCycle())
     const BCycles = groupController.getOptions("B").map((plotGroup) => plotGroup.getCycle())
@@ -131,6 +137,12 @@ function createTraces(groupController, dataNames) {
     return _generate_traces_coordinate(coordinates, activeCycle, TCP_x, TCP_y);
 }
 
+/**
+ *
+ * @param chartId {string}
+ * @param dataNames {CoordinateNames}
+ * @param groupController {GroupController}
+ */
 export function updateCoordinatePlot(chartId, dataNames, groupController) {
     const chart = document.getElementById(chartId)
 

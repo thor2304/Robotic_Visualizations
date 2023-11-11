@@ -30,6 +30,12 @@ async function _updateVisualizations(timestamp, plotGroup = _activePlotGroup) {
     if (timestamp === previousTimestamp && plotGroup === _activePlotGroup){
         return
     }
+
+    const datapoint = groups.get(_activePlotGroup).groupedDataPoints[timestamp]
+    if (datapoint === undefined){
+        return
+    }
+
     previousTimestamp = timestamp.toString()
 
     _activePlotGroup = plotGroup
@@ -45,10 +51,10 @@ async function _updateVisualizations(timestamp, plotGroup = _activePlotGroup) {
 
     calls.push(update_variable_showcase(timestamp))
     await highlight_line(
-        groups.get(_activePlotGroup).groupedDataPoints[timestamp].time.highlightLine,
+        datapoint.time.highlightLine,
         0,
         true,
-        groups.get(_activePlotGroup).groupedDataPoints[timestamp].time.highlightLine + getScriptOffset() === groups.get(_activePlotGroup).groupedDataPoints[timestamp].time.lineNumber,
+        datapoint.time.highlightLine + getScriptOffset() === datapoint.time.lineNumber,
         _activePlotGroup
     )
 
