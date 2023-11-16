@@ -13,7 +13,7 @@ export async function showStrain(rawFrames) {
 
     if (life === undefined || life === null || life.filter(l => isNaN(l)).length === life.length) {
         const strainDisplayText = document.createElement("p")
-        strainDisplayText.innerText = `No strain data available`
+        strainDisplayText.innerText = `No strain data available. This has not yet been implemented for EDDE data sources, only for FlightRecord.`
         strainDisplay.appendChild(strainDisplayText)
         return
     }

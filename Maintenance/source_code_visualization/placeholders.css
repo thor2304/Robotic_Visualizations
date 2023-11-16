@@ -5,7 +5,7 @@
 .vis-placeholder, .code-placeholder{
     /*box-sizing: border-box;*/
     width: auto;
-    /*height: 20em;*/
+    height: 20em;
     min-height: 20em;
     border: .2em solid hsl(240, 20%, 2%);
     background-color: var(--ungrouped-color);
@@ -24,6 +24,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-grow: 0;
 }
 
 .group-A {

@@ -73,7 +73,7 @@
 
     <script defer type="module" src="fluid_layout/toggle_draggable.js"></script>
     <script defer type="module" src="fluid_layout/make_draggable.js"></script>
-<!--    <script defer type="module" src="fluid_layout/column_resize.js"></script>-->
+    <!--    <script defer type="module" src="fluid_layout/column_resize.js"></script>-->
     <script defer type="module" src="fluid_layout/window_resizing.js"></script>
 
     <link rel="stylesheet" href="main.css">
@@ -92,14 +92,12 @@
 <!--</div>-->
 <main>
     <div id="visualization-container" class="visualization-container drag-container">
-        <div id="time-slider-div">
-            <label for="time-slider" class="form-label">TimeStamp: <span id="timestamp-vis"></span></label>
+        <div id="strain-display" class="group-A draggable vis-placeholder text-center p-2" draggable="false"></div>
+        <div id="time-slider-div" class="bottom-vis">
+            <label for="time-slider" class="form-label">Step: <span id="timestamp-vis"></span></label>
             <input id="time-slider" type="range" class="form-range"
                    min="0" max="5">
-            <div class="sliderticks" id="slider-ticks">
-            </div>
-        </div>
-        <div id="strain-display" class="group-A draggable vis-placeholder text-center p-2" draggable="false">
+            <div class="sliderticks" id="slider-ticks"></div>
         </div>
     </div>
 </main>

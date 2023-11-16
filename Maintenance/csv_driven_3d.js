@@ -15,6 +15,7 @@ import {convertFlightRecordDataToDataPoints} from "./file_upload/flightRecordTra
 import {showStrain} from "./strain/showstrain.js";
 import {updateContainers} from "./fluid_layout/column_resize.js";
 import {registerSliderTimestamps} from "./helper_scripts/slider-control.js";
+import {sendToBottom} from "./fluid_layout/sendToBottom.js";
 
 export const groups = new GroupController();
 
@@ -104,9 +105,11 @@ async function plot_raw_data(data, dataSource = "EDDE") {
         rawFrames = await convertFlightRecordDataToDataPoints(data);
     } else if (dataSource === "EDDE" || dataSource === "RTDE") {
         data = filter_raw_data(data);
-        data = pick_every_x_from_array(data, 2);
+        // data = pick_every_x_from_array(data, 2);
         rawFrames = await convert_EDDE_to_data_frames(data); // This method is the cause of all loading time
     }
+
+    rawFrames = rawFrames.filter(frame => frame.time.stepCount !== undefined)
 
     registerSliderTimestamps(rawFrames)
 
@@ -117,11 +120,22 @@ async function plot_raw_data(data, dataSource = "EDDE") {
     groupA.setCycle(new Cycle(rawFrames, 0))
 
 
-    const firstStep = groupA.cycle.sequentialDataPoints[0].time.stepCount;
+    let firstStep = groupA.cycle.sequentialDataPoints[0].time.stepCount;
+
+    if (firstStep === undefined) {
+        console.log("First step not available, moving on to find the first point with it defined")
+        for (let i = 0; i < groupA.cycle.sequentialDataPoints.length; i++) {
+            if (groupA.cycle.sequentialDataPoints[i].time.stepCount !== undefined) {
+                firstStep = groupA.cycle.sequentialDataPoints[i].time.stepCount;
+                break;
+            }
+        }
+    }
 
     // populatePickers(groups)
 
     await Promise.all(groupA.getPlotPromises());
 
     finalizePlotting(firstStep);
+    sendToBottom();
 }

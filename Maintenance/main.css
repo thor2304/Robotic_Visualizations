@@ -113,7 +113,15 @@ main{
     /*Forcing the height on main does not work, so instead we will allow it to grow*/
     /*Forcing it to a set value was an attempt at getting the scrollbar to appear on the code block while certainly staying within the viewport*/
     /*height: 95vh;*/
-    height: auto;
+    /*height: auto;*/
+
+    flex-grow: 1;
+}
+
+body {
+    /*display: flex;*/
+    /*flex-direction: column;*/
+    height: 100vh;
 }
 
 main > *{
@@ -122,6 +130,11 @@ main > *{
     /*Spacing of the sub elements*/
     flex: 0.99;
 }
+
+/*#visualization-container {*/
+/*    display: flex;*/
+/*    flex-wrap: wrap;*/
+/*}*/
 
 #separator-slider{
     flex: 0 0 .4em;
@@ -182,15 +195,20 @@ td {
 }
 
 #time-slider-div{
-    position: fixed;
-    bottom: 0;
-    width: calc(100% - 3em);
-    box-sizing: border-box;
-    margin: 1.5em;
-    padding: .5em;
+    bottom: .25em;
+    position: sticky;
+
+    width: calc(100% - .5em);
+    height: 7.5em;
+
+    margin: .25em .25em .75em;
+    padding: 1em;
     text-align: center;
     background-color: var(--group-B-background-color);
     border-radius: .5em;
+    border: .2em solid hsl(240, 20%, 2%);
+
+    z-index: 100;
 }
 
 #time-slider{
