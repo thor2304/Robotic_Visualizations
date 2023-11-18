@@ -12,13 +12,18 @@ const sliderTicks = document.getElementById('slider-ticks');
 
 export let updateSliderStep;
 
-export function registerSliderTimestamps(dataPoints){
+export function registerSliderTimestamps(dataPoints) {
     // Create numberOfTicks evenly spaced ticks
     const numberOfTicks = 10;
 
     const tickDataPoints = evenlyPickItemsFromArray(dataPoints, numberOfTicks)
 
-    for(let i = 0; i < tickDataPoints.length; i++){
+    const ticks = sliderTicks.childNodes
+    for (; ticks.length > 0;) {
+        ticks[0].remove();
+    }
+
+    for (let i = 0; i < tickDataPoints.length; i++) {
         const span = document.createElement('span');
         span.innerText = tickDataPoints[i].time.stepCount;
         sliderTicks.appendChild(span);
@@ -34,7 +39,7 @@ export function registerSliderTimestamps(dataPoints){
     timeSlider.max = dataPoints.length - 1;
 
     const timeStampStringToIndex = {};
-    for(let i = 0; i < dataPoints.length; i++){
+    for (let i = 0; i < dataPoints.length; i++) {
         timeStampStringToIndex[dataPoints[i].time.stepCount] = i;
     }
 
@@ -43,14 +48,20 @@ export function registerSliderTimestamps(dataPoints){
         updateSliderText(timestampString)
     }
 
-    function updateSliderText(timeStampString ){
+    function updateSliderText(timeStampString) {
         timestampShowcase.innerText = timeStampString;
     }
 
     // Update the timestamp showcase when the slider is moved
-    timeSlider.addEventListener('input', async () => {
+    // timeSlider.addEventListener('input', async () => {
+    //     const timestamp = dataPoints[timeSlider.value].time.stepCount;
+    //     updateSliderText(timestamp);
+    //     await updateVisualizations(timestamp, getActivePlotGroup());
+    // });
+
+    timeSlider.oninput = async function () {
         const timestamp = dataPoints[timeSlider.value].time.stepCount;
         updateSliderText(timestamp);
         await updateVisualizations(timestamp, getActivePlotGroup());
-    });
+    }
 }

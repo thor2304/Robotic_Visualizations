@@ -8,6 +8,7 @@ import {LinkedList} from "./linked_list.js";
 import {createEnum} from "../helper_scripts/helpers.js";
 import {plotBarChart} from "../helper_scripts/factories/BarChartFactory.js";
 import {plotCoordinates} from "../helper_scripts/factories/CoordinatePlotFactory.js";
+import {groups} from "../csv_driven_3d.js";
 
 export class PlotGroup {
     /**
@@ -96,7 +97,9 @@ export class PlotGroup {
                 this.addGroupClass(divs[plotRequest.chartId])
             }
         }
-        createDivForTable(table.chartId, table.plotName, ["Variable", "Value"]).then(div => this.addGroupClass(div))
+        if (table !== undefined) {
+            createDivForTable(table.chartId, table.plotName, ["Variable", "Value"]).then(div => this.addGroupClass(div))
+        }
     }
 
     /**
@@ -154,7 +157,7 @@ export class PlotGroup {
             case plotTypes.bar:
                 return plotBarChart(plotRequest.plotName, plotRequest.chartId, this.cycle.sequentialDataPoints, this.cycle.timestamps, plotRequest.dataNames[0], this.cycle.errors, this)
             case plotTypes.coordinate:
-                return plotCoordinates(plotRequest.plotName, plotRequest.chartId, plotRequest.dataNames, this)
+                return plotCoordinates(plotRequest.plotName, plotRequest.chartId, plotRequest.dataNames, groups, this)
         }
     }
 

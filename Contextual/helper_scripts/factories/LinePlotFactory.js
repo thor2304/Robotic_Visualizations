@@ -3,6 +3,7 @@ import {getColorMap} from "../ColorMap.js";
 import {updateVisualizations} from "../updateVisualizations.js";
 import {createErrorBar, get2dLayout} from "./layoutFactory.js";
 import {createDivForPlotlyChart} from "./chartDivFactory.js";
+import {cleanName} from "../datanameCleaner.js";
 
 /**
  * Creates a line plot with the given dataPoints and data names
@@ -21,17 +22,23 @@ export async function plotLineChart(chartName, chartId, dataPoints, timestamps, 
 
     const chart = await createDivForPlotlyChart(chartId)
 
-    for (let i = 0; i < dataNames.length; i++) {
-        dataArrays[dataNames[i]] = []
+    const cleanNames = []
+
+    dataNames.forEach(name => {
+        cleanNames.push(cleanName(name))
+    })
+
+    for (let i = 0; i < cleanNames.length; i++) {
+        dataArrays[cleanNames[i]] = []
     }
 
     for (let i = 0; i < dataPoints.length; i++) {
         for (let j = 0; j < dataNames.length; j++) {
-            dataArrays[dataNames[j]].push(dataPoints[i].traversed_attribute(dataNames[j]))
+            dataArrays[cleanNames[j]].push(dataPoints[i].traversed_attribute(dataNames[j]))
         }
     }
 
-    const traces = generate_traces(dataNames, dataArrays, timestamps);
+    const traces = generate_traces(cleanNames, dataArrays, timestamps);
 
     const frames = new Array(timestamps.length)
     for (let i = 0; i < timestamps.length; i++) {
@@ -94,7 +101,7 @@ function generate_traces(dataNames, dataArrays, time) {
         x: [time[0], time[0]],
         y: [minY, maxY],
         type: 'linesgl',
-        name: 'timestamp',
+        name: 'stepcount',
         line: {
             color: getColorMap().legend_colors.connecting_line,
             width: 2,

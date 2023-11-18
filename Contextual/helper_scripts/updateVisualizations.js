@@ -39,9 +39,10 @@ async function _updateVisualizations(timestamp, plotGroup = _activePlotGroup) {
 
     const datapoint = groups.get(_activePlotGroup).groupedDataPoints[timestamp]
     if (datapoint === undefined){
-        console.log("Datapoint is undefined, when trying to update visualisations",groups.get(_activePlotGroup) )
+        console.log(`Datapoint ${timestamp} is undefined, when trying to update visualisations`,groups.get(_activePlotGroup) )
         return
     }
+    console.log("Updating visualizations to timestamp " + timestamp)
 
     const start = performance.now();
 

@@ -52,7 +52,7 @@ function extract_cycles(frames) {
         last: 1467 + 130
     }
 
-    console.log(frames)
+    // console.log(frames)
 
     let cycle_active = false
     let end_area_hit = false

@@ -115,7 +115,6 @@ async function plot_raw_data(data, dataSource = "EDDE") {
     const withErrors = [];
 
     const withoutErrors = [];
-    console.log(withErrors, withoutErrors)
 
     for (let i = 0; i < cycles.length; i++) {
 
@@ -191,7 +190,8 @@ async function plot_raw_data(data, dataSource = "EDDE") {
         "Pickup positions",
         "test",
         [{xName: "custom.target_x", yName: "custom.target_y"}],
-        groups
+        groups,
+        groups.get("A")
     )
 
     // 5. shared operations for both groups

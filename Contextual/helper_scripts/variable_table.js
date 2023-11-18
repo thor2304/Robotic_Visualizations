@@ -1,6 +1,7 @@
 import {getActivePlotGroup} from "./updateVisualizations.js";
 import {getIdPrefix, groups} from "../csv_driven_3d.js";
 import {extract_available_variables} from "./helpers.js";
+import {cleanName} from "./datanameCleaner.js";
 
 function createRowInTable(traversed_variable_name, timestamp, tblBody) {
     const variable = groups.get(getActivePlotGroup()).groupedDataPoints[timestamp].traversed_attribute(traversed_variable_name)
@@ -15,7 +16,7 @@ function createRowInTable(traversed_variable_name, timestamp, tblBody) {
     const row = document.createElement("tr");
 
     const var_name = document.createElement("td");
-    var_name.appendChild(document.createTextNode(traversed_variable_name));
+    var_name.appendChild(document.createTextNode(cleanName(traversed_variable_name)));
 
     const var_value = document.createElement("td");
     var_value.appendChild(document.createTextNode(variable_value));

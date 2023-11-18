@@ -50,10 +50,10 @@ export async function createButtonAndWarningLine(timestamp, name, plotGroup) {
     const line = await get_line(datapoint.time.lineNumber, getScriptOffset())
 
     if (line === undefined){
-        console.log(`No line found for timestamp ${timestamp} and line number ${datapoint.time.lineNumber}`)
+        // console.log(`No line found for timestamp ${timestamp} and line number ${datapoint.time.lineNumber}`)
         return
     }else{
-        console.log(`Found line for timestamp ${timestamp} and line number ${datapoint.time.lineNumber}`)
+        // console.log(`Found line for timestamp ${timestamp} and line number ${datapoint.time.lineNumber}`)
     }
 
     line.classList.add("warning")
