@@ -78,6 +78,7 @@ function getRanges(traces, dataPoints) {
     return {xMin, xMax, yMin, yMax};
 }
 
+
 /**
  * Creates a 2d plot, that shows the values of the datanames provided at the first timestamp of the cycles provided.
  * @param chartName {string} - The name of the chart displayed as the title
@@ -98,6 +99,7 @@ export async function plotCoordinates(chartName, chartId, dataNames, groupContro
 
     const frames = getFramesForTCP(plotGroup);
     const {xMin, xMax, yMin, yMax} = getRanges(traces, groupController.rawFrames);
+    addLegendExplanations(traces);
 
     const layout = getLayoutForCoordinates(chartName, xMin, xMax, yMin, yMax);
 
@@ -314,7 +316,11 @@ function _generate_traces_coordinate(coordinates, active_number = 1, TCP_x, TCP_
         hovertemplate: "(%{x}, %{y}) number: %{text} Current"
     })
 
-    // Generate the traces for the legend explanation
+    return traces
+}
+
+function addLegendExplanations(traces) {
+    const colorMap = getColorMap()
     traces.push(getTransparentMarkerForLegendExplanation("Error", colorMap.general.error, markers.explanation))
     traces.push(getTransparentMarkerForLegendExplanation("Success", colorMap.general.success, markers.explanation))
 
@@ -323,14 +329,14 @@ function _generate_traces_coordinate(coordinates, active_number = 1, TCP_x, TCP_
     traces.push(getTransparentMarkerForLegendExplanation("Future", colorMap.legend_colors.c, markers.future))
 
     traces.push(getTransparentMarkerForLegendExplanation("Robot TCP position", colorMap.legend_colors.a, markers.robot))
-
-    return traces
 }
 
-function getTransparentMarkerForLegendExplanation(text, color, symbol) {
+function getTransparentMarkerForLegendExplanation(text, color, symbol, TCP_x, TCP_y) {
     return {
-        x: [0],
-        y: [0], // We need to put something in here for it to show up. But at the same time we do not want to show the data
+        x: [undefined],
+        y: [undefined],
+        // x: [TCP_x],
+        // y: [TCP_y],
         type: 'scatter',
         mode: 'markers',
         name: text,
@@ -340,6 +346,7 @@ function getTransparentMarkerForLegendExplanation(text, color, symbol) {
             size: 14
         },
         legendGroup: "legendExplanation",
-        visible: "legendonly"
+        showLegend: true,
+        // visible: "legendonly"
     }
 }
