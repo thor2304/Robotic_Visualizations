@@ -1,4 +1,5 @@
 import {getColorMap} from "../ColorMap.js";
+import {cleanName} from "../datanameCleaner.js";
 
 /**
  *
@@ -68,9 +69,10 @@ export function get3dLayout(title, range, zoom=1) {
  *
  * @param startX {number}
  * @param endX {number}
+ * @param variableName {string}
  * @returns {{yref: string, xref: string, fillcolor: string, line: {width: number}, y0: number, x0: number, y1: number, x1: number, type: string, opacity: number}}
  */
-export function createErrorBar(startX, endX){
+export function createErrorBar(startX, endX, variableName) {
     //https://plotly.com/javascript/shapes/
     return {
         type: "rect",
@@ -81,11 +83,18 @@ export function createErrorBar(startX, endX){
         x1: endX,
         y1: 1,
 
+        layer: "below",
+
         fillcolor: getColorMap().general.error,
         opacity: 0.3,
         line: {
             width: 0
-        }
+        },
+        label: {
+            text: `${cleanName(variableName)} below threshold`,
+            font: { size: 10, color: getColorMap().general.text_on_background },
+            textposition: 'top center',
+        },
     }
 }
 

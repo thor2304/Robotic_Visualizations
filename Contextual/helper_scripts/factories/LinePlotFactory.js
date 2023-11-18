@@ -54,7 +54,7 @@ export async function plotLineChart(chartName, chartId, dataPoints, timestamps, 
 
     const layout = get2dLayout(chartName)
     for(let timespanError of errors){
-        layout.shapes.push(createErrorBar(timespanError.start.time.stepCount, timespanError.end.time.stepCount))
+        layout.shapes.push(createErrorBar(timespanError.start.time.stepCount, timespanError.end.time.stepCount, timespanError.triggeringVariable))
     }
 
     // Hacky way to remove the numbers for this specific plot type

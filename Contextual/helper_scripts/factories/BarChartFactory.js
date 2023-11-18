@@ -30,7 +30,7 @@ export async function plotBarChart(chartName, chartId, dataPoints, timestamps, d
 
     const layout = get2dLayout(chartName);
     for(let timespanError of errors){
-        layout.shapes.push(createErrorBar(timespanError.start.time.stepCount, timespanError.end.time.stepCount))
+        layout.shapes.push(createErrorBar(timespanError.start.time.stepCount, timespanError.end.time.stepCount, timespanError.triggeringVariable))
     }
 
     await Plotly.newPlot(chart, {
