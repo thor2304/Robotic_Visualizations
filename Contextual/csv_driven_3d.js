@@ -105,21 +105,20 @@ async function plot_raw_data(data, dataSource = "EDDE") {
 
     rawFrames = rawFrames.filter(frame => frame.time.stepCount !== undefined)
 
-    registerSliderTimestamps(rawFrames)
-
     // console.log(rawFrames[rawFrames.length - 1])
 
     // print_script_lines(rawFrames);
-    // end of 2.
 
+    // end of 2.
     const cycles = get_cycles(rawFrames);
 
     const withErrors = [];
-    const withoutErrors = [];
 
+    const withoutErrors = [];
     console.log(withErrors, withoutErrors)
 
     for (let i = 0; i < cycles.length; i++) {
+
         const cycle = cycles[i];
         if (cycle.hasError()) {
             withErrors.push(cycle)
@@ -127,15 +126,17 @@ async function plot_raw_data(data, dataSource = "EDDE") {
             withoutErrors.push(cycle)
         }
     }
-
     if (cycles.length === 0) {
+
         withErrors.push(new Cycle(rawFrames, 0))
     }
-
     groups.initialize(groupA)
-    groups.addRawFrames(rawFrames)
 
+    groups.addRawFrames(rawFrames)
     groupA.setCycle(withErrors[0])
+
+    registerSliderTimestamps(groupA.cycle.sequentialDataPoints)
+
     for (let i = 1; i < withErrors.length; i++) {
         const newGroup = createGroup("A")
         newGroup.setCycle(withErrors[i])

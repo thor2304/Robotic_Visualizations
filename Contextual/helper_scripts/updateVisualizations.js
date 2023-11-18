@@ -2,6 +2,7 @@ import {getScriptOffset, groups} from "../csv_driven_3d.js";
 import {highlight_line} from "../source_code_visualization/line_highlight.js";
 import {update_variable_showcase} from "./variable_table.js";
 import {get_throttled_version_function} from "./factories/ThrottledFunction.js";
+import {updateSliderStep} from "./slider-control.js";
 
 
 let previousTimestamp = 0;
@@ -38,12 +39,15 @@ async function _updateVisualizations(timestamp, plotGroup = _activePlotGroup) {
 
     const datapoint = groups.get(_activePlotGroup).groupedDataPoints[timestamp]
     if (datapoint === undefined){
+        console.log("Datapoint is undefined, when trying to update visualisations",groups.get(_activePlotGroup) )
         return
     }
 
     const start = performance.now();
 
     previousTimestamp = timestamp.toString()
+
+    updateSliderStep(timestamp)
 
     _activePlotGroup = plotGroup
 

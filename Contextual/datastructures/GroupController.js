@@ -1,4 +1,5 @@
 import {updateCoordinatePlot} from "../helper_scripts/factories/CoordinatePlotFactory.js";
+import {registerSliderTimestamps} from "../helper_scripts/slider-control.js";
 
 export class GroupController {
     /**
@@ -47,6 +48,7 @@ export class GroupController {
         // This updates the visualizations to use this new cycle
         activePlotGroup.getPlotPromises().forEach(promise => promise.then())
         updateCoordinatePlot("test", [{xName: "custom.target_x", yName: "custom.target_y"}], this)
+        registerSliderTimestamps(activePlotGroup.getCycle().sequentialDataPoints)
     }
 
     /**
