@@ -1,6 +1,10 @@
 /**
+ * @typedef ColorMap {{general: {success: string, warning: string, error: string, text_on_background: string}, legend_colors_array: string[], group_colors: {B_inactive: string, B_background: string, A_inactive: string, A_background: string, B_active: string, A_active: string}, plot_colors: {paperColor: string, gridColor: string, plotColor: string}, legend_colors: {a: string, b: string, c: string, d: string, e: string, f: string, connecting_line: string}}}
+ */
+
+/**
  * Reads the color map from the css variables
- * @returns {{general: {success: string, warning: string, error: string}, legend_colors_array: string[], group_colors: {B_inactive: string, B_background: string, A_inactive: string, A_background: string, B_active: string, A_active: string}, plot_colors: {paperColor: string, gridColor: string, plotColor: string}, legend_colors: {a: string, b: string, c: string, d: string, e: string, f: string, connecting_line: string}}}
+ * @returns ColorMap
  * @private
  */
 function _readColorMap() {
@@ -24,6 +28,7 @@ function _readColorMap() {
             error: rs.getPropertyValue('--error-color'),
             warning: rs.getPropertyValue('--warning-color'),
             success: rs.getPropertyValue('--success-color'),
+            text_on_background: rs.getPropertyValue('--text-on-background-color'),
         },
         legend_colors: {
             a: rs.getPropertyValue('--legend-a-color'),
@@ -66,7 +71,8 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', eve
 
 /**
  * Get the active color map. This is already taking into account dark/light mode
- * @returns {{general: {success: string, warning: string, error: string}, legend_colors_array: string[], group_colors: {B_inactive: string, B_background: string, A_inactive: string, A_background: string, B_active: string, A_active: string}, plot_colors: {paperColor: string, gridColor: string, plotColor: string}, legend_colors: {a: string, b: string, c: string, d: string, e: string, f: string, connecting_line: string}}} */
+ * @returns ColorMap
+ */
 export function getColorMap() {
     return _readColorMap();
 }

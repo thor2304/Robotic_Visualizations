@@ -53,6 +53,9 @@
     --group-B-inactive-color-dark: hsla(261, 83%, 77%, 0.7);
     --group-B-inactive-color-light: hsla(253, 54%, 90%, 0.7);
 
+    --text-on-background-color-dark: hsl(0, 0%, 100%);
+    --text-on-background-color-light: hsl(0, 0%, 0%);
+
     /**
     Setting al of the variables to their dark values
      */
@@ -72,6 +75,7 @@
     --group-B-background-color: var(--group-B-background-color-dark);
     --group-B-active-color: var(--group-B-active-color-dark);
     --group-B-inactive-color: var(--group-B-inactive-color-dark);
+    --text-on-background-color: var(--text-on-background-color-dark);
 }
 
 @media(prefers-color-scheme: light){
@@ -91,6 +95,7 @@
         --group-B-background-color: var(--group-B-background-color-light);
         --group-B-active-color: var(--group-B-active-color-light);
         --group-B-inactive-color: var(--group-B-inactive-color-light);
+        --text-on-background-color: var(--text-on-background-color-light);
     }
 }
 

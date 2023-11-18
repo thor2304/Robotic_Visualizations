@@ -16,6 +16,11 @@ function getLayoutForCoordinates(chartName, xMin, xMax, yMin, yMax) {
     layout.xaxis.scaleanchor = "y"
     layout.xaxis.scaleratio = 1
     layout.xaxis.constrain = "domain"
+
+    // Make legend more clear
+    layout.legend.font = layout.legend.font || {}
+    layout.legend.font.color = getColorMap().general.text_on_background
+
     return layout;
 }
 
@@ -147,9 +152,9 @@ function createTraces(groupController, dataNames) {
     const BCycles = groupController.getOptions("B").map((plotGroup) => plotGroup.getCycle())
 
     const coordinates = extractCoordinates(ACycles, BCycles, dataNames)
-    const activeCycle = groupController.get("A").getCycle().cycleIndex
-    const TCP_x = groupController.get("A").getCycle().sequentialDataPoints[activeCycle].robot.tool.position.x
-    const TCP_y = groupController.get("A").getCycle().sequentialDataPoints[activeCycle].robot.tool.position.y
+    const activeCycle = groupController.get(getActivePlotGroup()).getCycle().cycleIndex
+    const TCP_x = groupController.get(getActivePlotGroup()).getCycle().sequentialDataPoints[activeCycle].robot.tool.position.x
+    const TCP_y = groupController.get(getActivePlotGroup()).getCycle().sequentialDataPoints[activeCycle].robot.tool.position.y
     return _generate_traces_coordinate(coordinates, activeCycle, TCP_x, TCP_y);
 }
 
@@ -202,7 +207,7 @@ function extractCoordinates(ACycles, BCycles, dataNames) {
      */
     const BCoordinates = []
 
-    function getCoordinatesForCycleGroup(coordinates, cycles, error) {
+    function getCoordinatesForCycleGroup(coordinates, cycles) {
         for (let cycle of cycles) {
             const dataPoint = cycle.sequentialDataPoints[1] || cycle.sequentialDataPoints[0]
             for (let i = 0; i < dataNames.length; i++) {
@@ -211,7 +216,7 @@ function extractCoordinates(ACycles, BCycles, dataNames) {
                 coordinates.push({
                     x: x,
                     y: y,
-                    error: error,
+                    error: cycle.hasError(),
                     name: cycle.cycleIndex.toString(),
                     cycleIndex: cycle.cycleIndex
                 })
@@ -219,8 +224,8 @@ function extractCoordinates(ACycles, BCycles, dataNames) {
         }
     }
 
-    getCoordinatesForCycleGroup(ACoordinates, ACycles, true);
-    getCoordinatesForCycleGroup(BCoordinates, BCycles, false);
+    getCoordinatesForCycleGroup(ACoordinates, ACycles);
+    getCoordinatesForCycleGroup(BCoordinates, BCycles);
 
     return [].concat(ACoordinates, BCoordinates)
 }
@@ -235,7 +240,7 @@ const markers = {
 
 /**
  *
- * @param coordinates {Coordinate []} - An array of strings that are passed to dataPoints[i].traversed_attribute(dataNames[j]).
+ * @param coordinates {Coordinate []} -
  * @param active_number {number} - The index of the cycle that is currently active.
  * @param TCP_x {number} - The x coordinate of the TCP at the active cycle
  * @param TCP_y {number} - The y coordinate of the TCP at the active cycle
@@ -317,9 +322,11 @@ function _generate_traces_coordinate(coordinates, active_number = 1, TCP_x, TCP_
     traces.push(getTransparentMarkerForLegendExplanation("Error", colorMap.general.error, markers.explanation))
     traces.push(getTransparentMarkerForLegendExplanation("Success", colorMap.general.success, markers.explanation))
 
-    traces.push(getTransparentMarkerForLegendExplanation("Past", colorMap.general.success, markers.past))
-    traces.push(getTransparentMarkerForLegendExplanation("Current", colorMap.general.success, markers.current))
-    traces.push(getTransparentMarkerForLegendExplanation("Future", colorMap.general.success, markers.future))
+    traces.push(getTransparentMarkerForLegendExplanation("Past", colorMap.legend_colors.c, markers.past))
+    traces.push(getTransparentMarkerForLegendExplanation("Current", colorMap.legend_colors.c, markers.current))
+    traces.push(getTransparentMarkerForLegendExplanation("Future", colorMap.legend_colors.c, markers.future))
+
+    traces.push(getTransparentMarkerForLegendExplanation("Robot TCP position", colorMap.legend_colors.a, markers.robot))
 
     return traces
 }
@@ -329,6 +336,7 @@ function getTransparentMarkerForLegendExplanation(text, color, symbol) {
         x: [0],
         y: [0], // We need to put something in here for it to show up. But at the same time we do not want to show the data
         type: 'scatter',
+        mode: 'markers',
         name: text,
         marker: {
             color: color,
