@@ -114,6 +114,10 @@ main{
     /*Forcing it to a set value was an attempt at getting the scrollbar to appear on the code block while certainly staying within the viewport*/
     /*height: 95vh;*/
     height: auto;
+
+    /*The mainteneace part uses this to make main take up the entire page, and allow the slider to stick to the bottom*/
+    /*This is not as relevant here, and it also does not work yet*/
+    /*flex-grow: 1;*/
 }
 
 main > *{
@@ -164,4 +168,40 @@ img{
     max-width: 90%;
     max-height: 90%;
     /*width: 90%; !*Since we change the width of the parent we want the image to constantly fill it out*!*/
+}
+
+#time-slider-div{
+    bottom: .25em;
+    position: sticky;
+
+    width: calc(100% - .5em);
+    height: 7.5em;
+
+    margin: .25em .25em .75em;
+    padding: 1em;
+    text-align: center;
+    background-color: var(--group-B-background-color);
+    border-radius: .5em;
+    border: .2em solid hsl(240, 20%, 2%);
+
+    z-index: 100;
+}
+
+#time-slider{
+    width: 100%;
+}
+
+.sliderticks {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
+}
+
+.sliderticks span {
+    display: flex;
+    justify-content: center;
+    width: 1px;
+    height: 10px;
+    background: #d3d3d3;
+    line-height: 40px;
 }

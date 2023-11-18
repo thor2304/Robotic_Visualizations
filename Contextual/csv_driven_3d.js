@@ -13,6 +13,10 @@ import {makeAllDraggable} from "./fluid_layout/make_draggable.js";
 import {filter_raw_data} from "./helper_scripts/targeted_filtering.js";
 import {GroupController} from "./datastructures/GroupController.js";
 import {convertFlightRecordDataToDataPoints} from "./file_upload/flightRecordTranslations.js";
+import {updateContainers} from "./fluid_layout/column_resize.js";
+import {registerSliderTimestamps} from "./helper_scripts/slider-control.js";
+import {sendToBottom} from "./fluid_layout/sendToBottom.js";
+
 
 export const groups = new GroupController();
 
@@ -40,6 +44,7 @@ function finalizePlotting(firstSepCount) {
     updateVisualizations(firstSepCount, getActivePlotGroup())
 
     makeAllDraggable()
+    updateContainers()
 }
 
 /**
@@ -94,9 +99,13 @@ async function plot_raw_data(data, dataSource = "EDDE") {
         rawFrames = await convertFlightRecordDataToDataPoints(data);
     } else if (dataSource === "EDDE" || dataSource === "RTDE") {
         data = filter_raw_data(data);
-        data = pick_every_x_from_array(data, 2);
+        // data = pick_every_x_from_array(data, 2);
         rawFrames = await convert_EDDE_to_data_frames(data); // This method is the cause of all loading time
     }
+
+    rawFrames = rawFrames.filter(frame => frame.time.stepCount !== undefined)
+
+    registerSliderTimestamps(rawFrames)
 
     // console.log(rawFrames[rawFrames.length - 1])
 
@@ -151,7 +160,17 @@ async function plot_raw_data(data, dataSource = "EDDE") {
     }
 
 
-    const firstStep = groupA.cycle.sequentialDataPoints[0].time.stepCount;
+    let firstStep = groupA.cycle.sequentialDataPoints[0].time.stepCount;
+
+    if (firstStep === undefined) {
+        console.log("First step not available, moving on to find the first point with it defined")
+        for (let i = 0; i < groupA.cycle.sequentialDataPoints.length; i++) {
+            if (groupA.cycle.sequentialDataPoints[i].time.stepCount !== undefined) {
+                firstStep = groupA.cycle.sequentialDataPoints[i].time.stepCount;
+                break;
+            }
+        }
+    }
 
     populatePickers(groups)
 
@@ -177,5 +196,6 @@ async function plot_raw_data(data, dataSource = "EDDE") {
     // 5. shared operations for both groups
     finalizePlotting(firstStep);
 
+    sendToBottom()
     // end of 5.
 }

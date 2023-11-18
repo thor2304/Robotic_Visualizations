@@ -31,6 +31,11 @@ async function _updateVisualizations(timestamp, plotGroup = _activePlotGroup) {
         return
     }
 
+    if (timestamp === undefined){
+        console.log("Timestamp is undefined")
+        return
+    }
+
     const datapoint = groups.get(_activePlotGroup).groupedDataPoints[timestamp]
     if (datapoint === undefined){
         return

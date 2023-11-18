@@ -16,6 +16,7 @@ export function createEnum(values) {
 
 export function evenlyPickItemsFromArray(fromArray, extractionCount) {
     // if we want more items than available, return all items
+    fromArray = fromArray.slice()
     if (extractionCount >= fromArray.length) {
         return fromArray;
     }
@@ -33,6 +34,8 @@ export function evenlyPickItemsFromArray(fromArray, extractionCount) {
     // default interval between items (might be float)
     const interval = totalItems / extractionCount;
 
+    const lastItem = result.pop();
+
     for (let i = 0; i < extractionCount; i++) {
         // always add half of interval, so 'picking area' is 'aligned' to the center
         // eg evenlyPickItemsFromArray([0...100], 1); // [50] instead of [0]
@@ -40,6 +43,7 @@ export function evenlyPickItemsFromArray(fromArray, extractionCount) {
 
         result.push(fromArray[evenIndex]);
     }
+    result.push(lastItem);
     return result;
 }
 
