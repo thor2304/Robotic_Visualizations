@@ -68,6 +68,20 @@ export async function plotLineChart(chartName, chartId, dataPoints, timestamps, 
     layout.legend.bordercolor = getColorMap().plot_colors.gridColor
     layout.legend.borderwidth = 1
 
+    layout.xaxis.tickprefix = "Step "
+
+    const ticktext = []
+    const tickvals = []
+
+    for(let i = 0; i < timestamps.length; i++){
+        // push one every 1000 steps or every 100 if there are less than 1000 steps or something like that
+    }
+
+    // Enabling the things below would override the tick text and values
+    // This would allow us to have different text in the hover box than shown on the x axis
+    // layout.xaxis.ticktext = ticktext
+    // layout.xaxis.tickvals = tickvals
+
     await Plotly.newPlot(chart, {
         data: traces,
         layout: layout,
@@ -82,8 +96,7 @@ export async function plotLineChart(chartName, chartId, dataPoints, timestamps, 
     plotGroup.addUpdateInformation(chartId, getAnimationSettings(false), frameLookup)
 
     chart.on('plotly_click', async function (data) {
-        const timestamp = await createAnnotationForClick(data, chartId, false);
-        await updateVisualizations(timestamp, plotGroup.identifier);
+        await updateVisualizations(getTimestampFromClick(data), plotGroup.identifier);
     })
 }
 
@@ -119,7 +132,7 @@ function generate_traces(dataNames, dataArrays, time) {
         marker: {
             size: 2,
             visible: false,
-        }
+        },
     }
     traces.push(verticalLine)
 
@@ -140,21 +153,6 @@ function generate_traces(dataNames, dataArrays, time) {
     return traces
 }
 
-async function createAnnotationForClick(data, htmlElementName, showAnnotation = true) {
-    const lastIndex = data.points.length - 1
-
-    if (showAnnotation) {
-        const annotate_text = 'Timestamp: ' + data.points[lastIndex].x.toPrecision(5) +
-            ' y = ' + data.points[lastIndex].y.toPrecision(4);
-
-        const annotation = {
-            text: annotate_text,
-            x: data.points[lastIndex].x,
-            y: parseFloat(data.points[lastIndex].y.toPrecision(4))
-        }
-
-        await Plotly.relayout(htmlElementName, {annotations: [annotation]})
-    }
-
-    return data.points[lastIndex].x;
+function getTimestampFromClick(data) {
+    return data.points[data.points.length - 1].x;
 }
