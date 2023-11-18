@@ -5,6 +5,8 @@ import {createErrorBar, get2dLayout} from "./layoutFactory.js";
 import {createDivForPlotlyChart} from "./chartDivFactory.js";
 import {cleanName} from "../datanameCleaner.js";
 
+const lineWeight = 3
+
 /**
  * Creates a line plot with the given dataPoints and data names
  * @param chartName {string} - The name of the chart displayed as the title
@@ -129,7 +131,8 @@ function generate_traces(dataNames, dataArrays, time) {
             type: 'scattergl',
             name: dataNames[i],
             line: {
-                color: getColorMap().legend_colors_array[i]
+                color: getColorMap().legend_colors_array[i],
+                width: lineWeight,
             },
         })
     }

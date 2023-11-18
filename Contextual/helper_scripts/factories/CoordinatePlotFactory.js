@@ -337,7 +337,7 @@ function getTransparentMarkerForLegendExplanation(text, color, symbol) {
         marker: {
             color: color,
             symbol: symbol,
-            size: 20
+            size: 14
         },
         legendGroup: "legendExplanation",
         visible: "legendonly"
