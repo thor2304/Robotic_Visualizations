@@ -57,6 +57,14 @@ export async function plotLineChart(chartName, chartId, dataPoints, timestamps, 
         layout.shapes.push(createErrorBar(timespanError.start.time.stepCount, timespanError.end.time.stepCount))
     }
 
+    // Hacky way to remove the numbers for this specific plot type
+    if (dataNames.filter(name => name === "custom.is_holding_A").length > 0) {
+        layout.yaxis.dtick = 1
+    }
+
+    layout.legend.bgcolor = getColorMap().group_colors.A_background
+    layout.legend.bordercolor = getColorMap().plot_colors.gridColor
+    layout.legend.borderwidth = 1
 
     await Plotly.newPlot(chart, {
         data: traces,

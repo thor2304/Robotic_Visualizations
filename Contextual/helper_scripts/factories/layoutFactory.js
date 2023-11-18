@@ -56,7 +56,10 @@ export function get3dLayout(title, range, zoom=1) {
         legend: {
             x: 1,
             xanchor: 'right',
-            y: 1
+            y: 1,
+            font: {
+                color: getColorMap().general.text_on_background
+            },
         }
     }
 }
@@ -154,6 +157,9 @@ export function get2dLayout(title, forLinePlot = true) {
             xanchor: 'right', // right means that the position is calculated from the right side of the legend
             yanchor: 'top',
             y: 1,
+            font: {
+                color: getColorMap().general.text_on_background
+            },
             // orientation: "h",
         }
     }

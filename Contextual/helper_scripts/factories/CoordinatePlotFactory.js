@@ -17,10 +17,6 @@ function getLayoutForCoordinates(chartName, xMin, xMax, yMin, yMax) {
     layout.xaxis.scaleratio = 1
     layout.xaxis.constrain = "domain"
 
-    // Make legend more clear
-    layout.legend.font = layout.legend.font || {}
-    layout.legend.font.color = getColorMap().general.text_on_background
-
     return layout;
 }
 

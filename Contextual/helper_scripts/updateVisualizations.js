@@ -42,7 +42,7 @@ async function _updateVisualizations(timestamp, plotGroup = _activePlotGroup) {
         console.log(`Datapoint ${timestamp} is undefined, when trying to update visualisations`,groups.get(_activePlotGroup) )
         return
     }
-    console.log("Updating visualizations to timestamp " + timestamp)
+    // console.log("Updating visualizations to timestamp " + timestamp)
 
     const start = performance.now();
 
@@ -79,7 +79,7 @@ async function _updateVisualizations(timestamp, plotGroup = _activePlotGroup) {
 
     const end = performance.now();
 
-    console.log("Update took " + (end - start) + " milliseconds")
+    // console.log("Update took " + (end - start) + " milliseconds")
 }
 
 /**
