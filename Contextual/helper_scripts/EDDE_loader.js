@@ -5,11 +5,14 @@ import {
     Joints,
     Payload,
     PhysicalIO,
-    Position, Register,
+    Position,
+    Register,
     Robot,
-    Tool, Variable
+    Tool,
+    Variable
 } from "../datastructures/datastructures.js";
 import {computeTCPPosition, parse_to_bool} from "./helpers.js";
+import {loadJson, save} from "../file_upload/Cache.js";
 
 /**
  *
@@ -190,13 +193,31 @@ function createCustom(customVariables, datum) {
  * @param datum {Object}
  * @param offSetVector {ArrayLike}
  * @param customVariables {CustomVariableConfiguration}
+ * @param cacheData {{joint_1: {x:number, y: number, z:number}, joint_2: {x:number, y: number, z:number}, joint_3: {x:number, y: number, z:number}, joint_4: {x:number, y: number, z:number}, joint_5: {x:number, y: number, z:number}, joint_6: {x:number, y: number, z:number}, tcp: {x:number, y: number, z:number}}}
  * @returns {Promise<DataPoint>}
  */
-async function create_frame_from_datum(datum, offSetVector, customVariables) {
-    const computation = computePositionAndRotation([datum.actual_q_0, datum.actual_q_1, datum.actual_q_2, datum.actual_q_3, datum.actual_q_4, datum.actual_q_5]);
-    const computedPositions = computation[0];
-    const computedTCPRotation = computation[1];
-    const computedTcpPosition = computeTCPPosition(datum, offSetVector, computedPositions, computedTCPRotation);
+async function create_frame_from_datum(datum, offSetVector, customVariables, cacheData) {
+    // Read the datum whether it contains the cached attributes of position and rotation
+    // If computation is needed, modify the datum to include the computed attributes, after this method is done, the datum can be written out and saved
+
+    let computedPositions;
+    let computedTcpPosition
+    if (cacheData) {
+        computedPositions = [
+            new Position(cacheData.joint_1.x, cacheData.joint_1.y, cacheData.joint_1.z),
+            new Position(cacheData.joint_2.x, cacheData.joint_2.y, cacheData.joint_2.z),
+            new Position(cacheData.joint_3.x, cacheData.joint_3.y, cacheData.joint_3.z),
+            new Position(cacheData.joint_4.x, cacheData.joint_4.y, cacheData.joint_4.z),
+            new Position(cacheData.joint_5.x, cacheData.joint_5.y, cacheData.joint_5.z),
+            new Position(cacheData.joint_6.x, cacheData.joint_6.y, cacheData.joint_6.z),
+        ]
+        computedTcpPosition = new Position(cacheData.tcp.x, cacheData.tcp.y, cacheData.tcp.z)
+    } else {
+        const computation = computePositionAndRotation([datum.actual_q_0, datum.actual_q_1, datum.actual_q_2, datum.actual_q_3, datum.actual_q_4, datum.actual_q_5]);
+        computedPositions = computation[0];
+        const computedTCPRotation = computation[1];
+        computedTcpPosition = computeTCPPosition(datum, offSetVector, computedPositions, computedTCPRotation);
+    }
 
     const base = new Joint(Joints.Base, computedPositions[0], undefined, datum.actual_position_0, datum.target_position_0)
     const shoulder = new Joint(Joints.Shoulder, computedPositions[1], undefined, datum.actual_position_1, datum.target_position_1)
@@ -422,12 +443,73 @@ export async function parser(data, customVariableConfiguration) {
      */
     const frames = []
 
+    let loadedCachedComputations = await loadJson("cachedComputations")
+
     // Generate the uniquely positioned frames
     // This is the slowest part of this function
     for (let i = 0; i < data.length; i++) {
-        const dataPoint = await create_frame_from_datum(data[i], offSetVector, customVariableConfiguration);
+        // if (data[i].vars === undefined) {
+        //     data.splice(i, 1)
+        //     i--
+        //     continue
+        // }
+        const cacheData = loadedCachedComputations ? loadedCachedComputations[i] : undefined
+        const dataPoint = await create_frame_from_datum(data[i], offSetVector, customVariableConfiguration, cacheData);
         frames.push(dataPoint)
     }
+
+    if (!loadedCachedComputations) {
+        console.log("saving cachedComputations")
+        const cachedComputations = frames.map(frame => {
+            return {
+                joint_1: {
+                    x: frame.robot.joints.base.position.x,
+                    y: frame.robot.joints.base.position.y,
+                    z: frame.robot.joints.base.position.z,
+                },
+                joint_2: {
+                    x: frame.robot.joints.shoulder.position.x,
+                    y: frame.robot.joints.shoulder.position.y,
+                    z: frame.robot.joints.shoulder.position.z,
+                },
+                joint_3: {
+                    x: frame.robot.joints.elbow.position.x,
+                    y: frame.robot.joints.elbow.position.y,
+                    z: frame.robot.joints.elbow.position.z,
+                },
+                joint_4: {
+                    x: frame.robot.joints.wrist_1.position.x,
+                    y: frame.robot.joints.wrist_1.position.y,
+                    z: frame.robot.joints.wrist_1.position.z,
+                },
+                joint_5: {
+                    x: frame.robot.joints.wrist_2.position.x,
+                    y: frame.robot.joints.wrist_2.position.y,
+                    z: frame.robot.joints.wrist_2.position.z,
+                },
+                joint_6: {
+                    x: frame.robot.joints.wrist_3.position.x,
+                    y: frame.robot.joints.wrist_3.position.y,
+                    z: frame.robot.joints.wrist_3.position.z,
+                },
+                tcp: {
+                    x: frame.robot.tool.position.x,
+                    y: frame.robot.tool.position.y,
+                    z: frame.robot.tool.position.z,
+                }
+            }
+        })
+
+        await save("cachedComputations", cachedComputations)
+
+        console.log("cachedComputations", cachedComputations)
+    }
+
+    // const header = Object.keys(data[0]).join(",") + ",vars" + "\n"
+    // console.log("header", header)
+    //
+    // const fileContent = header + data.map(data => Object.values(data).join(",")).join("\n")
+    // console.log("fileContent", fileContent)
 
     console.log("frames", frames)
 

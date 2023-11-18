@@ -86,6 +86,9 @@ function createGroup(groupIdentifier) {
  * @returns {Promise<void>}
  */
 async function plot_raw_data(data, dataSource = "EDDE") {
+    console.log("starting timing of plot_raw_data")
+    const start = performance.now();
+
     const groupA = createGroup("A");
     // const groupB = createGroup("B");
 
@@ -104,6 +107,7 @@ async function plot_raw_data(data, dataSource = "EDDE") {
     }
 
     rawFrames = rawFrames.filter(frame => frame.time.stepCount !== undefined)
+    const frameTime = performance.now()
 
     // console.log(rawFrames[rawFrames.length - 1])
 
@@ -129,6 +133,9 @@ async function plot_raw_data(data, dataSource = "EDDE") {
 
         withErrors.push(new Cycle(rawFrames, 0))
     }
+
+    const cycleTime = performance.now()
+
     groups.initialize(groupA)
 
     groups.addRawFrames(rawFrames)
@@ -196,6 +203,11 @@ async function plot_raw_data(data, dataSource = "EDDE") {
 
     // 5. shared operations for both groups
     finalizePlotting(firstStep);
+
+    const end = performance.now();
+    console.log(`Total time: ${end - start}ms`)
+    console.log(`Frame time: ${frameTime - start}ms`)
+    console.log(`Cycle time: ${cycleTime - frameTime}ms`)
 
     sendToBottom()
     // end of 5.

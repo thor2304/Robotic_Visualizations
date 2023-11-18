@@ -6,6 +6,7 @@ import {scriptFileName} from "../source_code_visualization/fetch_and_render_samp
 async function clearCaches(){
     await remove(dataFileName)
     await remove(scriptFileName)
+    await remove("cachedComputations")
 }
 
 document.getElementById("clear-cache-button").addEventListener("click", clearCaches)
