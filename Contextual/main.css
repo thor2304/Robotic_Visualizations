@@ -240,3 +240,12 @@ img{
 #dropdown-A:focus{
     background-color: var(--group-A-active-color);
 }
+
+#dropdown-container:focus-within{
+    position: sticky;
+    top: 0.25em;
+    z-index: 100;
+    background: var(--group-A-background-color);
+    border: var(--border-color) solid .2em;
+    border-radius: .5em;
+}

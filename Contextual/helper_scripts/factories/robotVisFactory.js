@@ -134,7 +134,7 @@ export async function plot3dVis(dataframes, chartId, chartTitle, plotGroup) {
     // }]
 
     // Create the plot:
-    await Plotly.newPlot(chartId, {
+    await Plotly.react(chartId, {
         data: traces,
         layout: layout,
         // frames: frames,

@@ -33,7 +33,7 @@ export async function plotBarChart(chartName, chartId, dataPoints, timestamps, d
         layout.shapes.push(createErrorBar(timespanError.start.time.stepCount, timespanError.end.time.stepCount, timespanError.triggeringVariable))
     }
 
-    await Plotly.newPlot(chart, {
+    await Plotly.react(chart, {
         data: trace,
         layout: layout,
     })

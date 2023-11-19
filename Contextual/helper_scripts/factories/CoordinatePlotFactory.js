@@ -103,7 +103,7 @@ export async function plotCoordinates(chartName, chartId, dataNames, groupContro
 
     const layout = getLayoutForCoordinates(chartName, xMin, xMax, yMin, yMax);
 
-    const plot = await Plotly.newPlot(chart, {
+    const plot = await Plotly.react(chart, {
         data: traces,
         layout: layout,
         // frames: frames,

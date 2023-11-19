@@ -51,7 +51,7 @@ export async function plotDirection(chartName, chartId, dataPoints, timestamps, 
     }
     plotGroup.addUpdateInformation(chartId, getAnimationSettings(), frameLookup)
 
-    return await Plotly.newPlot(chartId, {
+    return await Plotly.react(chartId, {
         data: traces,
         // frames: frames,
         layout: layout,

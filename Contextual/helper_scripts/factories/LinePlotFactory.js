@@ -82,7 +82,7 @@ export async function plotLineChart(chartName, chartId, dataPoints, timestamps, 
     // layout.xaxis.ticktext = ticktext
     // layout.xaxis.tickvals = tickvals
 
-    await Plotly.newPlot(chart, {
+    await Plotly.react(chart, {
         data: traces,
         layout: layout,
         // frames: frames,
