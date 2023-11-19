@@ -7,12 +7,12 @@
     width: auto;
     /*height: 20em;*/
     min-height: 20em;
-    border: .2em solid hsl(240, 20%, 2%);
+    border: .2em solid var(--border-color);
     background-color: var(--ungrouped-color);
     border-radius: .5em;
     margin: .25em .25em .75em;
 
-    /*Cool background gradient courtesy of:
+    /*Cool background grid courtesy of:
     https://www.stefanjudis.com/blog/a-css-based-background-grid-generator/
     */
     --grid-line-color: hsla(240, 20%, 2%, 50%);
@@ -42,7 +42,7 @@
 
 @media(prefers-color-scheme: light) {
     .vis-placeholder, .code-placeholder{
-        border-color: hsl(210, 9%, 77%);
+        border-color: var(--border-color);
         background: hsl(210, 29%, 97%);
         --grid-line-color: hsla(210, 9%, 77%, 100%);
         background-image: linear-gradient(var(--grid-line-color) var(--grid-thickness), transparent var(--grid-thickness), transparent calc(100% - var(--grid-thickness)), var(--grid-line-color) calc(100% - var(--grid-thickness))), linear-gradient(90deg, var(--grid-line-color) var(--grid-thickness), transparent var(--grid-thickness), transparent calc(100% - var(--grid-thickness)), var(--grid-line-color) calc(100% - var(--grid-thickness)));

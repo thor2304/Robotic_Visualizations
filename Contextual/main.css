@@ -8,13 +8,13 @@
     --connecting-line-color: rgb(82, 146, 222);
 
     --error-color-dark: hsl(0, 81%, 50%);
-    --error-color-light: hsla(0, 92%, 67%, 0.7);
+    --error-color-light: hsl(0, 92%, 67%);
 
     --warning-color-dark: hsl(60, 100%, 50%);
-    --warning-color-light: hsl(45, 100%, 90%);
+    --warning-color-light: hsl(60, 100%, 50%);
 
     --success-color-dark: hsl(120, 100%, 63%);
-    --success-color-light: hsl(120, 100%, 90%);
+    --success-color-light: hsl(120, 100%, 53%);
 
 
     --legend-a-color-dark: hsl(207, 75%, 30%);
@@ -27,10 +27,10 @@
     --legend-c-color-light: hsl(188, 70%, 85%);
 
     --legend-d-color-dark: hsl(27, 71%, 53%);
-    --legend-d-color-light: hsl(0, 100%, 90%);
+    --legend-d-color-light: hsl(27, 100%, 70%);
 
-    --legend-e-color-dark: hsl(173, 93%, 30%);
-    --legend-e-color-light: hsl(155, 94%, 30%);
+    --legend-e-color-dark: hsl(267, 59%, 28%);
+    --legend-e-color-light: hsl(290, 77%, 61%);
 
     --legend-f-color-dark: hsl(309, 64%, 35%);
     --legend-f-color-light: hsl(309, 64%, 80%);
@@ -56,6 +56,9 @@
     --text-on-background-color-dark: hsl(0, 0%, 100%);
     --text-on-background-color-light: hsl(0, 0%, 0%);
 
+    --border-color-light: hsl(210, 9%, 77%);
+    --border-color-dark: hsl(240, 20%, 2%);
+
     /**
     Setting al of the variables to their dark values
      */
@@ -76,6 +79,7 @@
     --group-B-active-color: var(--group-B-active-color-dark);
     --group-B-inactive-color: var(--group-B-inactive-color-dark);
     --text-on-background-color: var(--text-on-background-color-dark);
+    --border-color: var(--border-color-dark);
 }
 
 @media(prefers-color-scheme: light){
@@ -96,6 +100,7 @@
         --group-B-active-color: var(--group-B-active-color-light);
         --group-B-inactive-color: var(--group-B-inactive-color-light);
         --text-on-background-color: var(--text-on-background-color-light);
+        --border-color: var(--border-color-light);
     }
 }
 
@@ -185,15 +190,35 @@ img{
     margin: .25em .25em .75em;
     padding: 1em;
     text-align: center;
-    background-color: var(--group-B-background-color);
+    background-color: var(--group-A-background-color);
     border-radius: .5em;
-    border: .2em solid hsl(240, 20%, 2%);
+    border: .2em solid var(--border-color);
 
     z-index: 100;
 }
 
 #time-slider{
     width: 100%;
+}
+
+#time-slider::-webkit-slider-runnable-track {
+    width: 100%;
+    /*height: 84px;*/
+    background: var(--border-color);
+}
+
+#time-slider:focus::-webkit-slider-runnable-track {
+    background: var(--group-A-active-color);
+}
+
+#time-slider::-moz-range-track {
+    width: 100%;
+    /*height: 84px;*/
+    background: var(--border-color);
+}
+
+#time-slider:focus::-moz-range-track {
+    background: var(--group-A-active-color);
 }
 
 .sliderticks {
@@ -207,6 +232,11 @@ img{
     justify-content: center;
     width: 1px;
     height: 10px;
-    background: #d3d3d3;
+    background: var(--text-on-background-color);
     line-height: 40px;
+}
+
+
+#dropdown-A:focus{
+    background-color: var(--group-A-active-color);
 }
