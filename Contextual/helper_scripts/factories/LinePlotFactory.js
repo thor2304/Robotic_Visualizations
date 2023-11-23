@@ -73,9 +73,9 @@ export async function plotLineChart(chartName, chartId, dataPoints, timestamps, 
     const ticktext = []
     const tickvals = []
 
-    for(let i = 0; i < timestamps.length; i++){
-        // push one every 1000 steps or every 100 if there are less than 1000 steps or something like that
-    }
+    // for(let i = 0; i < timestamps.length; i++){
+    //     // push one every 1000 steps or every 100 if there are less than 1000 steps or something like that
+    // }
 
     // Enabling the things below would override the tick text and values
     // This would allow us to have different text in the hover box than shown on the x axis
@@ -123,7 +123,7 @@ function generate_traces(dataNames, dataArrays, time) {
     const verticalLine = {
         x: [time[0], time[0]],
         y: [minY, maxY],
-        type: 'linesgl',
+        type: 'lines',
         name: 'stepcount',
         line: {
             color: getColorMap().legend_colors.connecting_line,
@@ -141,7 +141,7 @@ function generate_traces(dataNames, dataArrays, time) {
         traces.push({
             x: time,
             y: dataArrays[dataNames[i]],
-            type: 'scattergl',
+            type: 'scatter',
             name: dataNames[i],
             line: {
                 color: getColorMap().legend_colors_array[i],
