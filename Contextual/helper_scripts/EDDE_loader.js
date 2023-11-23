@@ -13,7 +13,7 @@ import {
 } from "../datastructures/datastructures.js";
 import {computeTCPPosition, parse_to_bool} from "./helpers.js";
 import {loadJson, save} from "../file_upload/Cache.js";
-import {parseRegisters, parsePhysicalIO} from "../featureEnabler.js";
+import {parsePhysicalIO, parseRegisters} from "../featureEnabler.js";
 
 /**
  *
@@ -156,26 +156,27 @@ const method_map = {
     "belowBool": (a, b) => a < b,
 }
 
-/**
- * @param customVariables {CustomVariableConfiguration}
- * @param datum {Object}
- * @returns {Object<string, number>}
- */
-function createCustom(customVariables, datum) {
-    const out = {}
-
+function write_picked_variables(customVariables, out, datum) {
     for (let i = 0; i < customVariables.picked_variables.length; i++) {
         const variable = customVariables.picked_variables[i]
         out[variable.name] = variable.type === "float" ? Number.parseFloat(datum[variable.name]) : datum[variable.name]
     }
+}
 
-    const vars = datum.vars
-    const varLookup = {}
+/**
+ *
+ * @param vars {string[]}
+ * @param varLookup
+ */
+function populateVariableLookup(vars, varLookup) {
     for (let i = 0; i < vars.length; i++) {
-        const variableSplit = vars[i].split(';')
-        varLookup[`vars.${variableSplit[0]}`] = variableSplit[1]
+        const string = vars[i]
+        const splitIndex = string.indexOf(';')
+        varLookup["vars." + string.substring(0, splitIndex)] = string.substring(splitIndex + 1)
     }
+}
 
+function ComputedVariables(customVariables, varLookup, datum, out) {
     for (let i = 0; i < customVariables.computed_variables.length; i++) {
         const variable = customVariables.computed_variables[i]
 
@@ -186,6 +187,23 @@ function createCustom(customVariables, datum) {
 
         out[variable.name] = method(arg1, arg2)
     }
+}
+
+/**
+ * @param customVariables {CustomVariableConfiguration}
+ * @param datum {Object}
+ * @returns {Object<string, number>}
+ */
+function createCustom(customVariables, datum) {
+    const out = {}
+
+    write_picked_variables(customVariables, out, datum);
+
+    const vars = datum.vars
+    const varLookup = {}
+    populateVariableLookup(vars, varLookup);
+
+    ComputedVariables(customVariables, varLookup, datum, out);
 
     return out
 }

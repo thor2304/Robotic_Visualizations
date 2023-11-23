@@ -182,15 +182,6 @@
   ],
   "computed_variables": [
     {
-      "name": "current_window_diff_*",
-      "arguments": [
-        "current_window_max_*",
-        "current_window_min_*"
-      ],
-      "count": 6,
-      "method": "subtract"
-    },
-    {
       "name": "is_holding_A",
       "arguments": [
         "vars.vg_Vacuum_A",
