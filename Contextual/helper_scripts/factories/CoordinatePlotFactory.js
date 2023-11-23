@@ -93,7 +93,7 @@ export async function plotCoordinates(chartName, chartId, dataNames, groupContro
     const chart = await createDivForPlotlyChart(chartId)
     const traces = createTraces(groupController, dataNames);
 
-    console.log("plotting coordinates", groupController.get(getActivePlotGroup()), plotGroup)
+    // console.log("plotting coordinates", groupController.get(getActivePlotGroup()), plotGroup)
 
     // We have no frames here until we want to start animating the 2d plot.
 

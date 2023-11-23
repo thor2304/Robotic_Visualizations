@@ -1,4 +1,5 @@
 import {parsejson} from "./customParseJson.js";
+import {printCacheCalls} from "../featureEnabler.js";
 
 //https://github.com/mdn/dom-examples/blob/main/indexeddb-examples/idbindex/scripts/main.js
 // https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB
@@ -43,7 +44,9 @@ export async function load(name) {
         const transaction = (await db).transaction(["files"], "readwrite");
         const objectStore = transaction.objectStore("files");
         const request = objectStore.get(name);
-        console.log("Loading file: " + name, transaction, objectStore, request)
+        if (printCacheCalls){
+            console.log("Loading file: " + name, transaction, objectStore, request)
+        }
         request.onsuccess = (event) => {
             if (event.target.result === undefined) {
                 resolve(undefined)

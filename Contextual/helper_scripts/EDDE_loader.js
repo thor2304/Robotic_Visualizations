@@ -13,6 +13,7 @@ import {
 } from "../datastructures/datastructures.js";
 import {computeTCPPosition, parse_to_bool} from "./helpers.js";
 import {loadJson, save} from "../file_upload/Cache.js";
+import {parseRegisters, parsePhysicalIO} from "../featureEnabler.js";
 
 /**
  *
@@ -240,9 +241,17 @@ async function create_frame_from_datum(datum, offSetVector, customVariables, cac
         datum.blend
     )
 
-    const physicalIO = extract_physical_io(datum);
+    let physicalIO;
+    if (parsePhysicalIO){
+        physicalIO = extract_physical_io(datum);
+    }
+
+    let registers;
+    if (parseRegisters){
+        registers = extract_registers(datum);
+    }
+
     const variables = extract_variables(datum);
-    const registers = extract_registers(datum);
 
     const custom = createCustom(customVariables, datum)
 
@@ -436,7 +445,7 @@ export async function parser(data, customVariableConfiguration) {
     const offSetVector = math.matrix([0, 0, 0]);
     // const offSetVector = math.multiply(math.inv(rotationMatrix), tcpOffsets);
 
-    console.log("customVariables", customVariableConfiguration)
+    // console.log("customVariables", customVariableConfiguration)
 
     /**
      * @type {DataPoint[]}
@@ -511,7 +520,7 @@ export async function parser(data, customVariableConfiguration) {
     // const fileContent = header + data.map(data => Object.values(data).join(",")).join("\n")
     // console.log("fileContent", fileContent)
 
-    console.log("frames", frames)
+    // console.log("frames", frames)
 
     return frames;
 }

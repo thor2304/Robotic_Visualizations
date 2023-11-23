@@ -13,7 +13,7 @@ export const dataFileName = "dataFile"
  */
 export async function load_data_then_call(callback, data_delimiter = ','){
     let cached = await loadJson(dataFileName)
-    console.log(cached)
+    // console.log(cached)
     if (!cached){
         cached = await fetch_sample_data()
         await save(dataFileName, cached)

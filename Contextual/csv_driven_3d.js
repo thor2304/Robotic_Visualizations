@@ -134,8 +134,6 @@ async function plot_raw_data(data, dataSource = "EDDE") {
         withErrors.push(new Cycle(rawFrames, 0))
     }
 
-    const cycleTime = performance.now()
-
     groups.initialize(groupA)
 
     groups.addRawFrames(rawFrames)
@@ -207,7 +205,6 @@ async function plot_raw_data(data, dataSource = "EDDE") {
     const end = performance.now();
     console.log(`Total time: ${end - start}ms`)
     console.log(`Frame time: ${frameTime - start}ms`)
-    console.log(`Cycle time: ${cycleTime - frameTime}ms`)
 
     sendToBottom()
     // end of 5.

@@ -1,6 +1,23 @@
 import {createEnum} from "../helper_scripts/helpers.js";
 
-export {Offset, Position, DataPoint, Tool, Force, Robot, Payload, Joints, Joint, PhysicalIO, ScriptVariable, Register, PointInTime, Controller, SafetyStatus, Variable}
+export {
+    Offset,
+    Position,
+    DataPoint,
+    Tool,
+    Force,
+    Robot,
+    Payload,
+    Joints,
+    Joint,
+    PhysicalIO,
+    ScriptVariable,
+    Register,
+    PointInTime,
+    Controller,
+    SafetyStatus,
+    Variable
+}
 
 class Offset {
     constructor(x, y, z) {
@@ -82,7 +99,6 @@ class Tool {
         this.positionError = this.position.subtract(this.targetPosition);
     }
 }
-
 
 
 /**
@@ -227,7 +243,7 @@ class PointInTime {
         this.timestamp = timestamp
         this.lineNumber = Number.parseFloat(lineNumber);
         this.lineString = lineString;
-        this.stepCount =  stepCount ? Number.parseFloat(stepCount.value)  : undefined;
+        this.stepCount = stepCount ? Number.parseFloat(stepCount.value) : undefined;
     }
 }
 
@@ -268,14 +284,22 @@ class DataPoint {
         this.controller = new Controller(executionTime, cpuUsage, installedMemory, memoryUsage);
         this.robot = robot;
 
+        if (physicalIOBlocks === undefined) {
+            physicalIOBlocks = [];
+        }
+
         for (let i = 0; i < physicalIOBlocks.length; i++) {
             this.physicalIOBlocks[physicalIOBlocks[i].name] = physicalIOBlocks[i];
         }
+
 
         for (let i = 0; i < scriptVariables.length; i++) {
             this.scriptVariables[scriptVariables[i].name] = scriptVariables[i];
         }
 
+        if (registers === undefined) {
+            registers = [];
+        }
         for (let i = 0; i < registers.length; i++) {
             this.registers[registers[i].name] = registers[i];
         }
@@ -296,7 +320,7 @@ class DataPoint {
             try {
                 return o[p];
             } catch (e) {
-                console.error(`Accessing path ${path} failed`,dp, e)
+                console.error(`Accessing path ${path} failed`, dp, e)
                 return undefined;
             }
         }, this);
