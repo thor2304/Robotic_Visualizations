@@ -73,7 +73,7 @@ function getSplitResizeFunctions(){
     }
 
     const _updateContainers = () => {
-        console.log("updateContainers");
+        // console.log("updateContainers");
         codeContainer.style.flex = `${internalCodeSplit}%`
         visualizationContainer.style.flex = `${internalVizSplit}%`
 
@@ -91,23 +91,26 @@ function getSplitResizeFunctions(){
         // Since the plotly charts have set width, they somehow override the flex container
         // We need to manually update the width of the plotly charts
         plotly_containers.forEach((plotly_container) => {
-            console.log("plotly_container", plotly_container)
+            // console.log("plotly_container", plotly_container)
             // console.log("plotly_container.layout", plotly_container.layout)
             // console.log("plotly_container", plotly_container)
-            const difference = true_target_size - plotly_container.layout.width;
-            if (difference > lower_bound && difference < upper_bound) {
-                // We are within acceptable bounds, no need to resize
-                return;
-            }
+
+            // const difference = true_target_size - plotly_container.layout.width;
+            // if (difference > lower_bound && difference < upper_bound) {
+            //     // We are within acceptable bounds, no need to resize
+            //     return;
+            // }
             Plotly.relayout(plotly_container, {
                 // If we do not subtract the lower bound, then the lower_bound will be triggered on the next "frame"
-                width: difference > lower_bound ? true_target_size - (lower_bound + 5): target_down_size,
+                // width: difference > lower_bound ? true_target_size - (lower_bound + 5): target_down_size,
+                // since the function is throttled, we can just set the width to the target size
+                width:  true_target_size,
             });
         })
     }
 
-    const throttleUpdateContainers = get_throttled_version_function(_updateContainers, 50);
-    const throttleUpdateSplit = get_throttled_version_function(_updateSplit, 50);
+    const throttleUpdateContainers = get_throttled_version_function(_updateContainers, 10);
+    const throttleUpdateSplit = get_throttled_version_function(_updateSplit, 5);
 
     return [throttleUpdateContainers, throttleUpdateSplit]
 
