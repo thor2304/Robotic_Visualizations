@@ -147,7 +147,7 @@ main > *{
 
 /*For the header and the unlock button*/
 #header-title{
-    grid-template-columns: 1fr auto auto;
+    grid-template-columns: 1fr auto 1fr;
     display: grid;
     justify-content: center;
     align-content: center;
