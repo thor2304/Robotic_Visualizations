@@ -76,17 +76,23 @@
     <script defer type="module" src="fluid_layout/window_resizing.js"></script>
 
     <script defer type="module" src="file_upload/uploadPageHydration.js"></script>
+    <script defer type="module" src="file_upload/upload_redirect_button.js"></script>
 
     <link rel="stylesheet" href="main.css">
 </head>
 <body>
 <header>
     <div id="header-title">
-        <button id="clear-cache-button" class="btn btn-danger m-2">
-            Clear file cache<br> (Delete the files stored locally)
-        </button>
+        <div class="d-flex justify-content-evenly">
+            <button id="clear-cache-button" class="btn btn-danger m-2">
+                Clear file cache<br> (Delete the files stored locally)
+            </button>
+        </div>
         <h1>This cycle is a partial pickup. Only one suction cup grabbed the tile</h1>
-        <button id="lock-layout-button" class="btn btn-primary m-2"></button>
+        <div class="d-flex justify-content-evenly">
+            <button id="upload-file-button" class="btn btn-primary m-2">Upload Files</button>
+            <button id="lock-layout-button" class="btn btn-primary m-2"></button>
+        </div>
     </div>
 </header>
 <!--<div class="p-2">-->
@@ -105,14 +111,14 @@
                     <select class="form-select group-A" id="dropdown-A">
                     </select>
                 </div>
-<!--                <div class="col">-->
-<!--                <p id="error-density-B"></p>-->
-<!--                    <label id="dropdown-B-label" for="dropdown-B" class="form-label">-->
-<!--                        Visualization B: No Errors detected-->
-<!--                    </label>-->
-<!--                    <select class="form-select group-B" id="dropdown-B">-->
-<!--                    </select>-->
-<!--                </div>-->
+                <!--                <div class="col">-->
+                <!--                <p id="error-density-B"></p>-->
+                <!--                    <label id="dropdown-B-label" for="dropdown-B" class="form-label">-->
+                <!--                        Visualization B: No Errors detected-->
+                <!--                    </label>-->
+                <!--                    <select class="form-select group-B" id="dropdown-B">-->
+                <!--                    </select>-->
+                <!--                </div>-->
             </div>
         </div>
         <div id="test" class="vis-placeholder group-A"></div>

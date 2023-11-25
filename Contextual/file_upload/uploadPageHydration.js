@@ -3,10 +3,22 @@ import {dataFileName} from "../helper_scripts/load_csv_data.js";
 import {scriptFileName} from "../source_code_visualization/fetch_and_render_sample_code.js";
 
 
-async function clearCaches(){
+async function clearCaches() {
+    await clearDataCache()
+    await clearScriptCache()
+    location.reload()
+}
+
+export async function clearDataCache() {
     await remove(dataFileName)
-    await remove(scriptFileName)
     await remove("cachedComputations")
 }
 
-document.getElementById("clear-cache-button").addEventListener("click", clearCaches)
+export async function clearScriptCache() {
+    await remove(scriptFileName)
+}
+
+if (document.getElementById("clear-cache-button")) {
+    document.getElementById("clear-cache-button")
+        .addEventListener("click", clearCaches)
+}

@@ -5,6 +5,7 @@ import {MyFile} from "./Datastructures/MyFile.js";
 import {has, loadJson, save} from "./Cache.js";
 import {scriptFileName} from "../source_code_visualization/fetch_and_render_sample_code.js";
 import {handleFolder} from "./ZipHandler.js";
+import {clearDataCache, clearScriptCache} from "./uploadPageHydration.js";
 
 // https://gildas-lormeau.github.io/zip.js/api/index.html
 
@@ -80,10 +81,13 @@ async function loadScriptFile(file) {
  */
 export async function handleFile(file) {
     if (file.name.endsWith(".csv")) {
+        await clearDataCache()
         await loadCsvFile(file)
     } else if (file.name.endsWith(".zip")) {
+        await clearDataCache()
         await handleFolder(await loadZipFile(file))
     } else if (file.name.endsWith(".script")) {
+        await clearScriptCache()
         await loadScriptFile(file)
     }
 
