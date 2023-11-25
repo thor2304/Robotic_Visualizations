@@ -30,8 +30,8 @@ function getFramesForTCP(plotGroup) {
             frames.push({
                 name: timestamps[i],
                 data: [{
-                    x: [datapoints[i].robot.joints.wrist_3.position.x],
-                    y: [datapoints[i].robot.joints.wrist_3.position.y],
+                    x: [datapoints[i].robot.tool.position.x],
+                    y: [datapoints[i].robot.tool.position.y],
                 }]
             })
 
@@ -263,7 +263,10 @@ function _generate_traces_coordinate(coordinates, active_number = 1, TCP_x, TCP_
         marker: {
             color: colorMap.legend_colors.a,
             symbol: markers.robot,
-            size: 20
+            size: 20,
+            line: {
+                width: 3
+            }
         },
         hovertemplate: "(%{x}, %{y}) Current TCP Position"
     })

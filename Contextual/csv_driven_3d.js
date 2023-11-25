@@ -70,10 +70,10 @@ function createGroup(groupIdentifier) {
 
     const plotRequests = [
         // new PlotRequest(`${namePrefix} Bar Chart`, `${idPrefix}barchart`, ["controller.executionTime"], plotTypes.bar),
+        // new PlotRequest(`${namePrefix}3D TCP Vis`, `${idPrefix}3d_tcp_vis`, ["robot.tool.positionError"], plotTypes.direction),
         new PlotRequest(`${namePrefix}3D Robot Arm`, `${idPrefix}3dAnimation`, [], plotTypes.robot),
         new PlotRequest(`${namePrefix}Vacuum Levels`, `${idPrefix}lineGraph`, ["scriptVariables.vg_Vacuum_A.value", "scriptVariables.vg_Vacuum_B.value",], plotTypes.line),
         new PlotRequest(`${namePrefix}Robot gripper is holding`, `${idPrefix}holdingPlot`, ["custom.is_holding_A", "custom.is_holding_B",], plotTypes.line),
-        // new PlotRequest(`${namePrefix}3D TCP Vis`, `${idPrefix}3d_tcp_vis`, ["robot.tool.positionError"], plotTypes.direction),
         new PlotRequest(`${namePrefix}variable_table`, `${idPrefix}variable_vis`, [], plotTypes.table),
     ]
 

@@ -252,7 +252,8 @@ async function create_frame_from_datum(datum, offSetVector, customVariables, cac
     )
 
 
-    const robot = new Robot(tool,
+    const robot = new Robot(
+        tool,
         [base, shoulder, elbow, wrist_1, wrist_2, wrist_3],
         new Payload(extractExpectedWeight(datum), parseFloat(datum.payload)),
         datum.protective_stop,
