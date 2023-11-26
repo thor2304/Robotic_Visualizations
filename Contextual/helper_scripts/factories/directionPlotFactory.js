@@ -16,7 +16,7 @@ import {createDivForPlotlyChart} from "./chartDivFactory.js";
 export async function plotDirection(chartName, chartId, dataPoints, timestamps, dataNames, plotGroup) {
     const traces = []
 
-    await createDivForPlotlyChart(chartId)
+    const chart = await createDivForPlotlyChart(chartId)
 
     for (let i = 0; i < dataNames.length; i++) {
         traces.push(...createArrowTraces(dataPoints, dataNames[i]))
@@ -41,7 +41,7 @@ export async function plotDirection(chartName, chartId, dataPoints, timestamps, 
 
     // console.log(scale)
 
-    const layout = get3dLayout(chartName, scale)
+    const layout = get3dLayout(chartName, scale, chart.clientWidth, chart.clientHeight)
 
     // console.log(frames)
 

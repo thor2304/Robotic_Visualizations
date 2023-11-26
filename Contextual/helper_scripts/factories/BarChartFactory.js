@@ -28,7 +28,7 @@ export async function plotBarChart(chartName, chartId, dataPoints, timestamps, d
 
     const trace = createTrace(data, timestamps, dataName)
 
-    const layout = get2dLayout(chartName);
+    const layout = get2dLayout(chartName, chart.clientHeight, chart.clientWidth);
     for(let timespanError of errors){
         layout.shapes.push(createErrorBar(timespanError.start.time.stepCount, timespanError.end.time.stepCount, timespanError.triggeringVariable))
     }

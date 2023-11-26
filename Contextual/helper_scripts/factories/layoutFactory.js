@@ -5,13 +5,17 @@ import {cleanName} from "../datanameCleaner.js";
  *
  * @param title {string}
  * @param range {number}
+ * @param width {number}
+ * @param height {number}
  * @param zoom {number}
  * @return {{xaxis: {automargin: boolean}, margin: {r: number, b: number, pad: number, t: number, l: number}, plot_bgcolor: string, paper_bgcolor: string, title, yaxis: {automargin: boolean}, autosize: boolean, scene: {xaxis: {color: string, range: (number|*)[], title: string}, aspectmode: string, yaxis: {color: string, range: (number|*)[], title: string}, zaxis: {color: string, range: (number|*)[], title: string}, aspectratio: {x: number, y: number, z: number}}, showlegend: boolean, legend: {x: number, xanchor: string, y: number}}}
  */
-export function get3dLayout(title, range, zoom=1) {
+export function get3dLayout(title, range, width, height, zoom = 1) {
     return {
         title: title,
-        autosize: true,
+        autosize: false,
+        width: width,
+        height: height,
         margin: {
             l: 0,
             r: 0,
@@ -92,7 +96,7 @@ export function createErrorBar(startX, endX, variableName) {
         },
         label: {
             text: `${cleanName(variableName)} below threshold`,
-            font: { size: 10, color: getColorMap().general.text_on_background },
+            font: {size: 10, color: getColorMap().general.text_on_background},
             textposition: 'top center',
         },
     }
@@ -117,7 +121,7 @@ export function createVerticalLine(x, lineName, thickness = 2) {
         },
         label: {
             text: lineName,
-            font: { size: 10, color: getColorMap().general.text_on_background },
+            font: {size: 10, color: getColorMap().general.text_on_background},
             textposition: 'top center',
         },
     }
@@ -127,7 +131,7 @@ export function createVerticalLine(x, lineName, thickness = 2) {
 /**
  * @returns {{yref: string, xref: string, fillcolor: string, line: {color, width: number}, y0: number, x0: number, y1: number, x1: number, type: string, opacity: number}}
  */
-export function createBoundingLines(){
+export function createBoundingLines() {
     return {
         type: "rect",
         xref: "paper",
@@ -149,16 +153,20 @@ export function createBoundingLines(){
 /**
  *
  * @param title {string}
+ * @param height {number}
+ * @param width {number}
  * @param forLinePlot {boolean} - If true, the layout will be for a line plot, otherwise it will be for other types of 2d plots
  * @returns Object
  */
-export function get2dLayout(title, forLinePlot = true) {
+export function get2dLayout(title, height, width, forLinePlot = true) {
     const {plotColor, paperColor, gridColor} = getColorMap().plot_colors
 
     return {
         title: title,
         hovermode: forLinePlot ? "x unified" : "closest",
-        autosize: true,
+        autosize: false,
+        width: width,
+        height: height,
         margin: {
             l: 0,
             r: 0,
@@ -183,8 +191,7 @@ export function get2dLayout(title, forLinePlot = true) {
         plot_bgcolor: plotColor,
         paper_bgcolor: paperColor,
         //https://plotly.com/javascript/shapes/
-        shapes: [
-        ],
+        shapes: [],
         showlegend: true,
         legend: {
             //https://plotly.com/javascript/reference/layout/#layout-legend-xanchor

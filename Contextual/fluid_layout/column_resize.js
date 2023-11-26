@@ -86,7 +86,7 @@ function getSplitResizeFunctions(){
         const true_target_size = main_container.clientWidth * 0.01 * internalVizSplit;
 
         // Taking a % off the split will make the plot slightly smaller and allow for flex to control the size
-        const target_down_size = main_container.clientWidth * 0.01 * (internalVizSplit - 10);
+        const target_down_size = main_container.clientWidth * 0.01 * (internalVizSplit - 2);
 
         // Since the plotly charts have set width, they somehow override the flex container
         // We need to manually update the width of the plotly charts
@@ -104,7 +104,7 @@ function getSplitResizeFunctions(){
                 // If we do not subtract the lower bound, then the lower_bound will be triggered on the next "frame"
                 // width: difference > lower_bound ? true_target_size - (lower_bound + 5): target_down_size,
                 // since the function is throttled, we can just set the width to the target size
-                width:  true_target_size,
+                width:  target_down_size,
             });
         })
     }

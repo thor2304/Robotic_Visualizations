@@ -4,8 +4,8 @@ import {createDivForPlotlyChart} from "./chartDivFactory.js";
 import {getAnimationSettings} from "./animationSettings.js";
 import {getActivePlotGroup} from "../updateVisualizations.js";
 
-function getLayoutForCoordinates(chartName, xMin, xMax, yMin, yMax) {
-    const layout = get2dLayout(chartName, false)
+function getLayoutForCoordinates(chartName, chart, xMin, xMax, yMin, yMax) {
+    const layout = get2dLayout(chartName, chart.clientHeight, chart.clientWidth, false)
     // layout.shapes.push(createBoundingLines())
     layout.xaxis.showline = false
     layout.xaxis.showticklabels = false
@@ -113,7 +113,7 @@ export async function plotCoordinates(chartName, chartId, dataNames, groupContro
     const {xMin, xMax, yMin, yMax} = getRanges(traces, groupController.rawFrames);
     addLegendExplanations(traces);
 
-    const layout = getLayoutForCoordinates(chartName, xMin, xMax, yMin, yMax);
+    const layout = getLayoutForCoordinates(chartName, chart, xMin, xMax, yMin, yMax);
 
     const plot = await Plotly.react(chart, {
         data: traces,
@@ -187,7 +187,7 @@ export function updateCoordinatePlot(chartId, dataNames, groupController) {
 
     Plotly.react(chart, {
         data: traces,
-        layout: getLayoutForCoordinates(chart.layout.title, xMin, xMax, yMin, yMax),
+        layout: getLayoutForCoordinates(chart.layout.title, chart, xMin, xMax, yMin, yMax),
         frames: frames,
     }).then();
 }

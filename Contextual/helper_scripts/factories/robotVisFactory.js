@@ -12,7 +12,7 @@ import {createDivForPlotlyChart} from "./chartDivFactory.js";
  * @returns {Promise<void>}
  */
 export async function plot3dVis(dataframes, chartId, chartTitle, plotGroup) {
-    await createDivForPlotlyChart(chartId)
+    const chart = await createDivForPlotlyChart(chartId)
 
     const overlap_with_slider = true;
 
@@ -97,41 +97,10 @@ export async function plot3dVis(dataframes, chartId, chartTitle, plotGroup) {
     }
     // console.log(frames)
 
-    let sliderSteps = [];
-    for (let i = 0; i < timestamps.length; i++) {
-        sliderSteps.push({
-            method: 'animate',
-            label: timestamps[i],
-            args: [[timestamps[i]], getAnimationSettings()],
-            execute: false
-        });
-    }
-
     const box_size = 1
 
-    const layout = get3dLayout(chartTitle, box_size, 1.5)
-
+    const layout = get3dLayout(chartTitle, box_size, chart.clientWidth, chart.clientHeight,1.5)
     layout.hovermode = 'closest';
-    // Finally, add the slider and use `pad` to position it
-    // nicely next to the buttons.
-    // layout.sliders = [{
-    //     pad: {
-    //         l: 20,
-    //         r: 20,
-    //         t: overlap_with_slider ? -90 : -35,
-    //         b: 15,
-    //     },
-    //     currentvalue: {
-    //         visible: true,
-    //         prefix: 'stepcount: ',
-    //         xanchor: 'right',
-    //         font: {
-    //             size: 20,
-    //             // color: '#666'
-    //         }
-    //     },
-    //     steps: sliderSteps
-    // }]
 
     // Create the plot:
     await Plotly.react(chartId, {

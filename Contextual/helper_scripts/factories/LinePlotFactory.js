@@ -26,7 +26,7 @@ export async function plotLineChart(chartName, chartId, dataPoints, timestamps, 
 
 
     // Generate the layout. This is necessary for generating the frames
-    const layout = get2dLayout(chartName)
+    const layout = get2dLayout(chartName, chart.clientHeight, chart.clientWidth)
     for (let timespanError of errors) {
         layout.shapes.push(createErrorBar(timespanError.start.time.stepCount, timespanError.end.time.stepCount, timespanError.triggeringVariable))
     }
