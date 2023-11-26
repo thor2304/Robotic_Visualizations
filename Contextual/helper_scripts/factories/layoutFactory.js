@@ -98,6 +98,32 @@ export function createErrorBar(startX, endX, variableName) {
     }
 }
 
+export function createVerticalLine(x, lineName, thickness = 2) {
+    return {
+        type: "line",
+        xref: "x",
+        yref: "paper",
+        x0: x,
+        y0: 0,
+        x1: x,
+        y1: 1,
+
+        layer: "above",
+
+
+        line: {
+            width: thickness,
+            color: getColorMap().legend_colors.connecting_line
+        },
+        label: {
+            text: lineName,
+            font: { size: 10, color: getColorMap().general.text_on_background },
+            textposition: 'top center',
+        },
+    }
+
+}
+
 /**
  * @returns {{yref: string, xref: string, fillcolor: string, line: {color, width: number}, y0: number, x0: number, y1: number, x1: number, type: string, opacity: number}}
  */
