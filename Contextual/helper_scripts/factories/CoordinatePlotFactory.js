@@ -20,19 +20,31 @@ function getLayoutForCoordinates(chartName, xMin, xMax, yMin, yMax) {
     return layout;
 }
 
-function getFramesForTCP(plotGroup) {
+function getFramesForTCP(plotGroup, padCount = 0) {
     const frames = [];
     const datapoints = plotGroup.getCycle().sequentialDataPoints
     const timestamps = plotGroup.getCycle().timestamps
 
+    const padData = []
+    for (let i = 0; i < padCount; i++) {
+        padData.push({})
+    }
+
     for (let i = 0; i < timestamps.length; i++) {
+        const dataArray = []
+        padData.forEach(pad => {
+            dataArray.push(pad)
+        })
+
+        dataArray.push({
+            x: [datapoints[i].robot.tool.position.x],
+            y: [datapoints[i].robot.tool.position.y],
+        })
+
         try {
             frames.push({
                 name: timestamps[i],
-                data: [{
-                    x: [datapoints[i].robot.tool.position.x],
-                    y: [datapoints[i].robot.tool.position.y],
-                }]
+                data: dataArray,
             })
 
         } catch (e) {
@@ -97,7 +109,7 @@ export async function plotCoordinates(chartName, chartId, dataNames, groupContro
 
     // We have no frames here until we want to start animating the 2d plot.
 
-    const frames = getFramesForTCP(plotGroup);
+    const frames = getFramesForTCP(plotGroup, traces.length -1);
     const {xMin, xMax, yMin, yMax} = getRanges(traces, groupController.rawFrames);
     addLegendExplanations(traces);
 
@@ -170,7 +182,7 @@ export function updateCoordinatePlot(chartId, dataNames, groupController) {
 
     const traces = createTraces(groupController, dataNames);
 
-    const frames = getFramesForTCP(groupController.get(getActivePlotGroup()));
+    const frames = getFramesForTCP(groupController.get(getActivePlotGroup()), traces.length -1);
     groupController.get(getActivePlotGroup()).addUpdateInformation(chartId, getAnimationSettings(false), generateFrameLookupFromFrames(frames))
 
     Plotly.react(chart, {
@@ -254,24 +266,6 @@ function _generate_traces_coordinate(coordinates, active_number = 1, TCP_x, TCP_
     const active_coordinate = coordinates.filter((coordinate) => coordinate.cycleIndex === active_number)
 
     traces.push({
-        x: [TCP_x],
-        y: [TCP_y],
-        type: 'scatter',
-        mode: 'markers',
-        name: "", // Robot. This is empty to get rid of the ugly grey box
-        showlegend: false,
-        marker: {
-            color: colorMap.legend_colors.a,
-            symbol: markers.robot,
-            size: 20,
-            line: {
-                width: 3
-            }
-        },
-        hovertemplate: "(%{x}, %{y}) Current TCP Position"
-    })
-
-    traces.push({
         x: past_coordinates.map((coordinate) => coordinate.x),
         y: past_coordinates.map((coordinate) => coordinate.y),
         type: 'scatter',
@@ -317,6 +311,24 @@ function _generate_traces_coordinate(coordinates, active_number = 1, TCP_x, TCP_
         },
         text: active_coordinate.map((coordinate) => coordinate.cycleIndex.toString()),
         hovertemplate: "(%{x}, %{y}) number: %{text} Current"
+    })
+
+    traces.push({
+        x: [TCP_x],
+        y: [TCP_y],
+        type: 'scatter',
+        mode: 'markers',
+        name: "", // Robot. This is empty to get rid of the ugly grey box
+        showlegend: false,
+        marker: {
+            color: colorMap.legend_colors.a,
+            symbol: markers.robot,
+            size: 20,
+            line: {
+                width: 2
+            }
+        },
+        hovertemplate: "(%{x}, %{y}) Current TCP Position"
     })
 
     return traces

@@ -42,20 +42,30 @@ export async function plotLineChart(chartName, chartId, dataPoints, timestamps, 
 
     const traces = generate_traces(cleanNames, dataArrays, timestamps);
 
+    const padData = []
+    for (let i = 0; i < dataNames.length; i++) {
+        padData.push({})
+    }
+
     const frames = new Array(timestamps.length)
     for (let i = 0; i < timestamps.length; i++) {
+        const dataArray = []
+        padData.forEach(pad => {
+            dataArray.push(pad)
+        })
+        dataArray.push({
+            x: [timestamps[i], timestamps[i]],
+        })
         frames[i] = {
             name: timestamps[i],
             // data is an array, where each index corresponds to the index of a trace in the traces array
             // Since we only update one value, it will be the first trace in the traces array
-            data: [{
-                x: [timestamps[i], timestamps[i]],
-            }]
+            data: dataArray,
         }
     }
 
     const layout = get2dLayout(chartName)
-    for(let timespanError of errors){
+    for (let timespanError of errors) {
         layout.shapes.push(createErrorBar(timespanError.start.time.stepCount, timespanError.end.time.stepCount, timespanError.triggeringVariable))
     }
 
@@ -134,7 +144,6 @@ function generate_traces(dataNames, dataArrays, time) {
             visible: false,
         },
     }
-    traces.push(verticalLine)
 
     // Generate the traces for the data lines
     for (let i = 0; i < dataNames.length; i++) {
@@ -149,6 +158,9 @@ function generate_traces(dataNames, dataArrays, time) {
             },
         })
     }
+
+    traces.push(verticalLine)
+
 
     return traces
 }
