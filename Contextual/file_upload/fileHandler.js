@@ -143,6 +143,7 @@ async function loadCsvFile(file) {
 
     if(extendsExistingData){
         if(lastVersion !== undefined && fileVersionId !== lastVersion + 1){
+            alert("The uploaded file is not the next in order")
             throw new Error("The uploaded file is not the next in order")
         }
 
