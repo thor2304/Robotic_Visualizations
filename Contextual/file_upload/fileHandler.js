@@ -6,7 +6,7 @@ import {has, loadJson, save} from "./Cache.js";
 import {scriptFileName} from "../source_code_visualization/fetch_and_render_sample_code.js";
 import {handleFolder} from "./ZipHandler.js";
 import {clearDataCache, clearScriptCache} from "./uploadPageHydration.js";
-import {updateVersionNumber} from "./statusVisualizations.js";
+import {setFileName, updateVersionNumber} from "./statusVisualizations.js";
 
 // https://gildas-lormeau.github.io/zip.js/api/index.html
 
@@ -155,6 +155,7 @@ async function loadCsvFile(file) {
     lastDataName = unVersionedFileName
 
     updateVersionNumber(fileVersionId)
+    setFileName(unVersionedFileName)
 
     // This fixes a weird bug, where the data is not actually saved, unless it is explicitly cleared first
     await clearDataCache()

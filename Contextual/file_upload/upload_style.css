@@ -61,3 +61,7 @@ main{
 .span-indicator.present{
     background-color: var(--success-color);
 }
+
+#file-name-indicator{
+    font-weight: bold;
+}

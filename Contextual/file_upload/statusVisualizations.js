@@ -1,13 +1,22 @@
-import {has} from "./Cache.js";
+import {has, loadJson} from "./Cache.js";
 import {dataFileName} from "../helper_scripts/load_csv_data.js";
 import {scriptFileName} from "../source_code_visualization/fetch_and_render_sample_code.js";
 
 const dataIndicator = document.getElementById("data-indicator")
 const lastVersionDisplay = document.getElementById("last-version")
 const scriptIndicator = document.getElementById("script-indicator")
+const fileNameIndicator = document.getElementById("file-name-indicator")
 
 export function refreshIndicators() {
+    if (!dataIndicator || !scriptIndicator) {
+        return
+    }
     has(dataFileName).then((hasData) => {
+        loadJson(dataFileName).then((data) => {
+            if (data) {
+                setFileName(data.name)
+            }
+        })
         setIndicator(dataIndicator, hasData)
         if (!hasData) {
             clearVersionNumber()
@@ -21,8 +30,14 @@ export function refreshIndicators() {
 
 refreshIndicators()
 
+
+export function setFileName(fileName) {
+    fileNameIndicator.textContent = fileName
+
+}
 function clearVersionNumber() {
     lastVersionDisplay.textContent = ""
+    setFileName("")
 }
 
 export function updateVersionNumber(newVersion = undefined) {
