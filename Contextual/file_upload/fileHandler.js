@@ -6,6 +6,7 @@ import {has, loadJson, save} from "./Cache.js";
 import {scriptFileName} from "../source_code_visualization/fetch_and_render_sample_code.js";
 import {handleFolder} from "./ZipHandler.js";
 import {clearDataCache, clearScriptCache} from "./uploadPageHydration.js";
+import {updateVersionNumber} from "./statusVisualizations.js";
 
 // https://gildas-lormeau.github.io/zip.js/api/index.html
 
@@ -33,9 +34,9 @@ async function loadZipFile(file) {
         for (const entry of entries) {
             let filename = entry.filename
             const path = entry.filename.split("/")
-            if (!path[path.length-1].endsWith("/")) {
+            if (!path[path.length - 1].endsWith("/")) {
                 filename = path.pop()
-            }else  {
+            } else {
                 continue
             }
 
@@ -81,7 +82,6 @@ async function loadScriptFile(file) {
  */
 export async function handleFile(file) {
     if (file.name.endsWith(".csv")) {
-        await clearDataCache()
         await loadCsvFile(file)
     } else if (file.name.endsWith(".zip")) {
         await clearDataCache()
@@ -90,23 +90,6 @@ export async function handleFile(file) {
         await clearScriptCache()
         await loadScriptFile(file)
     }
-
-    await checkFilesAndRedirect()
-}
-
-async function checkFilesAndRedirect() {
-    if (
-        await has(dataFileName)
-        // && await has(scriptFileName)
-    ) {
-        redirectToTool()
-    }else {
-        console.log("Not all files loaded")
-    }
-}
-
-function redirectToTool() {
-    window.location.href = "../main.html"
 }
 
 
@@ -127,12 +110,55 @@ async function loadTextFromFile(file) {
 }
 
 /**
+ *
+ * @type {undefined|string}
+ */
+let lastDataName = undefined
+/**
+ *
+ * @type {undefined|number}
+ */
+let lastVersion = undefined
+
+/**
  * @param file {File}
- * @return {Promise<Object[]>}
+ * @return {Promise<void>}
  */
 async function loadCsvFile(file) {
-    const text = await loadTextFromFile(file);
-    const myFile = new MyFile(file.name, text)
+    const extensionIndex = file.name.lastIndexOf(".")
+
+    const versionedFileName = file.name.substring(0, extensionIndex)
+
+    const versionLocation = versionedFileName.lastIndexOf("-")
+
+    const fileVersionId = Number.parseInt(versionedFileName.substring(versionLocation + 1))
+
+    const unVersionedFileName = versionedFileName.substring(0, versionLocation)
+
+    console.log(versionedFileName, unVersionedFileName, fileVersionId)
+
+    let text = await loadTextFromFile(file);
+
+    const extendsExistingData = lastDataName === unVersionedFileName
+
+    if(extendsExistingData){
+        if(lastVersion !== undefined && fileVersionId !== lastVersion + 1){
+            throw new Error("The uploaded file is not the next in order")
+        }
+
+        const existingData = await loadJson(dataFileName)
+
+        text = existingData.content + text
+    }
+
+    lastVersion = fileVersionId
+    lastDataName = unVersionedFileName
+
+    updateVersionNumber(fileVersionId)
+
+    // This fixes a weird bug, where the data is not actually saved, unless it is explicitly cleared first
+    await clearDataCache()
+
+    const myFile = new MyFile(unVersionedFileName, text)
     await save(dataFileName, myFile)
-    return parseData(text);
 }

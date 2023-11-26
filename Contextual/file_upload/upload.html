@@ -5,21 +5,43 @@
     <title>Upload files</title>
     <script type="module" defer src="./uploadHandler.js"></script>
     <script type="module" defer src="./uploadPageHydration.js"></script>
+    <script type="module" defer src="tool_redirect_button.js"></script>
+    <script type="module" defer src="statusVisualizations.js"></script>
     <link rel="stylesheet" href="./upload_style.css">
+    <link rel="stylesheet" href="../colors.css">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
 <body>
-<div class="text-center">
-    <button id="clear-cache-button" class="btn btn-danger m-2">
-        Clear caches (Delete the files stored locally)
-    </button>
-</div>
-<div class="text-center d-flex justify-content-center">
-    <div id="drop_zone" class="area align-self-center">
-        <input type="file" id="upload"/>
+<main>
+    <div class="text-center">
+        <button id="clear-cache-button" class="btn btn-danger m-2">
+            Clear all caches (Delete the files stored locally)
+        </button>
     </div>
-</div>
+    <div class="text-center d-flex justify-content-center">
+        <div id="drop_zone" class="area align-self-center">
+            <input type="file" id="upload"/>
+        </div>
+    </div>
+    <div id="indicator-container" class="text-center d-flex justify-content-center align-items-baseline">
+        <div class="d-flex align-items-baseline">
+            <p>Data: <span id="data-indicator" class="span-indicator">Not uploaded</span> <span id="last-version"></span></p>
+            <button id="clear-data-cache-button" class="btn btn-danger m-2">
+                Clear
+            </button>
+        </div>
+        <button id="to-tool-btn" class="btn btn-primary m-5">
+            Proceed to tool
+        </button>
+        <div class="d-flex align-items-baseline">
+            <p>Script: <span id="script-indicator" class="span-indicator">Not uploaded</span></p>
+            <button id="clear-script-cache-button" class="btn btn-danger m-2">
+                Clear
+            </button>
+        </div>
+    </div>
+</main>
 </body>
 </html>

@@ -2,6 +2,7 @@
 import {dataFileName} from "../helper_scripts/load_csv_data.js";
 import {has, save} from "./Cache.js";
 import {MyFile} from "./Datastructures/MyFile.js";
+import {refreshIndicators, updateVersionNumber} from "./statusVisualizations.js";
 
 /**
  *
@@ -12,6 +13,8 @@ export async function handleFolder(folder){
 
     const file = new MyFile("realtimedata.csv", flightData, folder)
     file.setDataSource("FlightRecord")
+
+    updateVersionNumber()
 
     await save(dataFileName, file)
     console.log("Saved flight data")

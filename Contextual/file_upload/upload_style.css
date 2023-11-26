@@ -7,8 +7,9 @@
 /*}*/
 
 .area {
-    width: 90vw;
-    height: 90vh;
+    --margin: 5em;
+    width: calc(100% - var(--margin));
+    height: calc(100%);
     border: .2em dashed #000;
     background-image: url("../icons/android-chrome-256x256.png");
     background-position: center;
@@ -43,4 +44,20 @@
 
 .area input:focus {
     outline: none;
+}
+
+main{
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    height: 100vh;
+}
+
+.span-indicator{
+    border-radius: .25em;
+    background-color: var(--warning-color);
+    padding: .25em;
+}
+
+.span-indicator.present{
+    background-color: var(--success-color);
 }

@@ -79,7 +79,7 @@ async function _updateVisualizations(timestamp, plotGroup = _activePlotGroup) {
 
     const end = performance.now();
 
-    // console.log("Update took " + (end - start) + " milliseconds")
+    console.log("Update took " + (end - start) + " milliseconds")
 }
 
 /**
