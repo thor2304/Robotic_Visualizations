@@ -101,19 +101,29 @@ function getRanges(traces, dataPoints) {
  * @param plotGroup {PlotGroup} - The plotgroup that this plot belongs to.
  * @returns {Promise<void>}
  */
-export async function plotCoordinates(chartName, chartId, dataNames, groupController, plotGroup) {
+export async function plotCoordinates(chartId, dataNames, groupController, chartName = undefined, plotGroup = undefined) {
     const chart = await createDivForPlotlyChart(chartId)
+
+    if (plotGroup === undefined) {
+        plotGroup = groupController.get(getActivePlotGroup())
+    }
+
+    if (chartName === undefined) {
+        chartName = chart.layout.title
+    }
+
     const traces = createTraces(groupController, dataNames);
 
-    // console.log("plotting coordinates", groupController.get(getActivePlotGroup()), plotGroup)
+    let ranges = chart.ranges
+    if (ranges === undefined) {
+        ranges = getRanges(traces, groupController.rawFrames);
+    }
 
-    // We have no frames here until we want to start animating the 2d plot.
+    const frames = getFramesForTCP(plotGroup, traces.length - 1);
 
-    const frames = getFramesForTCP(plotGroup, traces.length -1);
-    const {xMin, xMax, yMin, yMax} = getRanges(traces, groupController.rawFrames);
     addLegendExplanations(traces);
 
-    const layout = getLayoutForCoordinates(chartName, chart, xMin, xMax, yMin, yMax);
+    const layout = getLayoutForCoordinates(chartName, chart, ranges.xMin, ranges.xMax, ranges.yMin, ranges.yMax);
 
     const plot = await Plotly.react(chart, {
         data: traces,
@@ -121,20 +131,9 @@ export async function plotCoordinates(chartName, chartId, dataNames, groupContro
         // frames: frames,
     })
 
-    plot.ranges = {
-        xMin: xMin,
-        xMax: xMax,
-        yMin: yMin,
-        yMax: yMax
-    }
-
-
-    // for (let plotGroup of groupController.getOptions("A")) {
-    //     plotGroup.addUpdateInformation(chartId, getAnimationSettings(false), frameLookup)
-    // }
+    plot.ranges = ranges
 
     plotGroup.addUpdateInformation(chartId, getAnimationSettings(false), generateFrameLookupFromFrames(frames))
-
 
 
     // chart.on('plotly_click', async function (data) {
@@ -166,30 +165,6 @@ function createTraces(groupController, dataNames) {
     const TCP_x = groupController.get(getActivePlotGroup()).getCycle().sequentialDataPoints[activeCycle].robot.tool.position.x
     const TCP_y = groupController.get(getActivePlotGroup()).getCycle().sequentialDataPoints[activeCycle].robot.tool.position.y
     return _generate_traces_coordinate(coordinates, activeCycle, TCP_x, TCP_y);
-}
-
-/**
- *
- * @param chartId {string}
- * @param dataNames {CoordinateNames}
- * @param groupController {GroupController}
- */
-export function updateCoordinatePlot(chartId, dataNames, groupController) {
-    const chart = document.getElementById(chartId)
-    console.log("updateCoordinatePlot", groupController.get(getActivePlotGroup()))
-
-    const {xMin, xMax, yMin, yMax} = chart.ranges
-
-    const traces = createTraces(groupController, dataNames);
-
-    const frames = getFramesForTCP(groupController.get(getActivePlotGroup()), traces.length -1);
-    groupController.get(getActivePlotGroup()).addUpdateInformation(chartId, getAnimationSettings(false), generateFrameLookupFromFrames(frames))
-
-    Plotly.react(chart, {
-        data: traces,
-        layout: getLayoutForCoordinates(chart.layout.title, chart, xMin, xMax, yMin, yMax),
-        frames: frames,
-    }).then();
 }
 
 

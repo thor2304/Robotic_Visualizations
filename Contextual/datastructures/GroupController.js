@@ -1,4 +1,4 @@
-import {updateCoordinatePlot} from "../helper_scripts/factories/CoordinatePlotFactory.js";
+import {plotCoordinates} from "../helper_scripts/factories/CoordinatePlotFactory.js";
 import {registerSliderTimestamps} from "../helper_scripts/slider-control.js";
 
 export class GroupController {
@@ -6,7 +6,7 @@ export class GroupController {
      * @private
      * @type {{plotGroup: PlotGroup, options: PlotGroup[]}}
      */
-    A={
+    A = {
         plotGroup: undefined,
         options: []
     };
@@ -14,7 +14,7 @@ export class GroupController {
      * @private
      * @type {{plotGroup: PlotGroup, options: PlotGroup[]}}
      */
-    B={
+    B = {
         plotGroup: undefined,
         options: []
     };
@@ -27,10 +27,10 @@ export class GroupController {
      * @param groupB {PlotGroup?}
      * @returns {void}
      */
-    initialize(groupA, groupB){
+    initialize(groupA, groupB) {
         this.A.plotGroup = groupA;
         this.addOption(groupA);
-        if (groupB === undefined){
+        if (groupB === undefined) {
             return;
         }
         this.B.plotGroup = groupB;
@@ -41,13 +41,14 @@ export class GroupController {
      * @param groupIdentifier {PlotGroupIdentifier}
      * @param optionIndex {number | string}
      */
-    set(groupIdentifier, optionIndex){
+    set(groupIdentifier, optionIndex) {
+        const start = performance.now()
         const index = typeof optionIndex === "string" ? parseInt(optionIndex) : optionIndex;
         const activePlotGroup = this.getOptions(groupIdentifier)[index]
         this[groupIdentifier].plotGroup = activePlotGroup;
         // This updates the visualizations to use this new cycle
         activePlotGroup.getPlotPromises().forEach(promise => promise.then())
-        updateCoordinatePlot("test", [{xName: "custom.target_x", yName: "custom.target_y"}], this)
+        plotCoordinates("test", [{xName: "custom.target_x", yName: "custom.target_y"}], this).then()
         registerSliderTimestamps(activePlotGroup.getCycle().sequentialDataPoints)
     }
 
@@ -63,7 +64,7 @@ export class GroupController {
      * @param identifier {PlotGroupIdentifier}
      * @returns {PlotGroup[]}
      */
-    getOptions(identifier){
+    getOptions(identifier) {
         return this[identifier].options;
     }
 
@@ -71,14 +72,14 @@ export class GroupController {
      * @param option {PlotGroupIdentifier}
      * @returns {PlotGroup}
      */
-    get(option){
+    get(option) {
         return this[option].plotGroup
     }
 
     /**
      * @returns {PlotGroupIdentifier[]}
      */
-    getGroupIdentifiers(){
+    getGroupIdentifiers() {
         // return ["A", "B"]
         return ["A"]
     }

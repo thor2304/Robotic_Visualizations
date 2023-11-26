@@ -52,7 +52,7 @@ export class PlotGroup {
      * @private
      * @type {Array<[string, {}]>}
      */
-    updateInformation= [];
+    updateInformation = [];
 
     /**
      *
@@ -105,7 +105,7 @@ export class PlotGroup {
     /**
      * @param div {HTMLDivElement}
      */
-    addGroupClass(div){
+    addGroupClass(div) {
         div.classList.add(`group-${this.identifier}`)
     }
 
@@ -135,7 +135,7 @@ export class PlotGroup {
     /**
      * @returns {Cycle}
      */
-    getCycle(){
+    getCycle() {
         return this.cycle
     }
 
@@ -157,7 +157,7 @@ export class PlotGroup {
             case plotTypes.bar:
                 return plotBarChart(plotRequest.plotName, plotRequest.chartId, this.cycle.sequentialDataPoints, this.cycle.timestamps, plotRequest.dataNames[0], this.cycle.errors, this)
             case plotTypes.coordinate:
-                return plotCoordinates(plotRequest.plotName, plotRequest.chartId, plotRequest.dataNames, groups, this)
+                return plotCoordinates(plotRequest.chartId, plotRequest.dataNames, groups, plotRequest.plotName, this)
         }
     }
 
@@ -178,15 +178,15 @@ export class PlotGroup {
      * @param updateInformation {{mode: string, transition: {duration: number, easing: string}, frame: {duration: number, redraw: boolean}}}
      * @param frames
      */
-    addUpdateInformation(chartId, updateInformation, frames){
-        if (this.updateInformationLookup[chartId]){
+    addUpdateInformation(chartId, updateInformation, frames) {
+        if (this.updateInformationLookup[chartId]) {
             return
         }
         this.updateInformationLookup[chartId] = true
         this.updateInformation.push([chartId, updateInformation, frames])
     }
 
-    getUpdateInformation(){
+    getUpdateInformation() {
         return this.updateInformation
     }
 }
@@ -318,7 +318,7 @@ export class Cycle {
         this.errors = detectErrors(this.sequentialDataPoints)
     }
 
-    hasError(){
+    hasError() {
         return this.errors.length > 0
     }
 

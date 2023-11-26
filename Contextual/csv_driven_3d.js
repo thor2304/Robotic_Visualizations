@@ -192,11 +192,10 @@ async function plot_raw_data(data, dataSource = "EDDE") {
     await Promise.all(plotPromises);
 
     await plotCoordinates(
-        "Pickup positions",
         "test",
         [{xName: "custom.target_x", yName: "custom.target_y"}],
         groups,
-        groups.get("A")
+        "Pickup positions"
     )
 
     // 5. shared operations for both groups
