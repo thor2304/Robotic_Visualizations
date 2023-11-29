@@ -34,6 +34,7 @@ export async function plotLineChart(chartName, chartId, dataPoints, timestamps, 
     // Hacky way to remove the numbers for this specific plot type
     if (dataNames.filter(name => name === "custom.is_holding_A").length > 0) {
         layout.yaxis.dtick = 1
+        layout.yaxis.range = [0, 1]
     }
 
     layout.legend.bgcolor = getColorMap().group_colors.A_background

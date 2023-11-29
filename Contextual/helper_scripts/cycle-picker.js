@@ -39,6 +39,9 @@ function addPercentageDisplay(pickerLabel, percentage, hasError = true) {
 function addOptions(groupIdentifier, groupPicker, plotGroups) {
     let errors = 0;
     let notErrors = 0;
+
+    plotGroups.sort((a, b) => a.getCycle().cycleIndex - b.getCycle().cycleIndex)
+
     for (let i = 0; i < plotGroups.length; i++) {
         const plotGroup = plotGroups[i];
         const option = document.createElement("option")

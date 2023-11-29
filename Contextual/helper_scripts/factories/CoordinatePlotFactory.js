@@ -250,7 +250,10 @@ function _generate_traces_coordinate(coordinates, active_number = 1, TCP_x, TCP_
         marker: {
             color: past_coordinates.map((coordinate) => coordinate.error ? colorMap.general.error : colorMap.general.success),
             symbol: markers.past,
-            size: 20
+            size: 20,
+            line: {
+                width: 2
+            }
         },
         text: past_coordinates.map((coordinate) => coordinate.cycleIndex.toString()),
         hovertemplate: "(%{x}, %{y}) number: %{text} Past"
@@ -267,6 +270,9 @@ function _generate_traces_coordinate(coordinates, active_number = 1, TCP_x, TCP_
             color: future_coordinates.map((coordinate) => coordinate.error ? colorMap.general.error : colorMap.general.success),
             symbol: markers.future,
             size: 20,
+            line: {
+                width: 2
+            }
         },
         text: future_coordinates.map((coordinate) => coordinate.cycleIndex.toString()),
         hovertemplate: "(%{x}, %{y}) number: %{text} Future"
@@ -282,7 +288,10 @@ function _generate_traces_coordinate(coordinates, active_number = 1, TCP_x, TCP_
         marker: {
             color: active_coordinate.map((coordinate) => coordinate.error ? colorMap.general.error : colorMap.general.success),
             symbol: markers.current,
-            size: 20
+            size: 20,
+            line: {
+                width: 2
+            }
         },
         text: active_coordinate.map((coordinate) => coordinate.cycleIndex.toString()),
         hovertemplate: "(%{x}, %{y}) number: %{text} Current"
@@ -314,9 +323,9 @@ function addLegendExplanations(traces) {
     traces.push(getTransparentMarkerForLegendExplanation("Error", colorMap.general.error, markers.explanation))
     traces.push(getTransparentMarkerForLegendExplanation("Success", colorMap.general.success, markers.explanation))
 
-    traces.push(getTransparentMarkerForLegendExplanation("Past", colorMap.legend_colors.c, markers.past))
-    traces.push(getTransparentMarkerForLegendExplanation("Current", colorMap.legend_colors.c, markers.current))
-    traces.push(getTransparentMarkerForLegendExplanation("Future", colorMap.legend_colors.c, markers.future))
+    traces.push(getTransparentMarkerForLegendExplanation("Past", colorMap.general.text_on_background, markers.past))
+    traces.push(getTransparentMarkerForLegendExplanation("Current", colorMap.general.text_on_background, markers.current))
+    traces.push(getTransparentMarkerForLegendExplanation("Future", colorMap.general.text_on_background, markers.future))
 
     traces.push(getTransparentMarkerForLegendExplanation("Robot TCP position", colorMap.legend_colors.a, markers.robot))
 }
