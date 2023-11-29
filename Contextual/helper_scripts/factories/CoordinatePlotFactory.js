@@ -169,7 +169,7 @@ function createTraces(groupController, dataNames) {
 
 
 /**
- * @typedef {{x: number, y: number, error: boolean, name: string, cycleIndex: number}} Coordinate
+ * @typedef {{x: number, y: number, color: string, name: string, cycleIndex: number}} Coordinate
  */
 
 /**
@@ -198,10 +198,17 @@ function extractCoordinates(ACycles, BCycles, dataNames) {
             for (let i = 0; i < dataNames.length; i++) {
                 const x = dataPoint.traversed_attribute(dataNames[i].xName)
                 const y = dataPoint.traversed_attribute(dataNames[i].yName)
+
+                let color = getColorMap().general.success
+                if (cycle.hasError()) {
+                    color = getColorMap().general.error
+                } else if (cycle.hasWarning()) {
+                    color = getColorMap().general.warning
+                }
                 coordinates.push({
                     x: x,
                     y: y,
-                    error: cycle.hasError(),
+                    color: color,
                     name: cycle.cycleIndex.toString(),
                     cycleIndex: cycle.cycleIndex
                 })
@@ -248,7 +255,7 @@ function _generate_traces_coordinate(coordinates, active_number = 1, TCP_x, TCP_
         name: "", // Past. This is empty to get rid of the ugly grey box
         showlegend: false,
         marker: {
-            color: past_coordinates.map((coordinate) => coordinate.error ? colorMap.general.error : colorMap.general.success),
+            color: past_coordinates.map((coordinate) => coordinate.color),
             symbol: markers.past,
             size: 20,
             line: {
@@ -267,7 +274,7 @@ function _generate_traces_coordinate(coordinates, active_number = 1, TCP_x, TCP_
         name: "", // Future. This is empty to get rid of the ugly grey box
         showlegend: false,
         marker: {
-            color: future_coordinates.map((coordinate) => coordinate.error ? colorMap.general.error : colorMap.general.success),
+            color: future_coordinates.map((coordinate) => coordinate.color),
             symbol: markers.future,
             size: 20,
             line: {
@@ -286,7 +293,7 @@ function _generate_traces_coordinate(coordinates, active_number = 1, TCP_x, TCP_
         name: "", // Current. This is empty to get rid of the ugly grey box
         showlegend: false,
         marker: {
-            color: active_coordinate.map((coordinate) => coordinate.error ? colorMap.general.error : colorMap.general.success),
+            color: active_coordinate.map((coordinate) => coordinate.color),
             symbol: markers.current,
             size: 20,
             line: {
@@ -322,6 +329,7 @@ function addLegendExplanations(traces) {
     const colorMap = getColorMap()
     traces.push(getTransparentMarkerForLegendExplanation("Error", colorMap.general.error, markers.explanation))
     traces.push(getTransparentMarkerForLegendExplanation("Success", colorMap.general.success, markers.explanation))
+    traces.push(getTransparentMarkerForLegendExplanation("Warning", colorMap.general.warning, markers.explanation))
 
     traces.push(getTransparentMarkerForLegendExplanation("Past", colorMap.general.text_on_background, markers.past))
     traces.push(getTransparentMarkerForLegendExplanation("Current", colorMap.general.text_on_background, markers.current))
