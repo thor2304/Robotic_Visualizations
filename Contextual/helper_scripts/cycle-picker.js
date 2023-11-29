@@ -52,7 +52,7 @@ function addOptions(groupIdentifier, groupPicker, plotGroups) {
         if (plotGroup.getCycle().hasWarning()) {
             appendText = "(warning)"
         }
-        option.innerText = `${plotGroup.getCycle().cycleIndex} ${appendText}`
+        option.innerText = `${plotGroup.getCycle().cycleIndex + 1} ${appendText}`
         option.value = i.toString()
         if (i === 0) {
             option.selected = true
