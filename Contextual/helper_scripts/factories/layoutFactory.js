@@ -78,6 +78,10 @@ export function get3dLayout(title, range, width, height, zoom = 1) {
  */
 export function createErrorBar(startX, endX, variableName) {
     //https://plotly.com/javascript/shapes/
+    return createBarShape(startX, endX, variableName, getColorMap().general.error, 0.3)
+}
+
+function createBarShape(startX, endX, variableName, color, opacity = 0.3) {
     return {
         type: "rect",
         xref: "x",
@@ -89,8 +93,8 @@ export function createErrorBar(startX, endX, variableName) {
 
         layer: "below",
 
-        fillcolor: getColorMap().general.error,
-        opacity: 0.3,
+        fillcolor: color,
+        opacity: opacity,
         line: {
             width: 0
         },
@@ -100,6 +104,17 @@ export function createErrorBar(startX, endX, variableName) {
             textposition: 'top center',
         },
     }
+}
+
+/**
+ *
+ * @param startX {number}
+ * @param endX {number}
+ * @param variableName {string}
+ * @returns {{yref: string, xref: string, fillcolor: string, line: {width: number}, y0: number, x0: number, y1: number, x1: number, type: string, opacity: number}}
+ */
+export function createWarningBar(startX, endX, variableName) {
+    return createBarShape(startX, endX, variableName, getColorMap().general.warning, 0.4)
 }
 
 export function createVerticalLine(x, lineName, thickness = 2) {

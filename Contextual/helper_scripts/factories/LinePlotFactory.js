@@ -1,7 +1,7 @@
 import {getAnimationSettings} from "./animationSettings.js";
 import {getColorMap} from "../ColorMap.js";
 import {updateVisualizations} from "../updateVisualizations.js";
-import {createErrorBar, createVerticalLine, get2dLayout} from "./layoutFactory.js";
+import {createErrorBar, createVerticalLine, createWarningBar, get2dLayout} from "./layoutFactory.js";
 import {createDivForPlotlyChart} from "./chartDivFactory.js";
 import {cleanName} from "../datanameCleaner.js";
 
@@ -27,8 +27,15 @@ export async function plotLineChart(chartName, chartId, dataPoints, timestamps, 
 
     // Generate the layout. This is necessary for generating the frames
     const layout = get2dLayout(chartName, chart.clientHeight, chart.clientWidth)
-    for (let timespanError of errors) {
-        layout.shapes.push(createErrorBar(timespanError.start.time.stepCount, timespanError.end.time.stepCount, timespanError.triggeringVariable))
+
+    if (errors.length > 1) {
+        const errorStart = Math.min(...errors.map(e => e.start.time.stepCount))
+        const errorEnd = Math.max(...errors.map(e => e.end.time.stepCount))
+        layout.shapes.push(createErrorBar(errorStart, errorEnd, "Both"))
+    }else if(errors.length === 1){
+        const errorStart = errors[0].start.time.stepCount
+        const errorEnd = errors[0].end.time.stepCount
+        layout.shapes.push(createWarningBar(errorStart, errorEnd,  errors[0].triggeringVariable))
     }
 
     // Hacky way to remove the numbers for this specific plot type
