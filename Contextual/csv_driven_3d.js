@@ -116,51 +116,20 @@ async function plot_raw_data(data, dataSource = "EDDE") {
     // end of 2.
     const cycles = get_cycles(rawFrames);
 
-    const withErrors = [];
-
-    const withoutErrors = [];
-
-    for (let i = 0; i < cycles.length; i++) {
-
-        const cycle = cycles[i];
-        if (cycle.hasError()) {
-            withErrors.push(cycle)
-        } else {
-            withoutErrors.push(cycle)
-        }
-    }
     if (cycles.length === 0) {
-
-        withErrors.push(new Cycle(rawFrames, 0))
+        cycles.push(new Cycle(rawFrames, 0))
     }
 
     groups.initialize(groupA)
 
     groups.addRawFrames(rawFrames)
-    groupA.setCycle(withErrors[0])
+    groupA.setCycle(cycles[0])
 
     registerSliderTimestamps(groupA.cycle.sequentialDataPoints)
 
-    for (let i = 1; i < withErrors.length; i++) {
+    for (let i = 1; i < cycles.length; i++) {
         const newGroup = createGroup("A")
-        newGroup.setCycle(withErrors[i])
-        groups.addOption(newGroup)
-    }
-
-    // if (withoutErrors.length === 0) {
-    //     withoutErrors.push(new Cycle([rawFrames[0]], withErrors.length))
-    // }
-    //
-    // groupB.setCycle(withoutErrors[0])
-    // for (let i = 1; i < withoutErrors.length; i++) {
-    //     const newGroup = createGroup("B")
-    //     newGroup.setCycle(withoutErrors[i])
-    //     groups.addOption(newGroup)
-    // }
-
-    for (let i = 0; i < withoutErrors.length; i++) {
-        const newGroup = createGroup("A")
-        newGroup.setCycle(withoutErrors[i])
+        newGroup.setCycle(cycles[i])
         groups.addOption(newGroup)
     }
 

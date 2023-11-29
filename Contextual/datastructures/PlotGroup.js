@@ -319,7 +319,11 @@ export class Cycle {
     }
 
     hasError() {
-        return this.errors.length > 0
+        return this.errors.length > 1
+    }
+
+    hasWarning() {
+        return this.errors.length === 1
     }
 
 }
