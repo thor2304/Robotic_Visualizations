@@ -147,7 +147,7 @@ export class PlotGroup {
     _plot(plotRequest) {
         switch (plotRequest.type) {
             case plotTypes.line:
-                return plotLineChart(plotRequest.plotName, plotRequest.chartId, this.cycle.sequentialDataPoints, this.cycle.timestamps, plotRequest.dataNames, this.cycle.errors, this)
+                return plotLineChart(plotRequest.plotName, plotRequest.chartId, this.cycle.sequentialDataPoints, this.cycle.timestamps, plotRequest.dataNames, plotRequest.unit, this.cycle.errors, this)
             case plotTypes.robot:
                 return plot3dVis(this.cycle.sequentialDataPoints, plotRequest.chartId, plotRequest.plotName, this)
             case plotTypes.direction:
@@ -245,6 +245,8 @@ export class PlotRequest {
      */
     type = undefined
 
+    unit = undefined
+
     static get availablePlotTypes() {
         return plotTypes;
     }
@@ -255,12 +257,14 @@ export class PlotRequest {
      * @param chartId {string}
      * @param dataNames {string[]}
      * @param type {PlotType}
+     * @param unit {String}
      */
-    constructor(plotName, chartId, dataNames, type) {
+    constructor(plotName, chartId, dataNames, type, unit) {
         this.plotName = plotName;
         this.chartId = chartId;
         this.dataNames = dataNames;
         this.type = type;
+        this.unit = unit;
     }
 }
 

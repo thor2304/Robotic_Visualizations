@@ -15,11 +15,12 @@ const lineWeight = 3
  * @param timestamps {Timestamp[]} - An array of timestamps
  * @param dataNames {string []} - An array of strings that are passed to dataPoints[i].traversed_attribute(dataNames[j]).
  * These are the names of the attributes that will be plotted.
+ * @param unit {String}
  * @param errors {TimespanError[]}
  * @param plotGroup {PlotGroup}
  * @returns {Promise<void>}
  */
-export async function plotLineChart(chartName, chartId, dataPoints, timestamps, dataNames, errors, plotGroup) {
+export async function plotLineChart(chartName, chartId, dataPoints, timestamps, dataNames,unit, errors, plotGroup) {
     const dataArrays = {}
 
     const chart = await createDivForPlotlyChart(chartId)
@@ -41,7 +42,24 @@ export async function plotLineChart(chartName, chartId, dataPoints, timestamps, 
     // Hacky way to remove the numbers for this specific plot type
     if (dataNames.filter(name => name === "custom.is_holding_A").length > 0) {
         layout.yaxis.dtick = 1
-        layout.yaxis.range = [0, 1]
+        layout.yaxis.range = [-0.1, 1]
+        layout.yaxis.tickvals = [0, 1]
+        layout.yaxis.ticktext = ["No grip", "Gripping"]
+    }else{
+        layout.yaxis.ticksuffix = unit
+        layout.annotations = [{
+            x: 0.005,
+            y: 10,
+            xref: 'paper',
+            yref: 'axis',
+            text: "Target",
+            showarrow: false,
+            font: {
+                family: 'Arial',
+                size: 14,
+                color: getColorMap().general.text_on_background
+            }
+        }]
     }
 
     layout.legend.bgcolor = getColorMap().group_colors.A_background

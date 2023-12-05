@@ -11,5 +11,9 @@ export function cleanName(name) {
 
     name = path_parts[path_parts.length - 1]
 
+    if(name === "vacuum_level") {
+        name = "Vacuum target"
+    }
+
     return name
 }

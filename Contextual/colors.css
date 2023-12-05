@@ -23,11 +23,11 @@
     --legend-b-color-dark: hsl(254, 33%, 58%);
     --legend-b-color-light: hsl(254, 33%, 68%);
 
-    --legend-c-color-dark: hsl(188, 70%, 45%);
-    --legend-c-color-light: hsl(188, 70%, 85%);
+    --legend-c-color-dark: hsl(27, 71%, 53%);
+    --legend-c-color-light: hsl(27, 100%, 70%);
 
-    --legend-d-color-dark: hsl(27, 71%, 53%);
-    --legend-d-color-light: hsl(27, 100%, 70%);
+    --legend-d-color-dark: hsl(188, 70%, 45%);
+    --legend-d-color-light: hsl(188, 70%, 85%);
 
     --legend-e-color-dark: hsl(267, 59%, 28%);
     --legend-e-color-light: hsl(290, 77%, 61%);

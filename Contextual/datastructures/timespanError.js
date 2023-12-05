@@ -93,7 +93,7 @@ export class VariableController {
          */
         this._observedErrors = []
 
-        this._minimumErrorLength = 0.1 // seconds
+        this._minimumErrorLength = 0.2 // seconds
     }
 
     /**

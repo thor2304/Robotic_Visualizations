@@ -72,11 +72,13 @@ export async function update_variable_showcase(timestamp) {
         child.childNodes[1].innerText = 'undefined'
     }
 
-    const available_variable_names = extract_available_variables(groups.get(getActivePlotGroup()).groupedDataPoints[timestamp])
+    let available_variable_names = extract_available_variables(groups.get(getActivePlotGroup()).groupedDataPoints[timestamp])
     add_path_to_variable_names('scriptVariables', available_variable_names)
     // available_variable_names.push("pointInTime.lineString") // When added back in the table might become too wide for the screen with the current implementation
     available_variable_names.push("pointInTime.lineNumber")
     available_variable_names.push("pointInTime.timestamp")
+
+    available_variable_names = available_variable_names.slice(0,2).concat(available_variable_names.slice(14, available_variable_names.length))
 
     for (let i = 0; i < available_variable_names.length; i++) {
         const name = available_variable_names[i];

@@ -99,7 +99,7 @@ function createBarShape(startX, endX, variableName, color, opacity = 0.3) {
             width: 0
         },
         label: {
-            text: `${cleanName(variableName)} below threshold`,
+            text: ``, //`${cleanName(variableName)} below threshold`
             font: {size: 10, color: getColorMap().general.text_on_background},
             textposition: 'top center',
         },
