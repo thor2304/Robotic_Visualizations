@@ -45,6 +45,8 @@ function finalizePlotting(firstSepCount) {
 
     makeAllDraggable()
     updateContainers()
+
+    groups.updateCycleText("1")
 }
 
 /**

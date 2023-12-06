@@ -307,6 +307,8 @@ export class Cycle {
      */
     cycleIndex = undefined
 
+    timeForThisCycle = undefined
+
     constructor(sequentialDataPoints, cycleIndex) {
         addHighlightLineToDataPoints(sequentialDataPoints)
         this.sequentialDataPoints = sequentialDataPoints
@@ -320,6 +322,8 @@ export class Cycle {
         }
 
         this.errors = detectErrors(this.sequentialDataPoints)
+
+        this.timeForThisCycle = this.sequentialDataPoints[this.sequentialDataPoints.length - 1].time.timestamp - this.sequentialDataPoints[0].time.timestamp
     }
 
     hasError() {

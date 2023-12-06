@@ -105,12 +105,21 @@
         <div id="dropdown-container" class="container text-center p-2">
             <div class="row align-items-center">
                 <div class="col">
-                    <p id="error-density-A"></p>
                     <label id="dropdown-A-label" for="dropdown-A" class="form-label">
                         Choose a Cycle
                     </label>
-                    <select class="form-select group-A" id="dropdown-A">
-                    </select>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <span class="input-group-text">Selected cycle: </span>
+                        </div>
+                        <select class="form-select group-A" id="dropdown-A">
+                        </select>
+                    </div>
+                    <div>
+                        <p class="p-0 m-0 text-start" id="error-density-A"></p>
+                        <p class="p-0 m-0 text-start" id="error-or-not-A"></p>
+                        <p class="p-0 m-0 text-start" id="cycle-speed-display-A"></p>
+                    </div>
                 </div>
                 <!--                <div class="col">-->
                 <!--                <p id="error-density-B"></p>-->

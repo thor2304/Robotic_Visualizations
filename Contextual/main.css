@@ -58,7 +58,7 @@ main > *{
 
 .warning {
     /*https://una.im/color-mix-opacity/*/
-    background-color: color-mix(in srgb, var(--warning-color), transparent 70%);
+    background-color: color-mix(in srgb, var(--warning-color), transparent 100%);
 }
 
 
@@ -133,6 +133,10 @@ img{
 
 #dropdown-A:focus{
     background-color: var(--group-A-active-color);
+}
+
+#dropdown-A > option::selection::before{
+   content: "A";
 }
 
 #dropdown-container:focus-within{

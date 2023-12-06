@@ -262,7 +262,7 @@ function _generate_traces_coordinate(coordinates, active_number = 1, TCP_x, TCP_
                 width: 2
             }
         },
-        text: past_coordinates.map((coordinate) => coordinate.cycleIndex.toString()),
+        text: past_coordinates.map((coordinate) => (coordinate.cycleIndex + 1).toString()),
         hovertemplate: "(%{x}, %{y}) number: %{text} Past"
     })
 
@@ -281,7 +281,7 @@ function _generate_traces_coordinate(coordinates, active_number = 1, TCP_x, TCP_
                 width: 2
             }
         },
-        text: future_coordinates.map((coordinate) => coordinate.cycleIndex.toString()),
+        text: future_coordinates.map((coordinate) => (coordinate.cycleIndex + 1).toString()),
         hovertemplate: "(%{x}, %{y}) number: %{text} Future"
     })
 
@@ -300,7 +300,7 @@ function _generate_traces_coordinate(coordinates, active_number = 1, TCP_x, TCP_
                 width: 2
             }
         },
-        text: active_coordinate.map((coordinate) => coordinate.cycleIndex.toString()),
+        text: active_coordinate.map((coordinate) => (coordinate.cycleIndex + 1).toString()),
         hovertemplate: "(%{x}, %{y}) number: %{text} Present"
     })
 

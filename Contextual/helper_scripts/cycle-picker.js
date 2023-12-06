@@ -20,8 +20,14 @@ export function populatePickers(groups) {
     for (let i = 0; i < groupIdentifiers.length; i++) {
         const label = document.getElementById(`error-density-${groupIdentifiers[i]}`)
         const groupSelector = document.getElementById(`dropdown-${groupIdentifiers[i]}`)
-        addPercentageDisplay(label,  groupSelector.errorCount / sum * 100, true)
+        const percentage = Math.round((groupSelector.errorCount / sum * 100)*10)/10
+        addPercentageDisplay(label,  percentage, true)
         // addPercentageDisplay(label,  groupSelector.notErrorCount / sum * 100, false)
+
+
+        const errorOrNot = document.getElementById(`error-or-not-${groupIdentifiers[i]}`)
+        const cycleSpeedDisplay = document.getElementById(`cycle-speed-display-${groupIdentifiers[i]}`)
+
     }
 }
 
