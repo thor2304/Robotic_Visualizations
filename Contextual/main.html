@@ -29,46 +29,19 @@
 
     <script defer type="module" src="./helper_scripts/bootstrap-dark-mode.js"></script>
 
-    <script defer type="module" src="./helper_scripts/helpers.js"></script>
-
-    <script defer type="module" src="./helper_scripts/load_csv_data.js"></script>
-    <script defer type="module" src="datastructures/datastructures.js"></script>
-    <script defer type="module" src="datastructures/linked_list.js"></script>
     <script defer type="module" src="./helper_scripts/keyboardControl.js"></script>
 
-    <script defer type="module" src="./helper_scripts/factories/animationSettings.js"></script>
-    <script defer type="module" src="./helper_scripts/factories/layoutFactory.js"></script>
-    <script defer type="module" src="./helper_scripts/factories/LinePlotFactory.js"></script>
-    <script defer type="module" src="./helper_scripts/factories/directionPlotFactory.js"></script>
-    <script defer type="module" src="./helper_scripts/factories/chartDivFactory.js"></script>
-    <script defer type="module" src="./helper_scripts/factories/robotVisFactory.js"></script>
-    <script defer type="module" src="./helper_scripts/factories/ThrottledFunction.js"></script>
-    <script defer type="module" src="./helper_scripts/factories/CoordinatePlotFactory.js"></script>
-
-    <script defer type="module" src="./helper_scripts/updateVisualizations.js"></script>
-    <script defer type="module" src="datastructures/timespanError.js"></script>
-    <script defer type="module" src="./helper_scripts/scrubCorrection.js"></script>
-    <script defer type="module" src="datastructures/PlotGroup.js"></script>
-    <script defer type="module" src="datastructures/GroupController.js"></script>
     <script defer type="module" src="./helper_scripts/cycle-picker.js"></script>
 
     <link rel="stylesheet" href="./source_code_visualization/source_code.css">
     <link rel="stylesheet" href="source_code_visualization/placeholders.css">
     <link rel="stylesheet" href="./source_code_visualization/line-control.css">
 
-    <script defer type="module" src="./source_code_visualization/render_using_rehype.js"></script>
     <script defer type="module" src="source_code_visualization/fetch_and_render_sample_code.js"></script>
-    <script defer type="module" src="source_code_visualization/line_highlight.js"></script>
     <script defer type="module" src="./source_code_visualization/ErrorHighlightingLine.js"></script>
 
 
     <script defer type="module" src="csv_driven_3d.js"></script>
-    <script defer type="module" src="helper_scripts/cycle_filtering.js"></script>
-    <script defer type="module" src="helper_scripts/targeted_filtering.js"></script>
-    <script defer type="module" src="./dataframe_driven_robot_arm/computeJointPositions.js"></script>
-    <script defer type="module" src="./helper_scripts/EDDE_loader.js"></script>
-    <script defer type="module" src="./helper_scripts/variable_table.js"></script>
-    <script defer type="module" src="./helper_scripts/ColorMap.js"></script>
 
     <script defer type="module" src="fluid_layout/toggle_draggable.js"></script>
     <script defer type="module" src="fluid_layout/make_draggable.js"></script>
@@ -96,10 +69,6 @@
         </div>
     </div>
 </header>
-<!--<div class="p-2">-->
-<!--    <p>Multiple Cycles are now presented at the same time. They update independently of each other.-->
-<!--        The 4 at the top belong to group A and the bottom 4 belong to Group B. </p>-->
-<!--</div>-->
 <main>
     <div id="visualization-container" class="visualization-container drag-container">
         <div id="dropdown-container" class="container text-center p-2">
@@ -121,14 +90,6 @@
                         <p class="p-0 m-0 text-start" id="cycle-speed-display-A"></p>
                     </div>
                 </div>
-                <!--                <div class="col">-->
-                <!--                <p id="error-density-B"></p>-->
-                <!--                    <label id="dropdown-B-label" for="dropdown-B" class="form-label">-->
-                <!--                        Visualization B: No Errors detected-->
-                <!--                    </label>-->
-                <!--                    <select class="form-select group-B" id="dropdown-B">-->
-                <!--                    </select>-->
-                <!--                </div>-->
             </div>
         </div>
         <div id="test" class="vis-placeholder group-A"></div>

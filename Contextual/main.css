@@ -58,7 +58,7 @@ main > *{
 
 .warning {
     /*https://una.im/color-mix-opacity/*/
-    background-color: color-mix(in srgb, var(--warning-color), transparent 100%);
+    background-color: color-mix(in srgb, var(--warning-color), transparent 70%);
 }
 
 
