@@ -52,6 +52,10 @@ export async function highlight_line(line_number, offset = 0, scrollIntoView = t
         line.classList.remove(highlight_class_name);
     }
 
+    if (previous_highlighted_line === line) {
+        return;
+    }
+
     if(scrollIntoView){
         throttled_scroll_to_line(line);
     }
@@ -61,6 +65,12 @@ export async function highlight_line(line_number, offset = 0, scrollIntoView = t
 
 const throttled_scroll_to_line = get_throttled_version_function(scrollToLine, 600);
 
+/**
+ * Scrolls the given line into view.<br>
+ * There is a known bug with this, where it will only scroll to the line if the page has already been scrolled a bit.<br>
+ * In other words, if this is the first scroll on the page it is ignored, until a scroll happens.
+ * @param line {Element}
+ */
 function scrollToLine(line) {
     line.scrollIntoView( {block: "nearest", inline: "nearest", behavior: "smooth"})
 }
