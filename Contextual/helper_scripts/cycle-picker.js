@@ -22,15 +22,15 @@ export function populatePickers(groups) {
         const groupSelector = document.getElementById(`dropdown-${groupIdentifiers[i]}`)
         const percentage = Math.round((groupSelector.errorCount / sum * 100)*10)/10
         addPercentageDisplay(label,  percentage, true)
-        // addPercentageDisplay(label,  groupSelector.notErrorCount / sum * 100, false)
-
-
-        const errorOrNot = document.getElementById(`error-or-not-${groupIdentifiers[i]}`)
-        const cycleSpeedDisplay = document.getElementById(`cycle-speed-display-${groupIdentifiers[i]}`)
-
     }
 }
 
+/**
+ *
+ * @param pickerLabel {HTMLLabelElement}
+ * @param percentage {number}
+ * @param hasError {boolean}
+ */
 function addPercentageDisplay(pickerLabel, percentage, hasError = true) {
     const percentageDisplay = document.createElement("span")
     percentageDisplay.innerText = ` Errors were ${hasError ? "" : "not " }detected in ${percentage}% of the provided cycles`

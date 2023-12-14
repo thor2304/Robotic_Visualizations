@@ -1,8 +1,8 @@
 /**
  * @typedef {number | `${number}`} Timestamp
  */
-import {Cycle, PlotGroup, PlotRequest, plotTypes} from "./datastructures/PlotGroup.js";
-import {get_cycles, pick_every_x_from_array} from "./helper_scripts/cycle_filtering.js";
+import {PlotGroup} from "./datastructures/PlotGroup.js";
+import {get_cycles} from "./helper_scripts/cycle_filtering.js";
 import {getActivePlotGroup, updateVisualizations} from "./helper_scripts/updateVisualizations.js";
 import {populatePickers} from "./helper_scripts/cycle-picker.js";
 import {plotCoordinates} from "./helper_scripts/factories/CoordinatePlotFactory.js";
@@ -16,6 +16,8 @@ import {convertFlightRecordDataToDataPoints} from "./file_upload/flightRecordTra
 import {updateContainers} from "./fluid_layout/column_resize.js";
 import {registerSliderTimestamps} from "./helper_scripts/slider-control.js";
 import {sendToBottom} from "./fluid_layout/sendToBottom.js";
+import {PlotRequest, plotTypes} from "./datastructures/PlotRequest.js";
+import {Cycle} from "./datastructures/Cycle.js";
 
 
 export const groups = new GroupController();

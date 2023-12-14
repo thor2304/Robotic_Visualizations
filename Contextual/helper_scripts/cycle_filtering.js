@@ -1,4 +1,4 @@
-import {Cycle} from "../datastructures/PlotGroup.js";
+import {Cycle} from "../datastructures/Cycle.js";
 
 /**
  * @type {Array<Array<DataPoint>>}

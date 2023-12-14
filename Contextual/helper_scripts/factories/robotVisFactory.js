@@ -6,6 +6,10 @@ import {createDivForPlotlyChart} from "./chartDivFactory.js";
 
 
 /**
+ * This method is responsible for creating a 3d visualization of the robot.<br>
+ * It creates a plotly chart and adds it to the DOM.<br>
+ * It also registers this chart with the plotGroup, so that it is updated when the slider is moved.
+ *
  * @param dataframes {Array<DataPoint>}
  * @param chartId {String}
  * @param chartTitle {String}
@@ -43,7 +47,7 @@ export async function plot3dVis(dataframes, chartId, chartTitle, plotGroup) {
  *
  * @param joints {String[]}
  * @param datum {DataPoint}
- * @return {*[]}
+ * @return {Object[]}
  */
 function createTraces(joints, datum) {
     const traces = []
@@ -99,7 +103,7 @@ function createTraces(joints, datum) {
  *
  * @param dataframes {Array<DataPoint>}
  * @param joints {String[]}
- * @return {*[]}
+ * @return {{name:string, data:{id: [string],text: [string], x: [string], y:[string], z:[string] }[]}[]}
  */
 function createFrames(dataframes, joints) {
     let frames = [];
