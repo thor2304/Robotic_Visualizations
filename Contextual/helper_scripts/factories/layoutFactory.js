@@ -31,6 +31,7 @@ export function get3dLayout(title, range, width, height, zoom = 1) {
         },
         paper_bgcolor: getColorMap().plot_colors.paperColor,
         plot_bgcolor: getColorMap().plot_colors.plotColor,
+        dragmode: "turntable",
         scene: {
             aspectmode: "manual",
             aspectratio: {
@@ -205,6 +206,7 @@ export function get2dLayout(title, height, width, forLinePlot = true) {
         },
         plot_bgcolor: plotColor,
         paper_bgcolor: paperColor,
+        dragmode: "zoom",
         //https://plotly.com/javascript/shapes/
         shapes: [],
         showlegend: true,

@@ -15,28 +15,13 @@ function update_unlocked_class(draggable) {
     }
 }
 
-function update_plotly_chart_static(element) {
-    // if (element.data !== undefined) {
-    //     Plotly.react(element, element.data, element.layout, {staticPlot: !is_locked});
-    // }
+/**
+ *
+ * @type {Map<HTMLElement, {dragmode: string, hovermode: string}>}
+ */
+const previousSettings = new Map();
 
-    let plotly_image = undefined;
-
-    for (let i = 0; i < element.childElementCount; i++) {
-        if (element.children[i].classList.contains("plotly-image")) {
-            plotly_image = element.children[i];
-            break;
-        }
-    }
-
-    if (plotly_image === undefined) {
-        // create an image tag to put the plotly chart in
-        plotly_image = document.createElement("img");
-        plotly_image.classList.add("plotly-image");
-
-        element.appendChild(plotly_image);
-    }
-
+function isNotPlotlyChart(element) {
     let plotly_div = undefined;
     for (let i = 0; i < element.childElementCount; i++) {
         if (element.children[i].classList.contains("plot-container")) {
@@ -44,42 +29,34 @@ function update_plotly_chart_static(element) {
             break;
         }
     }
-    const plotly_controlled_div = plotly_div;
+    return plotly_div === undefined;
 
+}
 
-    if (plotly_controlled_div === undefined) {
+/**
+ *
+ * @param element {HTMLElement}
+ */
+function update_plotly_chart_static(element) {
+    // Only generate the image if necessary
+
+    if (isNotPlotlyChart(element)) {
         return;
     }
 
-    // Only generate the image if necessary
-    if (!is_locked) {
-        // Plotly
-        //     .toImage(
-        //         element,
-        //         {
-        //             format: 'png',
-        //             width: plotly_controlled_div.clientWidth,
-        //             height: plotly_controlled_div.clientHeight
-        //         })
-        //     .then(function (dataUrl) {
-        //         plotly_image.src = dataUrl;
-        //     });
-        Plotly.relayout(element, {
-            dragmode: false,
-            // hovermode: false
-        })
-    } else {
-        //    Otherwise we are going from showing an image to showing the chart.
-        //    Showing the chart requires a relayout to make sure the chart is the right size
-        Plotly.relayout(element, {
-            dragmode: "turntable",
-            width: element.clientWidth
-        });
+    const newLayout = {
+        dragmode: is_locked ? previousSettings.get(element).dragmode :false,
+        hovermode: is_locked ? previousSettings.get(element).hovermode : false,
+        width: element.clientWidth
     }
 
-    // plotly_controlled_div.hidden = !is_locked;
-    // plotly_image.hidden = is_locked;
-    plotly_image.hidden = true;
+    previousSettings.set(element, {
+        dragmode: element.layout.dragmode,
+        hovermode: element.layout.hovermode
+    })
+
+    //    Showing the chart requires a relayout to make sure the chart is the right size
+    Plotly.relayout(element, newLayout);
 }
 
 unlock_button.addEventListener('click', () => {
