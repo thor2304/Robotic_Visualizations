@@ -44,7 +44,6 @@ export class GroupController {
      * @param optionIndex {number | string}
      */
     set(groupIdentifier, optionIndex) {
-        const start = performance.now()
         const index = typeof optionIndex === "string" ? parseInt(optionIndex) : optionIndex;
         const activePlotGroup = this.getOptions(groupIdentifier)[index]
         this[groupIdentifier].plotGroup = activePlotGroup;
