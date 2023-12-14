@@ -13,7 +13,7 @@ import {makeAllDraggable} from "./fluid_layout/make_draggable.js";
 import {filter_raw_data} from "./helper_scripts/targeted_filtering.js";
 import {GroupController} from "./datastructures/GroupController.js";
 import {convertFlightRecordDataToDataPoints} from "./file_upload/flightRecordTranslations.js";
-import {updateContainers} from "./fluid_layout/column_resize.js";
+import {updateContainers, visualizationContainer} from "./fluid_layout/column_resize.js";
 import {registerSliderTimestamps} from "./helper_scripts/slider-control.js";
 import {sendToBottom} from "./fluid_layout/sendToBottom.js";
 import {PlotRequest, plotTypes} from "./datastructures/PlotRequest.js";
@@ -47,6 +47,8 @@ function finalizePlotting(firstSepCount) {
 
     makeAllDraggable()
     updateContainers()
+
+    visualizationContainer.dispatchEvent(new Event('populated'));
 
     groups.updateCycleText("1")
 }
