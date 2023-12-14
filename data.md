@@ -8,7 +8,7 @@
     - [Visualization types](#Visualization-types)
 
 # Data collection
-For data collection I had the `coordinated_pickup.script` running in the simulator, and recorded the data using [UR RTDE Client: Record.py](https://github.com/UniversalRobots/RTDE_Python_Client_Library#running-examples).
+For data collection that resulted in the folder: RTDE_Data, I had the `coordinated_pickup.script` running in the simulator, and recorded the data using [UR RTDE Client: Record.py](https://github.com/UniversalRobots/RTDE_Python_Client_Library#running-examples).
 
 This requires a `record_configuration.xml` file to specify what parameters should be recorded from the RTDE. This file has been provided in the folder next to this document.
 It contains an explanation of each parameter that are useful to us. URs official explanations can be found here: [RTDE Guide](https://www.universal-robots.com/articles/ur/interface-communication/real-time-data-exchange-rtde-guide/) under field names.

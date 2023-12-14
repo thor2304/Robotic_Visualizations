@@ -1,18 +1,4 @@
 # Performance improvements
-## Caching of computation on the client
-- Could be done by using localstorage like indexedDB
-  - https://web.dev/indexeddb-best-practices/
-  - https://developer.mozilla.org/en-US/docs/Web/API/Storage_API/Storage_quotas_and_eviction_criteria#firefox
-
-I imagine this as storing the JS objects.
-The problem is that i am using classes for functionality. 
-These will have to be restored from the saved objects.
-It is my understanding that saving them to localstorage will save them in a json-like format, 
-which means we will lose class information, unless we add it by ourselves.
-
-This means that we will have to make a serializer and unserializer. 
-
-
 ## Backend
 - Bun? https://bun.sh
 

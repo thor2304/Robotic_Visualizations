@@ -4,7 +4,8 @@ This project is a tool for visualizing logs extracted from a running cobot appli
 This iteration is focused on proving the usefulness of such an application, by applying it to a specific use case.
 The use case is a UR5e arm picking up a tile, based on coordinates received from an external application.
 
-The tool is produced as part of a research project supervised by Miguel Campusano.
+The tool is produced as part of a research project supervised by Miguel Campusano. 
+It would not have been possible without Emil Stubbe Kolvig Raun.
 
 ## Live demo
 A live demo is currently hosted at 
@@ -19,19 +20,17 @@ Here is a short clarification of how the labels are expected to be used, such th
 
 - Bug
   - If you discover something either while using the tool at the live demo, or by reading the source code, feel free to open a bug report on the issue.
-  - Describe the issue enough for me to replicate it or discuss it further
+  - Describe the issue enough for it to be replicated or discussed further
   - Consider whether this should be a question first before making it a bug
 - Question
   - Use this label if there is something about the tool, the data, the hosting, data handling etc. which you are unsure about.
   - These can be addressed either in a meeting or simply through the issue itself.
-  - Please close the issue, when a satisfcactory answer has been provided
-- EDDE Oddity
-  - This will be used as the label for issues that would be a bug, but which is initially attributed to the nature of the data gathered from EDDE
-  - Issues here will be discussed with Emil for either clarification or resolution.
+  - Please close the issue, when a satisfactory answer has been provided
 - New Feature and enhancement
   - These labels should be used for issues that request changes to the code.  
 
-Whenever possible consider using the issue template at [ISSUE_TEMPLATE.md](ISSUE_TEMPLATE.md)
+Whenever possible consider using the issue template at [ISSUE_TEMPLATE.md](ISSUE_TEMPLATE.md). 
+Creating a new issue on GitHub should automatically use this template.
 
 
 # Working with URScript
@@ -48,17 +47,25 @@ Thanks goes to Ahern Guo for making this extension and the TextMate grammar asso
 ## Side notes
 - For the thoughts on choosing framework / Language see [Language_framework.md](Language_framework)
 
+# Code structure
+The tool has been split into two parts. One for Contextual debugging and one for maintenance visualizations.
+These have ended up being very similar and i think it would be beneficial to merge them back together.
+The different features might then just be toggled on and off.
+The primary difference is that the maintenance tool has an algorithm for calculating the stress of the robot, 
+and is focused on reading data from the flight records. 
+It needs the movement speed, which is not something that is included in the contextual debugging tool.
+
+I have done some cleanup for better readability, but that was focused entirely on the contextual debugging part.
+
 
 # Data
-The data is hosted on Onedrive, due to its large size. It can be found on 
-[This link](https://syddanskuni-my.sharepoint.com/:f:/r/personal/tjoer21_student_sdu_dk/Documents/Contextual%20debugging?csf=1&web=1&e=vKsxSt).
+The public data is available on Zenodo through [This link](https://zenodo.org/records/10277257).
 
 The code expects the data to be in the folder `<project_root>/Robot_control/EDDE_data/WITH_POWER`. 
-Within this folder is to be placed the folders containing the data. By default, the tool reads the `control` folder, 
-such that the full path that is attempted is: `<project_root>/Robot_control/EDDE_data/WITH_POWER/control/control-0.csv`.
+Within this folder is to be placed the folders containing the data. By default, the tool reads the `2_4_partial` folder, 
+such that the full path that is attempted is: `<project_root>/Robot_control/EDDE_data/WITH_POWER/2_4_partial/2_4_partial-0.csv`.
+
+The tool also supports loading of data through the tool itself, by clicking "upload files".
+On this page longer runs can be uploaded, and the tool will combine the data into a single file internally.
 
 The document [data.md](data.md), explains some more about the data and how it is modelled internally in the tool.
-
-
-## Data news (Pre summer break 2023)
-Some more information about data receiving was uncovered, which lead to the creation of the document [Data news](data_news.md)

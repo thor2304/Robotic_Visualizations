@@ -72,10 +72,7 @@ async function _updateVisualizations(timestamp, plotGroup = _activePlotGroup) {
         _activePlotGroup
     )
 
-    try{
-        await Promise.allSettled(calls);
-    }catch (e){
-    }
+    await Promise.allSettled(calls);
 
     const end = performance.now();
 

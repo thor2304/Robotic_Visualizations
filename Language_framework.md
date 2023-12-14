@@ -68,14 +68,3 @@ Benefits:
 Drawbacks:
 - The learning curve looks very steep
 - The main benefits of using OOP can also be applied to the other options
-
-# Demo
-To see if Plotly.js can do what we want it to do I will make a demo of:
-- A 3d point visualization whose values change based on a slider moving
-  - Represents visualization of joints/the tcp at a (moving) point in time
-- A line visualization that can be pressed to display information about the node
-  - Represents for instance the weight visualization
-- These two visualizations connected such that Clicking a point in the line visualization will make the first visualization jump to that point
-  - Shows connectivity between visualizations
-
-If these things can be done, I think we are in good shape. 
