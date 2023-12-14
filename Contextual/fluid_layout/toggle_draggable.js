@@ -55,7 +55,7 @@ function update_plotly_chart_static(element) {
         hovermode: element.layout.hovermode
     })
 
-    //    Showing the chart requires a relayout to make sure the chart is the right size
+    //  The relayout makes sure the chart is the right size
     Plotly.relayout(element, newLayout);
 }
 

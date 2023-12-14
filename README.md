@@ -33,7 +33,11 @@ Whenever possible consider using the issue template at [ISSUE_TEMPLATE.md](ISSUE
 Creating a new issue on GitHub should automatically use this template.
 
 
-# Working with URScript
+# Provided ressources
+Many more ressources for this project have been compiled in [Ressources.md](Ressources.md).
+
+
+## Working with URScript
 
 The script that we will use for testing is [real_script_for_robot_use.script](Robot_control/full_scripts/all_runs/real_script_for_robot_use.script).
 My short guide on URScripts is [running_urscripts.md](running_urscripts.md)
@@ -44,12 +48,12 @@ When viewing URScript Visual Studio code has an extension by Ahern Guo
 The extension is also what provides the text formatting capabilities for the code visualization. 
 Thanks goes to Ahern Guo for making this extension and the TextMate grammar associated with it.
 
-## Side notes
+## Language / Framework
 - For the thoughts on choosing framework / Language see [Language_framework.md](Language_framework)
 
 # Code structure
 The tool has been split into two parts. One for Contextual debugging and one for maintenance visualizations.
-These have ended up being very similar and i think it would be beneficial to merge them back together.
+These have ended up being very similar and I think it would be beneficial to merge them back together.
 The different features might then just be toggled on and off.
 The primary difference is that the maintenance tool has an algorithm for calculating the stress of the robot, 
 and is focused on reading data from the flight records. 
