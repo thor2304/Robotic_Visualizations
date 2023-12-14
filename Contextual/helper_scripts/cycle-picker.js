@@ -1,7 +1,7 @@
 import {groups} from "../csv_driven_3d.js";
 
 /**
- *
+ * 
  * @param groups {GroupController}
  */
 export function populatePickers(groups) {
@@ -26,7 +26,7 @@ export function populatePickers(groups) {
 }
 
 /**
- *
+ *Adds the text for the percentage of errors found.
  * @param pickerLabel {HTMLLabelElement}
  * @param percentage {number}
  * @param hasError {boolean}
@@ -38,6 +38,7 @@ function addPercentageDisplay(pickerLabel, percentage, hasError = true) {
 }
 
 /**
+ * Adds options to the cycle picker dropdown.
  * @param groupIdentifier {PlotGroupIdentifier}
  * @param groupPicker {HTMLSelectElement}
  * @param plotGroups {PlotGroup[]}
