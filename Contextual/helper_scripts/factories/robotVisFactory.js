@@ -5,7 +5,6 @@ import {get3dLayout} from "./layoutFactory.js";
 import {createDivForPlotlyChart} from "./chartDivFactory.js";
 
 
-
 /**
  * @param dataframes {Array<DataPoint>}
  * @param chartId {String}
@@ -29,16 +28,13 @@ export async function plot3dVis(dataframes, chartId, chartTitle, plotGroup) {
     const layout = getCustomLayout(chartTitle, box_size, chart);
 
     // Create the plot:
-    await Plotly.react(chartId, {
+    // This one uses newPlot instead of react, because with react there is a bug where it resets the layout when scrubbing time after having changed the cycle.
+    await Plotly.newPlot(chartId, {
         data: traces,
         layout: layout,
-        // frames: frames,
     });
 
-    const frameLookup = {}
-    for (let i = 0; i < frames.length; i++) {
-        frameLookup[frames[i].name] = frames[i]
-    }
+    const frameLookup = createFrameLookup(frames);
 
     plotGroup.addUpdateInformation(chartId, getAnimationSettings(), frameLookup)
 }
@@ -146,4 +142,17 @@ function getCustomLayout(chartTitle, box_size, chart) {
     const layout = get3dLayout(chartTitle, box_size, chart.clientWidth, chart.clientHeight, 1.5)
     layout.hovermode = 'closest';
     return layout;
+}
+
+/**
+ *
+ * @param frames {Array<{}>}
+ * @return {{}}
+ */
+function createFrameLookup(frames) {
+    const frameLookup = {}
+    for (let i = 0; i < frames.length; i++) {
+        frameLookup[frames[i].name] = frames[i]
+    }
+    return frameLookup;
 }
