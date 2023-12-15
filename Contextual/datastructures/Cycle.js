@@ -48,9 +48,9 @@ export class Cycle {
         this.sequentialDataPoints = sequentialDataPoints
         this.cycleIndex = cycleIndex
 
-        for (let i = 0; i < sequentialDataPoints.length; i++) {
-            const stepCount = sequentialDataPoints[i].time.stepCount
-            this.dataPointsDictionary[stepCount] = sequentialDataPoints[i]
+        for (const datapoint of sequentialDataPoints) {
+            const stepCount = datapoint.time.stepCount
+            this.dataPointsDictionary[stepCount] = datapoint
             this.timestamps.push(stepCount)
             this.traversableDataPoints.push(stepCount)
         }

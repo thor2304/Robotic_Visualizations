@@ -276,8 +276,9 @@ class DataPoint {
                 robot, physicalIOBlocks, scriptVariables, registers, raw) {
         // The point in time and the controller objects will be generated but the Robot, PhysicalIO, ScriptVariable and Register objects must be passed in
         // The last three objects should be lists of objects of the respective type
-        for (let i = 0; i < scriptVariables.length; i++) {
-            this.scriptVariables[scriptVariables[i].name] = scriptVariables[i];
+
+        for (const scriptVariable of scriptVariables) {
+            this.scriptVariables[scriptVariable.name] = scriptVariable;
         }
 
         this.pointInTime = new PointInTime(timestamp, lineNumber, lineString, this.scriptVariables["step_count"]);
@@ -288,20 +289,16 @@ class DataPoint {
             physicalIOBlocks = [];
         }
 
-        for (let i = 0; i < physicalIOBlocks.length; i++) {
-            this.physicalIOBlocks[physicalIOBlocks[i].name] = physicalIOBlocks[i];
-        }
-
-
-        for (let i = 0; i < scriptVariables.length; i++) {
-            this.scriptVariables[scriptVariables[i].name] = scriptVariables[i];
+        for (const physicalIOBlock of physicalIOBlocks) {
+            this.physicalIOBlocks[physicalIOBlock.name] = physicalIOBlock;
         }
 
         if (registers === undefined) {
             registers = [];
         }
-        for (let i = 0; i < registers.length; i++) {
-            this.registers[registers[i].name] = registers[i];
+
+        for (const register of registers) {
+            this.registers[register.name] = register;
         }
 
         this.custom = raw;

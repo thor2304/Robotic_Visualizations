@@ -76,8 +76,9 @@ function extract_variables(datum) {
     if (variables === undefined) {
         return out;
     }
-    for (let i = 0; i < variables.length; i++) {
-        const variableSplit = variables[i].split(';')
+
+    for (const variable of variables) {
+        const variableSplit = variable.split(';')
         // This is one candidate for where we could parse the data type of the variable
         // We could also do it directly in the Variable type instead if we want to
         out.push(new Variable(variableSplit[0], variableSplit[1]))
@@ -157,9 +158,8 @@ const method_map = {
 }
 
 function write_picked_variables(customVariables, out, datum) {
-    for (let i = 0; i < customVariables.picked_variables.length; i++) {
-        const variable = customVariables.picked_variables[i]
-        out[variable.name] = variable.type === "float" ? Number.parseFloat(datum[variable.name]) : datum[variable.name]
+    for (const customVariable of customVariables.picked_variables) {
+        out[customVariable.name] = customVariable.type === "float" ? Number.parseFloat(datum[customVariable.name]) : datum[customVariable.name]
     }
 }
 
@@ -169,23 +169,35 @@ function write_picked_variables(customVariables, out, datum) {
  * @param varLookup
  */
 function populateVariableLookup(vars, varLookup) {
-    for (let i = 0; i < vars.length; i++) {
-        const string = vars[i]
-        const splitIndex = string.indexOf(';')
-        varLookup["vars." + string.substring(0, splitIndex)] = string.substring(splitIndex + 1)
+    for (const variableAsString of vars) {
+        const splitIndex = variableAsString.indexOf(';')
+        varLookup["vars." + variableAsString.substring(0, splitIndex)] = variableAsString.substring(splitIndex + 1)
     }
 }
 
-function ComputedVariables(customVariables, varLookup, datum, out) {
-    for (let i = 0; i < customVariables.computed_variables.length; i++) {
-        const variable = customVariables.computed_variables[i]
+/**
+ *
+ * @param customVariables {CustomVariableConfiguration}
+ * @param varLookup {Object<string, string>}
+ * @param datum {Object}
+ * @param out {Object<string, number>}
+ * @constructor
+ */
+function populateComputedVariables(customVariables, varLookup, datum, out) {
+    for (const computedVariable of customVariables.computed_variables) {
+        const method = method_map[computedVariable.method]
 
-        const method = method_map[variable.method]
+        const arg1 = computedVariable.argumentList[0].startsWith("vars.") ? varLookup[computedVariable.argumentList[0]] : datum[computedVariable.argumentList[0]]
+        let arg2;
+        if (typeof computedVariable.argumentList[1] !== "string") {
+            arg2 = computedVariable.argumentList[1]
+        } else if (computedVariable.argumentList[1].startsWith("vars.")) {
+            arg2 = varLookup[computedVariable.argumentList[1]]
+        } else {
+            arg2 = datum[computedVariable.argumentList[1]]
+        }
 
-        const arg1 = variable.arguments[0].startsWith("vars.") ? varLookup[variable.arguments[0]] : datum[variable.arguments[0]]
-        const arg2 = typeof variable.arguments[1] !== "string" ? variable.arguments[1] : variable.arguments[1].startsWith("vars.") ? varLookup[variable.arguments[1]] : datum[variable.arguments[1]]
-
-        out[variable.name] = method(arg1, arg2)
+        out[computedVariable.name] = method(arg1, arg2)
     }
 }
 
@@ -203,7 +215,7 @@ function createCustom(customVariables, datum) {
     const varLookup = {}
     populateVariableLookup(vars, varLookup);
 
-    ComputedVariables(customVariables, varLookup, datum, out);
+    populateComputedVariables(customVariables, varLookup, datum, out);
 
     return out
 }
@@ -261,12 +273,12 @@ async function create_frame_from_datum(datum, offSetVector, customVariables, cac
     )
 
     let physicalIO;
-    if (parsePhysicalIO){
+    if (parsePhysicalIO) {
         physicalIO = extract_physical_io(datum);
     }
 
     let registers;
-    if (parseRegisters){
+    if (parseRegisters) {
         registers = extract_registers(datum);
     }
 
@@ -317,18 +329,15 @@ export async function get_custom_map(custom_map_file_name = "EDDE_allow_list.jso
  */
 
 /**
- * Computed Variable:
- * @typedef {
- * {method: string, name: string, count: number, arguments: string[]}
- * | {method: string, name: string, indexes: string[], arguments: string[]}
- * |{method: string, name: string, arguments: string[]}
- * } ComputedVariableTemplate
+ * @typedef  {{method: string, name: string, count: number, argumentList: string[]}} ComputedVariableA
+ * @typedef  {{method: string, name: string, indexes: string[], argumentList: string[]}} ComputedVariableB
+ * @typedef  {{method: string, name: string, argumentList: string[]}} ComputedVariableC
  */
 
 /**
- * @typedef {{method: string, name: string, arguments: string[]}} ComputedVariable
+ * Computed Variable:
+ * @typedef {ComputedVariableA | ComputedVariableB | ComputedVariableC} ComputedVariableTemplate
  */
-
 class CustomVariableConfiguration {
     /**
      * @param jsonConfig {{
@@ -353,7 +362,7 @@ class CustomVariableConfiguration {
          */
         this.picked_variables = [];
         /**
-         * @type {ComputedVariable[]}
+         * @type {ComputedVariableTemplate[]}
          */
         this.computed_variables = [];
         this._populateComputedVariables()
@@ -361,18 +370,13 @@ class CustomVariableConfiguration {
     }
 
     _populateComputedVariables() {
-        for (let i = 0; i < this._jsonConfig.computed_variables.length; i++) {
-            const variable = this._jsonConfig.computed_variables[i]
-
+        for (const variable of this._jsonConfig.computed_variables) {
             if (variable.count !== undefined) {
                 for (let j = 0; j < variable.count; j++) {
-                    /**
-                     * @type {ComputedVariable}
-                     */
                     const outVariable = {
                         name: variable.name.replace(this._jsonConfig.wildcard, j),
                         method: variable.method,
-                        arguments: [
+                        argumentList: [
                             variable.arguments[0].replace(this._jsonConfig.wildcard, j),
                             variable.arguments[1].replace(this._jsonConfig.wildcard, j)
                         ]
@@ -382,13 +386,10 @@ class CustomVariableConfiguration {
                 }
             } else if (variable.indexes !== undefined) {
                 for (let index of variable.indexes) {
-                    /**
-                     * @type {ComputedVariable}
-                     */
                     const outVariable = {
                         name: variable.name.replace(this._jsonConfig.wildcard, index),
                         method: variable.method,
-                        arguments: [
+                        argumentList: [
                             variable.arguments[0].replace(this._jsonConfig.wildcard, index),
                             variable.arguments[1].replace(this._jsonConfig.wildcard, index)
                         ]
@@ -400,7 +401,7 @@ class CustomVariableConfiguration {
                 this.computed_variables.push({
                     name: variable.name,
                     method: variable.method,
-                    arguments: [
+                    argumentList: [
                         variable.arguments[0],
                         variable.arguments[1]
                     ]
@@ -410,8 +411,7 @@ class CustomVariableConfiguration {
     }
 
     _populatePickedVariables() {
-        for (let i = 0; i < this._jsonConfig.picked_variables.length; i++) {
-            const variable = this._jsonConfig.picked_variables[i]
+        for (const variable of this._jsonConfig.picked_variables) {
             if (variable.count !== undefined) { // Loop using numbered indexes (0,1,2,3,4...)
                 for (let j = 0; j < variable.count; j++) {
                     this.picked_variables.push({

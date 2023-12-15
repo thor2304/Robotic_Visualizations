@@ -69,6 +69,10 @@ export class ScriptSpan {
     contains_line(line_number) {
         return this.scriptRange.contains(line_number)
     }
+
+    doesNotContainLine(line_number) {
+        return !this.contains_line(line_number)
+    }
 }
 
 export class VariableController {
@@ -102,7 +106,7 @@ export class VariableController {
      * @param controllerLookup {Array<Array<VariableController>>}
      */
     register(controllerLookup) {
-        if (controllerLookup.length === 0){
+        if (controllerLookup.length === 0) {
             controllerLookup.push([])
         }
 
@@ -145,7 +149,7 @@ export class VariableController {
     _closeError(endDataPoint) {
         const errorLength = endDataPoint.time.timestamp - this._activeErrorStart.time.timestamp
         // console.log("errorLength", errorLength)
-        if (errorLength >= this._minimumErrorLength){ // Only add the error if it is longer than the minimum error length
+        if (errorLength >= this._minimumErrorLength) { // Only add the error if it is longer than the minimum error length
             // This is done to allow for a short ramp up of the pump
             const error = new TimespanError(this._activeErrorStart, endDataPoint, this.variableName)
             this._observedErrors.push(error)
@@ -163,29 +167,27 @@ export class VariableController {
      */
     checkDataPoint(dataPoint) {
         // Loop through ranges.
-        // If this range has min > datapoint then return
         // If this range.contains the datapoint then check it and return right after
 
         const lineNumber = dataPoint.pointInTime.lineNumber - getScriptOffset()
-        for (let i = 0; i < this.ranges.length; i++) {
-            if (this.ranges[i].scriptRange.min > lineNumber) {
-                return
+
+        for (const range of this.ranges) {
+            if (range.doesNotContainLine(lineNumber)) {
+                continue
             }
 
-            if (this.ranges[i].contains_line(lineNumber)) {
-                const isWithinLimits = this.ranges[i].variableLimit.contains(dataPoint.traversed_attribute(this.variableName))
+            const isWithinLimits = range.variableLimit.contains(dataPoint.traversed_attribute(this.variableName))
 
-                // If there was previously an error, but now we are within limits, end the active error
-                if (this._hasActiveError && isWithinLimits) {
-                    this._closeError(dataPoint)
-                    return;
-                } else if (!this._hasActiveError && !isWithinLimits) { // if we don't have an active error, but we are now outside the limits
-                    this._startError(dataPoint)
-                    return;
-                }
+            // If there was previously an error, but now we are within limits, end the active error
+            if (this._hasActiveError && isWithinLimits) {
+                this._closeError(dataPoint)
+                return;
+            } else if (!this._hasActiveError && !isWithinLimits) { // if we don't have an active error, but we are now outside the limits
+                this._startError(dataPoint)
+                return;
             }
+
         }
-
     }
 
 }
@@ -227,20 +229,20 @@ export function detectErrors(dataPoints) {
     // Loop through all datapoints and call controllerlookup[datapoint.time.linenumber] (correct for scriptoffset)
     // For all VariableControllers returned by that:
     // Call controller.checkDataPoint(datapoint)
-    for (let i = 0; i < dataPoints.length; i++) {
-        const datapoint = dataPoints[i]
-        const controllers = controllerLookup[datapoint.time.lineNumber - getScriptOffset()]
-        if (controllers === undefined){
+
+    for (const dataPoint of dataPoints) {
+        const controllers = controllerLookup[dataPoint.time.lineNumber - getScriptOffset()]
+        if (controllers === undefined) {
             continue
         }
-        for (let controller of controllers) {
-            controller.checkDataPoint(datapoint)
+        for (const controller of controllers) {
+            controller.checkDataPoint(dataPoint)
         }
     }
 
     // For all controllers call getObservedErrors and add the results to out (consider using spread ...)
     for (let i = 0; i < controllerLookup[0].length; i++) {
-        out.push(...controllerLookup[0][i].getAllObservedErrors(dataPoints[dataPoints.length -1]))
+        out.push(...controllerLookup[0][i].getAllObservedErrors(dataPoints[dataPoints.length - 1]))
     }
 
     return out

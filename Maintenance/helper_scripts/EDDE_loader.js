@@ -156,15 +156,13 @@ const method_map = {
 function createCustom(customVariables, datum) {
     const out = {}
 
-    for (let i = 0; i < customVariables.picked_variables.length; i++) {
-        const variable = customVariables.picked_variables[i]
+    for (const variable of customVariables.picked_variables) {
         out[variable.name] = variable.type === "float" ? Number.parseFloat(datum[variable.name]) : datum[variable.name]
     }
 
-    for (let i = 0; i < customVariables.computed_variables.length; i++) {
-        const variable = customVariables.computed_variables[i]
+    for (const variable of customVariables.computed_variables) {
         try {
-            out[variable.name] = method_map[variable.method](datum[variable.arguments[0]], datum[variable.arguments[1]])
+            out[variable.name] = method_map[variable.method](datum[variable.argumentList[0]], datum[variable.argumentList[1]])
         } catch (e) {
             console.error("Error while computing custom variable", variable, e)
         }

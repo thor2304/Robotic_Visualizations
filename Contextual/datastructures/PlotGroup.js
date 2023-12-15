@@ -152,8 +152,8 @@ export class PlotGroup {
          * @type {Promise<void>[]}
          */
         const plotPromises = []
-        for (let i = 0; i < this.plotRequests.length; i++) {
-            plotPromises.push(this._plot(this.plotRequests[i]))
+        for (const plotRequest of this.plotRequests) {
+            plotPromises.push(this._plot(plotRequest))
         }
         return plotPromises
     }
@@ -185,16 +185,15 @@ export class PlotGroup {
  */
 export function findMaxOfVariables(dataPoints, variablePathArray) {
     const currentMax = {}
-    for (let variablePath of variablePathArray) {
+    for (const variablePath of variablePathArray) {
         currentMax[variablePath] = {
             stepcount: undefined,
             value: 0
         }
     }
 
-    for (let i = 0; i < dataPoints.length; i++) {
-        const dataPoint = dataPoints[i];
-        for (let variablePath of variablePathArray) {
+    for (const dataPoint of dataPoints) {
+        for (const variablePath of variablePathArray) {
             const value = dataPoint.traversed_attribute(variablePath)
             if (value > currentMax[variablePath].value) {
                 currentMax[variablePath].value = value
