@@ -6,7 +6,6 @@ import {get_cycles} from "./helper_scripts/cycle_filtering.js";
 import {getActivePlotGroup, updateVisualizations} from "./helper_scripts/updateVisualizations.js";
 import {populatePickers} from "./helper_scripts/cycle-picker.js";
 import {plotCoordinates} from "./helper_scripts/factories/CoordinatePlotFactory.js";
-import {createButtonAndWarningLine} from "./source_code_visualization/ErrorHighlightingLine.js";
 import {load_data_then_call} from "./helper_scripts/load_csv_data.js";
 import {convert_EDDE_to_data_frames} from "./helper_scripts/EDDE_loader.js";
 import {makeAllDraggable} from "./fluid_layout/make_draggable.js";
@@ -30,7 +29,7 @@ export function getScriptOffset() {
 }
 
 // The .then at the end is used to await the promise
-load_data_then_call(plot_raw_data).then(r => ("loaded"))
+load_data_then_call(plot_raw_data).then()
 
 /**
  * @param firstSepCount {number}
@@ -38,8 +37,8 @@ load_data_then_call(plot_raw_data).then(r => ("loaded"))
 function finalizePlotting(firstSepCount) {
     // Mark all vis containers as loaded, to remove the loading text
     const visContainers = document.getElementsByClassName("vis-placeholder");
-    for (let i = 0; i < visContainers.length; i++) {
-        visContainers[i].classList.add("loaded");
+    for (const visContainer of visContainers ){
+        visContainer.classList.add("loaded")
     }
 
     // Updating immediately after loading, populates the variable showcase with the first datapoint
@@ -72,7 +71,6 @@ function createGroup(groupIdentifier) {
 
     const idPrefix = getIdPrefix(groupIdentifier)
     const namePrefix = ``
-    // const namePrefix = `${groupIdentifier}: `
 
     const plotRequests = [
         // new PlotRequest(`${namePrefix} Bar Chart`, `${idPrefix}barchart`, ["controller.executionTime"], plotTypes.bar),
@@ -96,10 +94,8 @@ async function plot_raw_data(data, dataSource = "EDDE") {
     const start = performance.now();
 
     const groupA = createGroup("A");
-    // const groupB = createGroup("B");
 
     await groupA.createDivsForPlots();
-    // await groupB.createDivsForPlots();
 
     // 2. Shared operation for both groups
     let rawFrames;
@@ -108,16 +104,11 @@ async function plot_raw_data(data, dataSource = "EDDE") {
         rawFrames = await convertFlightRecordDataToDataPoints(data);
     } else if (dataSource === "EDDE" || dataSource === "RTDE") {
         data = filter_raw_data(data);
-        // data = pick_every_x_from_array(data, 2);
         rawFrames = await convert_EDDE_to_data_frames(data); // This method is the cause of all loading time
     }
 
     rawFrames = rawFrames.filter(frame => frame.time.stepCount !== undefined)
     const frameTime = performance.now()
-
-    // console.log(rawFrames[rawFrames.length - 1])
-
-    // print_script_lines(rawFrames);
 
     // end of 2.
     const cycles = get_cycles(rawFrames);
@@ -144,9 +135,9 @@ async function plot_raw_data(data, dataSource = "EDDE") {
 
     if (firstStep === undefined) {
         console.log("First step not available, moving on to find the first point with it defined")
-        for (let i = 0; i < groupA.cycle.sequentialDataPoints.length; i++) {
-            if (groupA.cycle.sequentialDataPoints[i].time.stepCount !== undefined) {
-                firstStep = groupA.cycle.sequentialDataPoints[i].time.stepCount;
+        for (const datapoint of groupA.cycle.sequentialDataPoints) {
+            if (datapoint.time.stepCount !== undefined) {
+                firstStep = datapoint.time.stepCount;
                 break;
             }
         }
@@ -156,9 +147,9 @@ async function plot_raw_data(data, dataSource = "EDDE") {
 
 
     // 3.1 Per group operations that might interfere with the other group
-    for (const key of Object.keys(groupA.maxima)) {
-        // await createButtonAndWarningLine(groupA.maxima[key].stepcount, key + " max", groupA.identifier)
-    }
+    // for (const key of Object.keys(groupA.maxima)) {
+    //     await createButtonAndWarningLine(groupA.maxima[key].stepcount, key + " max", groupA.identifier)
+    // }
     // end of 3.1
 
     // 4. Shared operation for both groups

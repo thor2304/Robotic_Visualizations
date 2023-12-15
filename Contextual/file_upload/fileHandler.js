@@ -1,8 +1,8 @@
-import {dataFileName, parseData} from "../helper_scripts/load_csv_data.js";
+import {dataFileName} from "../helper_scripts/load_csv_data.js";
 import * as zip from "https://deno.land/x/zipjs/index.js";
 import {MyDirectory} from "./Datastructures/MyDirectory.js";
 import {MyFile} from "./Datastructures/MyFile.js";
-import {has, loadJson, save} from "./Cache.js";
+import {loadJson, save} from "./Cache.js";
 import {scriptFileName} from "../source_code_visualization/fetch_and_render_sample_code.js";
 import {handleFolder} from "./ZipHandler.js";
 import {clearDataCache, clearScriptCache} from "./uploadPageHydration.js";

@@ -1,8 +1,8 @@
 
 import {dataFileName} from "../helper_scripts/load_csv_data.js";
-import {has, save} from "./Cache.js";
+import {save} from "./Cache.js";
 import {MyFile} from "./Datastructures/MyFile.js";
-import {refreshIndicators, updateVersionNumber} from "./statusVisualizations.js";
+import {updateVersionNumber} from "./statusVisualizations.js";
 
 /**
  *
