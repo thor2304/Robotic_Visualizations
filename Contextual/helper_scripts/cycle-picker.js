@@ -7,8 +7,7 @@ import {groups} from "../csv_driven_3d.js";
 export function populatePickers(groups) {
     const groupIdentifiers = groups.getGroupIdentifiers()
     const counts = []
-    for (let i = 0; i < groupIdentifiers.length; i++) {
-        const groupIdentifier = groupIdentifiers[i];
+    for (const groupIdentifier of groupIdentifiers) {
         const groupSelector = document.getElementById(`dropdown-${groupIdentifier}`)
         const plotGroups = groups.getOptions(groupIdentifier)
         counts.push(plotGroups.length)
@@ -17,9 +16,9 @@ export function populatePickers(groups) {
 
     const sum = counts.reduce((a, b) => a + b, 0)
 
-    for (let i = 0; i < groupIdentifiers.length; i++) {
-        const label = document.getElementById(`error-density-${groupIdentifiers[i]}`)
-        const groupSelector = document.getElementById(`dropdown-${groupIdentifiers[i]}`)
+    for (const groupIdentifier of groupIdentifiers) {
+        const label = document.getElementById(`error-density-${groupIdentifier}`)
+        const groupSelector = document.getElementById(`dropdown-${groupIdentifier}`)
         const percentage = Math.round((groupSelector.errorCount / sum * 100)*10)/10
         addPercentageDisplay(label,  percentage, true)
     }

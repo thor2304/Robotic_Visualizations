@@ -22,8 +22,8 @@ export async function plotBarChart(chartName, chartId, dataPoints, timestamps, d
 
     const chart = await createDivForPlotlyChart(chartId)
 
-    for (let i = 0; i < dataPoints.length; i++) {
-        data.push(dataPoints[i].traversed_attribute(dataName))
+    for (const dataPoint of dataPoints) {
+        data.push(dataPoint.traversed_attribute(dataName))
     }
 
     const trace = createTrace(data, timestamps, dataName)

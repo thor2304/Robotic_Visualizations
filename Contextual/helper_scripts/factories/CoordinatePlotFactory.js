@@ -143,8 +143,8 @@ export async function plotCoordinates(chartId, dataNames, groupController, chart
 
 function generateFrameLookupFromFrames(frames) {
     const frameLookup = {}
-    for (let i = 0; i < frames.length; i++) {
-        frameLookup[frames[i].name] = frames[i]
+    for (const frame of frames) {
+        frameLookup[frame.name] = frame
     }
 
     return frameLookup
@@ -164,7 +164,7 @@ function createTraces(groupController, dataNames) {
     const activeCycle = groupController.get(getActivePlotGroup()).getCycle().cycleIndex
     const TCP_x = groupController.get(getActivePlotGroup()).getCycle().sequentialDataPoints[activeCycle].robot.tool.position.x
     const TCP_y = groupController.get(getActivePlotGroup()).getCycle().sequentialDataPoints[activeCycle].robot.tool.position.y
-    return _generate_traces_coordinate(coordinates, activeCycle, TCP_x, TCP_y);
+    return _generate_traces_coordinate(coordinates, TCP_x, TCP_y, activeCycle);
 }
 
 
@@ -173,8 +173,35 @@ function createTraces(groupController, dataNames) {
  */
 
 /**
- * @typedef {{xName: string, yName:string}[]} CoordinateNames
+ * @typedef {{xName: string, yName:string}} CoordinateName
+ * @typedef {CoordinateName[]} CoordinateNames
  */
+
+/**
+ *
+ * @param dataPoint {DataPoint}
+ * @param dataName {CoordinateName}
+ * @param cycle {Cycle}
+ * @return {Coordinate}
+ */
+function createCoordinate(dataPoint, dataName, cycle) {
+    const x = dataPoint.traversed_attribute(dataName.xName)
+    const y = dataPoint.traversed_attribute(dataName.yName)
+
+    let color = getColorMap().general.success
+    if (cycle.hasError()) {
+        color = getColorMap().general.error
+    } else if (cycle.hasWarning()) {
+        color = getColorMap().general.warning
+    }
+    return {
+        x: x,
+        y: y,
+        color: color,
+        name: cycle.cycleIndex.toString(),
+        cycleIndex: cycle.cycleIndex
+    };
+}
 
 /**
  * @param ACycles {Cycle[]}
@@ -195,23 +222,10 @@ function extractCoordinates(ACycles, BCycles, dataNames) {
     function getCoordinatesForCycleGroup(coordinates, cycles) {
         for (let cycle of cycles) {
             const dataPoint = cycle.sequentialDataPoints[1] || cycle.sequentialDataPoints[0]
-            for (let i = 0; i < dataNames.length; i++) {
-                const x = dataPoint.traversed_attribute(dataNames[i].xName)
-                const y = dataPoint.traversed_attribute(dataNames[i].yName)
 
-                let color = getColorMap().general.success
-                if (cycle.hasError()) {
-                    color = getColorMap().general.error
-                } else if (cycle.hasWarning()) {
-                    color = getColorMap().general.warning
-                }
-                coordinates.push({
-                    x: x,
-                    y: y,
-                    color: color,
-                    name: cycle.cycleIndex.toString(),
-                    cycleIndex: cycle.cycleIndex
-                })
+            for (const dataName of dataNames) {
+                const coordinate = createCoordinate(dataPoint, dataName, cycle);
+                coordinates.push(coordinate)
             }
         }
     }
@@ -233,12 +247,12 @@ const markers = {
 /**
  *
  * @param coordinates {Coordinate []} -
- * @param active_number {number} - The index of the cycle that is currently active.
  * @param TCP_x {number} - The x coordinate of the TCP at the active cycle
  * @param TCP_y {number} - The y coordinate of the TCP at the active cycle
+ * @param active_number {number} - The index of the cycle that is currently active.
  * @returns {{}[]}
  */
-function _generate_traces_coordinate(coordinates, active_number = 1, TCP_x, TCP_y) {
+function _generate_traces_coordinate(coordinates, TCP_x, TCP_y, active_number = 1) {
     const traces = []
 
     const colorMap = getColorMap()
