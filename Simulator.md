@@ -8,6 +8,16 @@ Miguel got it to run by:
 - Ensuring that java8 is installed on the pc.
     - There might have to be made some changes to the $HOME variable in the install.sh script
 
+## Polyscope in docker
+Run the docker compose file in the `Robot_control` folder.
+
+In browser go to [http://localhost:6080/vnc.html?host=localhost&port=6080&password=easybot](http://localhost:6080/vnc.html?host=localhost&port=6080&password=easybot)and connect using the password `easybot`
+
+https://hub.docker.com/r/universalrobots/ursim_e-series
+https://github.com/UniversalRobots/RTDE_Python_Client_Library#using-robot-simulator-in-docker
+
+The script is easier to work with when they are hard linked into the polyscope folder from a folder outside.
+
 
 # Developing in the simulator
 ## Mocking inputs

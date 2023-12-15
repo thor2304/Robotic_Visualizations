@@ -1,0 +1,20 @@
+services:
+  polyscope:
+    image: universalrobots/ursim_e-series # https://hub.docker.com/r/universalrobots/ursim_e-series
+#      I have had some problems with using the newest image, at some point. maybe you will need to tag a specific version
+#    New versions have been pushed since i had my problems though. Maybe the issue is resolved.
+    ports:
+      - "30001:30001"
+      - "30002:30002"
+      - "30003:30003"
+      - "30004:30004"
+      - "5900:5900"
+      - "6080:6080"
+    volumes:
+      - type: bind
+        source: ./urprograms
+        target: /ursim/programs
+    tty: true
+    stdin_open: true
+
+#https://github.com/urrsk/ursim_docker/blob/main/ursim/e-series/Dockerfile
