@@ -112,12 +112,12 @@ async function loadTextFromFile(file) {
  *
  * @type {undefined|string}
  */
-let lastDataName = undefined
+let lastDataName;
 /**
  *
  * @type {undefined|number}
  */
-let lastVersion = undefined
+let lastVersion ;
 
 /**
  * @param file {File}

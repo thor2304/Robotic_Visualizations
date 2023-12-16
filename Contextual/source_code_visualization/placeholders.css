@@ -3,9 +3,7 @@
 }
 
 .vis-placeholder, .code-placeholder{
-    /*box-sizing: border-box;*/
     width: auto;
-    /*height: 20em;*/
     min-height: 20em;
     border: .2em solid var(--border-color);
     background-color: var(--ungrouped-color);
@@ -51,6 +49,5 @@
 }
 
 .loaded{
-    /*height: fit-content;*/
     background-image: none;
 }

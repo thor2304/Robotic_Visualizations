@@ -22,7 +22,7 @@ function update_unlocked_class(draggable) {
 const previousSettings = new Map();
 
 function isNotPlotlyChart(element) {
-    let plotly_div = undefined;
+    let plotly_div;
     for (let i = 0; i < element.childElementCount; i++) {
         if (element.children[i].classList.contains("plot-container")) {
             plotly_div = element.children[i];

@@ -1,5 +1,4 @@
 import {getColorMap} from "../ColorMap.js";
-import {cleanName} from "../datanameCleaner.js";
 
 /**
  *

@@ -1,6 +1,5 @@
 import {createDivForPlotlyChart} from "./chartDivFactory.js";
 import {createErrorBar, get2dLayout} from "./layoutFactory.js";
-import {getAnimationSettings} from "./animationSettings.js";
 import {updateVisualizations} from "../updateVisualizations.js";
 
 //https://plotly.com/javascript/bar-charts/

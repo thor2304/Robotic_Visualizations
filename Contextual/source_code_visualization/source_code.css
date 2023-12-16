@@ -79,12 +79,10 @@ pre {
 }
 
 .line.active.error.controlling-group-A{
-    /*background-color: var(--highlight-active-line-color);*/
     background-color: color-mix(in hsl, var(--highlight-error-line-color), var(--group-A-active-color));
 }
 
 .line.active.error.controlling-group-B{
-    /*background-color: var(--highlight-active-line-color);*/
     background-color: color-mix(in hsl, var(--highlight-error-line-color), var(--group-B-active-color));
 }
 

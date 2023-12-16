@@ -16,9 +16,9 @@ function _readColorMap() {
     let paperColor = 'hsla(208,21%,12%,0)'
     let gridColor = "rgba(100,100,100,0.6)"
 
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+    if (window.matchMedia?.('(prefers-color-scheme: light)').matches) {
         // light mode
-        plotColor = 'rgba(145,0,0,0)'
+        // plotcolor is not changed
         paperColor = 'hsl(210, 29%, 97%)'
         gridColor = "rgba(96,96,96,0.6)"
     }

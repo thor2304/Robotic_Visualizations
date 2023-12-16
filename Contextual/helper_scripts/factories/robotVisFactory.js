@@ -1,6 +1,5 @@
 import {getAnimationSettings} from "./animationSettings.js";
 import {getColorMap} from "../ColorMap.js";
-import {updateVisualizations} from "../updateVisualizations.js";
 import {get3dLayout} from "./layoutFactory.js";
 import {createDivForPlotlyChart} from "./chartDivFactory.js";
 

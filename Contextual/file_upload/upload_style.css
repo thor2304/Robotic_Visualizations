@@ -1,11 +1,3 @@
-/*#drop_zone {*/
-/*    border: .125em solid #37379b;*/
-/*    background-color: rgba(55, 55, 155, 0.27);*/
-/*    width: 50vw;*/
-/*    height: 50vh;*/
-/*    padding: 0.5em;*/
-/*}*/
-
 .area {
     --margin: 5em;
     width: calc(100% - var(--margin));

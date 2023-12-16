@@ -92,14 +92,14 @@ function createArrowTraces(datapoints, dataName) {
     line.mode = 'lines'
     line.type = 'scatter3d'
     line.line = {
-        color: getColorMap().legend_colors.connecting_line,
+        color: colorMap.legend_colors.connecting_line,
         width: 14
     }
 
     ArrowHead.name = ""
     ArrowHead.text = ""
     ArrowHead.type = "cone"
-    ArrowHead.colorscale = [[0, getColorMap().legend_colors.connecting_line], [1, getColorMap().legend_colors.connecting_line]]
+    ArrowHead.colorscale = [[0, colorMap.legend_colors.connecting_line], [1, colorMap.legend_colors.connecting_line]]
     ArrowHead.showLegend = false
     ArrowHead.showscale = false
     ArrowHead.sizemode = "absolute"
@@ -115,7 +115,7 @@ function createArrowTraces(datapoints, dataName) {
         mode: 'markers',
         type: 'scatter3d',
         marker: {
-            color: getColorMap().legend_colors.connecting_line,
+            color: colorMap.legend_colors.connecting_line,
         },
         showLegend: false,
     }

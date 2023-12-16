@@ -1,6 +1,6 @@
 import {get_throttled_version_function} from "../helper_scripts/factories/ThrottledFunction.js";
 
-let code = undefined;
+let code;
 export const code_container = document.getElementById('code-container');
 
 /**

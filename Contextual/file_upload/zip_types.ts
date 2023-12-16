@@ -7,11 +7,11 @@
 interface FileEntry {}
 
 declare namespace zip {
-    export var useWebWorkers: boolean;
-    export var workerScriptsPath: string;
-    export var workerScripts: {
-        deflater?: string[] | undefined;
-        inflater?: string[] | undefined;
+    export let useWebWorkers: boolean;
+    export let workerScriptsPath: string;
+    export let workerScripts: {
+        deflater?: string[];
+        inflater?: string[];
     };
 
     export class Reader {
@@ -100,11 +100,11 @@ declare namespace zip {
     ): void;
 
     export interface WriteOptions {
-        directory?: boolean | undefined;
-        level?: number | undefined;
-        comment?: string | undefined;
-        lastModDate?: Date | undefined;
-        version?: number | undefined;
+        directory?: boolean;
+        level?: number;
+        comment?: string;
+        lastModDate?: Date;
+        version?: number;
     }
 
     export class ZipWriter {
