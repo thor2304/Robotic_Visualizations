@@ -1,8 +1,12 @@
 import {updateContainers, updateSplit} from "./column_resize.js";
 
-document.body.addEventListener("DOMContentLoaded", () => {
-    registerSliderEvents()
-});
+if (document.readyState === "interactive" || document.readyState === "complete") {
+    // already fired, so run logic right away
+    registerSliderEvents();
+} else {
+    // not fired yet, so let's listen for the event
+    document.body.addEventListener("DOMContentLoaded", registerSliderEvents);
+}
 
 function registerSliderEvents() {
     let buttonDown = false;
@@ -16,7 +20,7 @@ function registerSliderEvents() {
         buttonDown = false;
     });
 
-    document.body.addEventListener('mousemove', async (e) => {
+    document.body.addEventListener('mousemove', (e) => {
         if (buttonDown) {
             // Using clientWidth is not a bulletproof solution and may cause issues
             const windowWidth = document.documentElement["clientWidth"];
@@ -25,8 +29,8 @@ function registerSliderEvents() {
 
             // When we introduce reordering between code and viz containers, we will need to update this
             // We will have to compare the x coordinates between code and viz containers
-            await updateSplit(rightSplit, leftSplit);
-            await updateContainers();
+            updateSplit(rightSplit, leftSplit);
+            updateContainers();
         }
     })
 }

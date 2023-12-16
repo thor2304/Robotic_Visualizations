@@ -21,21 +21,21 @@ export async function clearScriptCache() {
 
 if (document.getElementById("clear-cache-button")) {
     document.getElementById("clear-cache-button")
-        .addEventListener("click", clearCaches)
+        .addEventListener("click", () => {
+            clearCaches.then()
+        })
 }
 
 if (document.getElementById("clear-data-cache-button")) {
     document.getElementById("clear-data-cache-button")
-        .addEventListener("click", async ()=>{
-            await clearDataCache()
-            refreshIndicators()
+        .addEventListener("click", () => {
+            clearDataCache().then(refreshIndicators)
         })
 }
 
 if (document.getElementById("clear-script-cache-button")) {
     document.getElementById("clear-script-cache-button")
-        .addEventListener("click", async ()=>{
-            await clearScriptCache()
-            refreshIndicators()
+        .addEventListener("click", () => {
+            clearScriptCache().then(refreshIndicators)
         })
 }
