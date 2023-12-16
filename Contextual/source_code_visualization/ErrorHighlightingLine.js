@@ -29,8 +29,8 @@ export async function createButtonAndWarningLine(timestamp, name, plotGroup) {
 
     button_container.appendChild(button);
 
-    button.addEventListener ("click", async function() {
-        await updateVisualizations(timestamp, plotGroup);
+    button.addEventListener ("click", function() {
+        updateVisualizations(timestamp, plotGroup).then();
     });
 
     const default_display = button.style.display;
@@ -62,7 +62,7 @@ export async function createButtonAndWarningLine(timestamp, name, plotGroup) {
 
     if (button_groups[line].length === 0){
         const hide = getHideDecider()
-        line.addEventListener("click", async function() {
+        line.addEventListener("click", function() {
             hideAllButtons()
             if (hide()){
                 return

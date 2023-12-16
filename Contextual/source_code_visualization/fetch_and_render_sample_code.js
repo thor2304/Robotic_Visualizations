@@ -5,18 +5,17 @@ import {MyFile} from "../file_upload/Datastructures/MyFile.js";
 
 export const scriptFileName = "script"
 
-window.addEventListener("DOMContentLoaded", async () => {
+window.addEventListener("DOMContentLoaded", () => {
     const code_container = document.getElementById("code-container")
     if (!code_container) {
         console.warn("Could not find code-container. Will not continue to fetch and render code visualization")
         return
     }
 
-    const code = await getCode()
-    // console.log(code)
-    const markdown = code.toMarkdown()
-
-    renderMarkDownToHTML(markdown, code_container)
+    getCode().then((code) => {
+        const markdown = code.toMarkdown()
+        renderMarkDownToHTML(markdown, code_container).then()
+    })
 })
 
 /**

@@ -8,9 +8,9 @@ async function stepToNextTimestamp() {
     updateSliderStep(nextTimestamp);
 }
 
-async function stepToPreviousTimestamp(){
+async function stepToPreviousTimestamp() {
     const previousTimeStamp = groups.get(getActivePlotGroup()).dataPointsLinked.previous();
-    if (previousTimeStamp === undefined){
+    if (previousTimeStamp === undefined) {
         return;
     }
     await updateVisualizations(previousTimeStamp, getActivePlotGroup());
@@ -20,14 +20,14 @@ async function stepToPreviousTimestamp(){
 const right_arrow = "ArrowRight";
 const left_arrow = "ArrowLeft";
 
-document.body.addEventListener("keydown", async (e) => {
-    try{
+document.body.addEventListener("keydown", (e) => {
+    try {
         if (e.key === right_arrow) {
-            await stepToNextTimestamp()
+            stepToNextTimestamp().then()
         } else if (e.key === left_arrow) {
-            await stepToPreviousTimestamp()
+            stepToPreviousTimestamp().then()
         }
-    } catch (e){
+    } catch (e) {
         console.log(e)
     }
 })

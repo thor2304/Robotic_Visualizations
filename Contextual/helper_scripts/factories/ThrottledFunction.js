@@ -6,9 +6,9 @@
 /**
  *The function to throttle must be an async function.
  *
- * @param function_to_throttle {function}
- * @param minimum_time_between_calls
- * @returns {function(...[*]): void}
+ * @param function_to_throttle {function(...[*]): Promise<void>}
+ * @param minimum_time_between_calls {number}
+ * @returns {function(...[*]): Promise<void>}
  */
 export function get_throttled_version_function(function_to_throttle, minimum_time_between_calls) {
     let wait = false;
