@@ -179,7 +179,7 @@ function populateVariableLookup(vars, varLookup) {
  * @param varLookup {Object<string, string>}
  * @param datum {Object}
  * @param out {Object<string, number>}
- * @constructor
+ * @returns {void}
  */
 function populateComputedVariables(customVariables, varLookup, datum, out) {
     for (const computedVariable of customVariables.computed_variables) {
@@ -209,7 +209,8 @@ function createCustom(customVariables, datum) {
 
     write_picked_variables(customVariables, out, datum);
 
-    const vars = datum.vars
+    const vars = datum.vars || []
+
     const varLookup = {}
     populateVariableLookup(vars, varLookup);
 
