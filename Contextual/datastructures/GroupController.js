@@ -21,9 +21,6 @@ export class GroupController {
 
     averageTimePerCycle = 0;
 
-    constructor() {
-    }
-
     /**
      * @param groupA {PlotGroup}
      * @param groupB {PlotGroup?}

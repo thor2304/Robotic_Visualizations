@@ -10,9 +10,6 @@ export {
     Payload,
     Joints,
     Joint,
-    PhysicalIO,
-    ScriptVariable,
-    Register,
     PointInTime,
     Controller,
     SafetyStatus,
@@ -208,24 +205,6 @@ class Variable {
     }
 }
 
-class PhysicalIO extends Variable {
-    constructor(name, value) {
-        super(name, value);
-    }
-}
-
-class ScriptVariable extends Variable {
-    constructor(name, value) {
-        super(name, value);
-    }
-}
-
-class Register extends Variable {
-    constructor(name, value) {
-        super(name, value);
-    }
-}
-
 class PointInTime {
     /**
      * The value put into this variable is already offset by the value from getScriptOffset()
@@ -267,10 +246,36 @@ class Controller {
 
 
 class DataPoint {
+    /**
+     * @type {Object<string, Variable>}
+     */
     scriptVariables = {};
+    /**
+     *
+     * @type {Object<string, Variable>}
+     */
     physicalIOBlocks = {};
+    /**
+     *
+     * @type {Object<string, Variable>}
+     */
     registers = {};
 
+    /**
+     *
+     * @param timestamp
+     * @param lineNumber
+     * @param lineString {string}
+     * @param executionTime {number}
+     * @param cpuUsage {number}
+     * @param installedMemory {number}
+     * @param memoryUsage {number}
+     * @param robot {Robot}
+     * @param physicalIOBlocks {Variable[]}
+     * @param scriptVariables {Variable[]}
+     * @param registers {Variable[]}
+     * @param raw {Object}
+     */
     constructor(timestamp, lineNumber, lineString,
                 executionTime, cpuUsage, installedMemory, memoryUsage,
                 robot, physicalIOBlocks, scriptVariables, registers, raw) {

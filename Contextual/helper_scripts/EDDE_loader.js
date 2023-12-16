@@ -4,9 +4,7 @@ import {
     Joint,
     Joints,
     Payload,
-    PhysicalIO,
     Position,
-    Register,
     Robot,
     Tool,
     Variable
@@ -36,24 +34,24 @@ function get_controller_memory(datum) {
 
 /**
  * @param datum {Object}
- * @returns {PhysicalIO[]}
+ * @returns {Variable[]}
  */
 function extract_physical_io(datum) {
     /**
-     * @type {PhysicalIO[]}
+     * @type {Variable[]}
      */
     const out = []
 
     for (let i = 0; i < 8; i++) {
-        out.push(new PhysicalIO(`digital_in_${i}`, parse_to_bool(datum[`digital_in_${i}`])))
-        out.push(new PhysicalIO(`digital_out_${i}`, parse_to_bool(datum[`digital_out_${i}`])))
-        out.push(new PhysicalIO(`config_out_${i}`, parse_to_bool(datum[`config_out_${i}`])))
-        out.push(new PhysicalIO(`config_in_${i}`, parse_to_bool(datum[`config_in_${i}`])))
+        out.push(new Variable(`digital_in_${i}`, parse_to_bool(datum[`digital_in_${i}`])))
+        out.push(new Variable(`digital_out_${i}`, parse_to_bool(datum[`digital_out_${i}`])))
+        out.push(new Variable(`config_out_${i}`, parse_to_bool(datum[`config_out_${i}`])))
+        out.push(new Variable(`config_in_${i}`, parse_to_bool(datum[`config_in_${i}`])))
     }
 
     for (let i = 0; i < 2; i++) {
-        out.push(new PhysicalIO(`analog_in_${i}`, Number.parseFloat(datum[`analog_in_${i}`])))
-        out.push(new PhysicalIO(`analog_out_${i}`, Number.parseFloat(datum[`analog_out_${i}`])))
+        out.push(new Variable(`analog_in_${i}`, Number.parseFloat(datum[`analog_in_${i}`])))
+        out.push(new Variable(`analog_out_${i}`, Number.parseFloat(datum[`analog_out_${i}`])))
     }
 
     return out
@@ -112,19 +110,19 @@ function createBinaryString(nMask) {
 
 /**
  * @param datum {Object}
- * @returns {Register[]}
+ * @returns {Variable[]}
  */
 function extract_registers(datum) {
     /**
-     * @type {Register[]}
+     * @type {Variable[]}
      */
     const out = []
 
     for (let i = 0; i < 24; i++) {
-        out.push(new Register(`output_double_register_${i}`, Number.parseFloat(datum[`output_double_register_${i}`])))
-        out.push(new Register(`input_double_register_${i}`, Number.parseFloat(datum[`input_double_register_${i}`])))
-        out.push(new Register(`output_int_register_${i}`, Number.parseInt(datum[`output_int_register_${i}`])))
-        out.push(new Register(`input_int_register_${i}`, Number.parseInt(datum[`input_int_register_${i}`])))
+        out.push(new Variable(`output_double_register_${i}`, Number.parseFloat(datum[`output_double_register_${i}`])))
+        out.push(new Variable(`input_double_register_${i}`, Number.parseFloat(datum[`input_double_register_${i}`])))
+        out.push(new Variable(`output_int_register_${i}`, Number.parseInt(datum[`output_int_register_${i}`])))
+        out.push(new Variable(`input_int_register_${i}`, Number.parseInt(datum[`input_int_register_${i}`])))
     }
 
     for (let i = 0; i < 2; i++) {
@@ -135,8 +133,8 @@ function extract_registers(datum) {
         const inputBits = createBinaryString(datum[`input_bit_register_${lower}_to${upper}`])
 
         for (let j = 0; j < 32; j++) {
-            out.push(new Register(`output_bit_register_${lower + j}`, parse_to_bool(outputBits[j])))
-            out.push(new Register(`input_bit_register_${lower + j}`, parse_to_bool(inputBits[j])))
+            out.push(new Variable(`output_bit_register_${lower + j}`, parse_to_bool(outputBits[j])))
+            out.push(new Variable(`input_bit_register_${lower + j}`, parse_to_bool(inputBits[j])))
         }
     }
 

@@ -154,7 +154,6 @@ async function plot_raw_data(data, dataSource = "EDDE") {
 
     // 4. Shared operation for both groups
     const plotPromises = groupA.getPlotPromises();
-    // plotPromises.push(...groupB.getPlotPromises());
     await Promise.all(plotPromises);
 
     await plotCoordinates(

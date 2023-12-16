@@ -32,13 +32,12 @@ async function loadZipFile(file) {
 
         // Loop through all the entries and add them to the root directory
         for (const entry of entries) {
-            let filename = entry.filename
             const path = entry.filename.split("/")
-            if (!path[path.length - 1].endsWith("/")) {
-                filename = path.pop()
-            } else {
+            const isDirectoryName = path[path.length - 1].endsWith("/")
+            if (isDirectoryName) {
                 continue
             }
+            const filename =  path.pop()
 
             const text = await entry.getData(new zip.TextWriter());
             const currentEntry = new MyFile(filename, text)
