@@ -21,13 +21,13 @@ const right_arrow = "ArrowRight";
 const left_arrow = "ArrowLeft";
 
 document.body.addEventListener("keydown", (e) => {
-    try {
-        if (e.key === right_arrow) {
-            stepToNextTimestamp().then()
-        } else if (e.key === left_arrow) {
-            stepToPreviousTimestamp().then()
-        }
-    } catch (e) {
-        console.log(e)
+    if (e.key === right_arrow) {
+        stepToNextTimestamp().catch((e) => {
+            console.error(e);
+        })
+    } else if (e.key === left_arrow) {
+        stepToPreviousTimestamp().catch((e) => {
+            console.error(e);
+        })
     }
 })
