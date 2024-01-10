@@ -22,7 +22,7 @@ export async function clearScriptCache() {
 if (document.getElementById("clear-cache-button")) {
     document.getElementById("clear-cache-button")
         .addEventListener("click", () => {
-            clearCaches.then()
+            clearCaches().then()
         })
 }
 

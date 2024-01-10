@@ -164,7 +164,7 @@ function createCustom(customVariables, datum) {
         try {
             out[variable.name] = method_map[variable.method](datum[variable.argumentList[0]], datum[variable.argumentList[1]])
         } catch (e) {
-            console.error("Error while computing custom variable", variable, e)
+            console.error("Error while computing custom variables", variable, datum, method_map, e)
         }
     }
 
