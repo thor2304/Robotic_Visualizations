@@ -2,7 +2,7 @@ import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 import {MyFile} from "../file_upload/Datastructures/MyFile.js";
 import {loadJson, save} from "../file_upload/Cache.js";
 
-const dataFolder ='../../Robot_control/EDDE_data/WITH_POWER'
+const dataFolder ='../Robot_control/EDDE_data/WITH_POWER'
 
 export const dataFileName = "dataFile"
 

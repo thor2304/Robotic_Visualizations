@@ -1,0 +1,13 @@
+# Compose file to run the dockerfile with the basic server
+
+version: '3.7'
+services:
+  web:
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./Contextual:/usr/src/app/Robotic_Visualizations/Contextual
+      - ./Maintenance:/usr/src/app/Robotic_Visualizations/Maintenance
+      - ./Robot_control:/usr/src/app/Robotic_Visualizations/Robot_control
+

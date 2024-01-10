@@ -16,7 +16,9 @@ export async function renderMarkDownToHTML(markdown, intoThisElement) {
         .use(remarkRehype, {allowDangerousHtml: true})
         .use(rehypeStarryNight, {aliases: {script: "urscript"}, grammars: [urscript]})
         .use(rehypeStringify, {allowDangerousHtml: true})
-        .process(markdown)
+        .process(markdown).catch((error) => {
+            console.error(error, markdown, intoThisElement)
+        })
 
     intoThisElement.appendChild(htmlToElement(String(file)))
 
