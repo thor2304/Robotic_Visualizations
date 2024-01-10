@@ -12,6 +12,31 @@ A live demo is currently hosted at
 ### [robotics.cryptobot.dk](robotics.cryptobot.dk)
 This demo is password protected
 
+## Running locally
+The tool can be run locally by cloning the repository. 
+Make sure that the folder is called `Robotic_Visualizations`, 
+such that this file is located at `../Robotic_Visualizations/README.md`.
+
+Running the tool requires a webserver.
+I found it easy to use the node module 
+[https://www.npmjs.com/package/http-server](https://www.npmjs.com/package/http-server).
+
+It can be run directly from above the project root with:
+```
+npx http-server -o .
+``` 
+
+Alternatively, a docker compose file has been provided with the tool, 
+so the tool can be run from the project root with:
+```
+docker compose up
+```
+This will run the server on port 
+[http://127.0.0.1:8080/Robotic_Visualizations/Contextual/main.html](http://127.0.0.1:8080/Robotic_Visualizations/Contextual/main.html).
+The tool runs best in Chrome, so if you have performance problems try Chrome first. 
+(Chromium based browsers in this case is not the same. 
+I have tried Opera, and that has much worse performance than Chrome.)
+
 # Using Github Issues
 Feedback is very welcome by creating an Issue.
 The different issue labels can be used by us to communicate the nature of the issue. 
